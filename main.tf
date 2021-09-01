@@ -12,7 +12,14 @@ provider "scaleway" {
   region          = "fr-par"
 }
 
+resource "scaleway_instance_ip" "web_public_ip" {}
+
 resource "scaleway_instance_server" "web" {
 	type = "DEV1-S"
 	image = "debian_bullseye"
+	ip_id = scaleway_instance_ip.web_public_ip.id
+}
+
+output "instance_ip_addr" {
+	value = scaleway_instance_server.web.public_ip
 }
