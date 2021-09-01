@@ -12,6 +12,10 @@ provider "scaleway" {
   region          = "fr-par"
 }
 
+resource "scaleway_account_ssh_key" "main"{
+	public_key = file("~/.ssh/scaleway.pub")
+}
+
 resource "scaleway_instance_security_group" "www" {
 	inbound_default_policy = "drop"
 	outbound_default_policy = "accept"
