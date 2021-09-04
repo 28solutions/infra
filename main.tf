@@ -7,13 +7,18 @@ terraform {
   required_version = ">= 0.13"
 }
 
+variable "ssh_private_key" {
+	type = string
+	description = "A matching .pub file must exist"
+}
+
 provider "scaleway" {
   zone            = "fr-par-1"
   region          = "fr-par"
 }
 
 resource "scaleway_account_ssh_key" "main"{
-	public_key = file("~/.ssh/scaleway.pub")
+	public_key = file("${var.ssh_private_key}.pub")
 }
 
 resource "scaleway_instance_security_group" "www" {
