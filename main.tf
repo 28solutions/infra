@@ -38,6 +38,17 @@ resource "scaleway_instance_server" "web" {
 	image = "debian_bullseye"
 	ip_id = scaleway_instance_ip.web_public_ip.id
 	security_group_id = scaleway_instance_security_group.www.id
+
+	provisioner "remote-exec" {
+		inline = [ "uname -a" ]
+
+		connection {
+			type = "ssh"
+			host = self.public_ip
+			user = "root"
+			private_key = file(var.ssh_private_key)
+		}
+	}
 }
 
 output "instance_ip_addr" {
