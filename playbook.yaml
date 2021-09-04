@@ -1,0 +1,9 @@
+- name: Provision web server
+  hosts: all
+  tasks:
+  - name: Update package manager
+    apt:
+      update_cache: yes
+      cache_valid_time: 3600
+      autoremove: yes
+      autoclean: yes
