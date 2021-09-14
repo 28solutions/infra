@@ -41,6 +41,6 @@ resource "scaleway_instance_server" "web" {
 	}
 }
 
-output "instance_ip_addr" {
+output "web_server_ip_address" {
 	value = scaleway_instance_server.web.public_ip
 }
