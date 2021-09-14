@@ -1,4 +1,4 @@
-.PHONY: deploy provision
+.PHONY: deploy provision destroy
 
 ip != terraform -chdir=provisioning output -raw web_server_ip_address
 
@@ -7,3 +7,6 @@ deploy: provision
 
 provision:
 	terraform -chdir=provisioning apply -auto-approve -var "ssh_private_key=$(SSH_PK)"
+
+destroy:
+	terraform -chdir=provisioning destroy -auto-approve -var "ssh_private_key=$(SSH_PK)"
