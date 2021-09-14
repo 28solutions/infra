@@ -1,20 +1,6 @@
-terraform {
-  required_providers {
-    scaleway = {
-      source = "scaleway/scaleway"
-    }
-  }
-  required_version = ">= 0.13"
-}
-
 variable "ssh_private_key" {
 	type = string
 	description = "A matching .pub file must exist"
-}
-
-provider "scaleway" {
-  zone            = "fr-par-1"
-  region          = "fr-par"
 }
 
 resource "scaleway_account_ssh_key" "main"{
