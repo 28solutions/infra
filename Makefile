@@ -1,5 +1,7 @@
 .PHONY: deploy provision destroy
 
+SSH_PK ?= ~/.ssh/scaleway
+
 tf := terraform -chdir=provisioning
 ansible := ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook
 
