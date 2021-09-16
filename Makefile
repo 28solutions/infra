@@ -3,13 +3,16 @@
 tf := terraform -chdir=provisioning
 ansible := ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook
 
+ansible_auth := -u root --private-key '$(SSH_PK)'
+tf_vars := -var "ssh_private_key=$(SSH_PK)"
+
 ip = $(shell $(tf) output -raw web_server_ip_address)
 
 deploy: provision
-	$(ansible) -u root -i $(ip), --private-key '$(SSH_PK)' deployment/playbook.yaml
+	$(ansible) -i $(ip), $(ansible_auth) deployment/playbook.yaml
 
 provision:
-	$(tf) apply -auto-approve -var "ssh_private_key=$(SSH_PK)"
+	$(tf) apply -auto-approve $(tf_vars)
 
 destroy:
-	$(tf) destroy -auto-approve -var "ssh_private_key=$(SSH_PK)"
+	$(tf) destroy -auto-approve $(tf_vars)
