@@ -1,6 +1,6 @@
 .PHONY: deploy provision destroy
 
-ip != terraform -chdir=provisioning output -raw web_server_ip_address
+ip = $(shell terraform -chdir=provisioning output -raw web_server_ip_address)
 
 deploy: provision
 	ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u root -i $(ip), --private-key '$(SSH_PK)' deployment/playbook.yaml
