@@ -5,6 +5,10 @@ resource "aws_s3_bucket" "state-bucket" {
   versioning {
     enabled = true
   }
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 resource "aws_dynamodb_table" "state-table" {
@@ -15,5 +19,9 @@ resource "aws_dynamodb_table" "state-table" {
   attribute {
     name = "LockID"
     type = "S"
+  }
+
+  lifecycle {
+    prevent_destroy = true
   }
 }
