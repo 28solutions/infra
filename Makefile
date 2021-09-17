@@ -8,9 +8,12 @@ ansible_auth := -u root --private-key "$(SSH_PK)"
 
 ip = $(shell $(tf) output -raw web_server_ip_address)
 
-.PHONY: deploy provision destroy
+.PHONY: bootstrap deploy provision destroy
 
 all: deploy
+
+bootstrap:
+	$(MAKE) --directory bootstrap
 
 provisioning/.terraform:
 	$(tf) init
