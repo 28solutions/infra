@@ -10,11 +10,13 @@ ip = $(shell $(tf) output -raw web_server_ip_address)
 
 .PHONY: deploy provision destroy
 
-deploy: provision
-	$(ansible) -i $(ip), $(ansible_auth) deployment/playbook.yaml
+all: deploy
 
 provision:
 	$(tf) apply -auto-approve $(tf_vars)
+
+deploy: provision
+	$(ansible) -i $(ip), $(ansible_auth) deployment/playbook.yaml
 
 destroy:
 	$(tf) destroy -auto-approve $(tf_vars)
