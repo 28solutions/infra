@@ -12,11 +12,14 @@ ip = $(shell $(tf) output -raw web_server_ip_address)
 
 all: deploy
 
-provision:
+provisioning/.terraform:
+	$(tf) init
+
+provision: provisioning/.terraform
 	$(tf) apply -auto-approve $(tf_vars)
 
 deploy: provision
 	$(ansible) -i $(ip), $(ansible_auth) deployment/playbook.yaml
 
-destroy:
+destroy: provisioning/.terraform
 	$(tf) destroy -auto-approve $(tf_vars)
