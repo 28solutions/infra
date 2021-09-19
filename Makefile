@@ -8,7 +8,7 @@ ansible_auth := -u root --private-key "$(SSH_PK)"
 
 ip = $(shell $(tf) output -raw web_server_ip_address)
 
-.PHONY: bootstrap deploy provision destroy versions
+.PHONY: all lint bootstrap provision deploy destroy versions
 
 all: deploy
 
