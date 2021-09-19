@@ -8,7 +8,7 @@ ansible_auth := -u root --private-key "$(SSH_PK)"
 
 ip = $(shell $(tf) output -raw web_server_ip_address)
 
-.PHONY: bootstrap deploy provision destroy
+.PHONY: bootstrap deploy provision destroy versions
 
 all: deploy
 
@@ -32,3 +32,8 @@ deploy: provision
 
 destroy: provisioning/.terraform
 	$(tf) destroy -auto-approve $(tf_vars)
+
+versions:
+	@echo Terraform $(shell terraform version -json | jq -r .terraform_version)
+	@echo Ansible $(shell ansible --version | grep -Po '(?<=core )[0-9.]+')
+	@echo Ansible Lint $(shell ansible-lint --version | grep -Eo "[0-9.]+" | head -n 1)
