@@ -16,6 +16,7 @@ lint: provisioning/.terraform
 	$(MAKE) --directory bootstrap lint
 	$(tf) fmt -check
 	$(tf) validate
+	cd deployment && ansible-lint
 
 bootstrap:
 	$(MAKE) --directory bootstrap
