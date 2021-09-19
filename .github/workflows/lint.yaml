@@ -20,6 +20,4 @@ jobs:
     - name: Install Ansible Lint
       run: pip install ansible ansible-lint
     - name: Lint
-      run: |
-        make versions
-        make lint
+      run: make versions lint
