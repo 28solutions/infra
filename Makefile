@@ -12,6 +12,11 @@ ip = $(shell $(tf) output -raw web_server_ip_address)
 
 all: deploy
 
+lint: provisioning/.terraform
+	$(MAKE) --directory bootstrap lint
+	$(tf) fmt -check
+	$(tf) validate
+
 bootstrap:
 	$(MAKE) --directory bootstrap
 
