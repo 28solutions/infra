@@ -9,5 +9,9 @@ jobs:
       uses: actions/checkout@v2
     - name: Install Terraform
       uses: hashicorp/setup-terraform@v1
+    - name: Initialize Terraform
+      run: |
+        terraform -chdir=bootstrap init -backend=false
+        terraform -chdir=provisioning init -backend=false
     - name: Lint
       run: make lint
