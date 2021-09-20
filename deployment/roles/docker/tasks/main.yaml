@@ -1,0 +1,35 @@
+- name: Uninstall old versions
+  apt:
+    name:
+    - docker
+    - docker-engine
+    - docker.io
+    - containerd
+    - runc
+    state: absent
+- name: Install prerequisites
+  apt:
+    name:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - gnupg
+    - lsb-release
+- name: Download GPG key
+  get_url:
+    url: "{{ docker_apt_repository.gpg_key.url }}"
+    dest: "{{ docker_apt_repository.gpg_key.path }}.ascii"
+  notify: Dearmor GPG key
+- name: Flush handlers
+  meta: flush_handlers
+- name: Add APT repository
+  apt_repository:
+    repo: "{{ docker_apt_repository_entry }}"
+    state: present
+    update_cache: yes
+- name: Install
+  apt:
+    name:
+    - docker-ce
+    - docker-ce-cli
+    - containerd.io

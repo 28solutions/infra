@@ -1,0 +1,1 @@
+docker_apt_repository_entry: deb [arch={{ docker_apt_repository.arch }} signed-by={{ docker_apt_repository.gpg_key.path }}] {{ docker_apt_repository.url }} {{ docker_apt_repository.distribution }} {{ docker_apt_repository.components }}
