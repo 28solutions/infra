@@ -25,7 +25,6 @@
   apt_repository:
     repo: "{{ docker_apt_repository_entry }}"
     state: present
-    update_cache: yes
 - name: Install
   apt:
     name:
