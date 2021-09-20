@@ -1,12 +1,4 @@
 - name: Provision web server
   hosts: all
-  tasks:
-  - name: Update package manager
-    apt:
-      update_cache: yes
-      cache_valid_time: 3600
-  - name: Upgrade system
-    apt:
-      upgrade: yes
-      autoremove: yes
-      autoclean: yes
+  roles:
+  - common
