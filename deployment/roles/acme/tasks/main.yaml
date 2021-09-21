@@ -1,0 +1,18 @@
+- name: Generate private key for {{ common_name | mandatory }}
+  community.crypto.openssl_privatekey:
+    path: /etc/ssl/private/{{ common_name }}.pem
+- name: Create CSR directory
+  file:
+    path: /etc/ssl/csr
+    state: directory
+    mode: 0755
+- name: Generate CSR for {{ common_name }}
+  community.crypto.openssl_csr:
+    path: /etc/ssl/csr/{{ common_name }}.csr
+    privatekey_path: /etc/ssl/private/{{ common_name }}.pem
+    common_name: "{{ common_name }}"
+    country_name: "{{ acme_country }}"
+    state_or_province_name: "{{ acme_state_or_province }}"
+    locality_name: "{{ acme_locality }}"
+    organization_name: "{{ acme_organization }}"
+    organizational_unit_name: "{{ acme_organizational_unit }}"
