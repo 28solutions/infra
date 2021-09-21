@@ -23,6 +23,16 @@ provider "scaleway" {
   region = "fr-par"
 }
 
+variable "acme_production" {
+  type        = bool
+  description = "Use production ACME endpoint"
+}
+
+locals {
+  acme_production_endpoint = "https://acme-v02.api.letsencrypt.org/directory"
+  acme_staging_endpoint    = "https://acme-staging-v02.api.letsencrypt.org/directory"
+}
+
 provider "acme" {
-  server_url = "https://acme-staging-v02.api.letsencrypt.org/directory"
+  server_url = var.acme_production ? local.acme_production_endpoint : local.acme_staging_endpoint
 }

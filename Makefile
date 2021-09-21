@@ -3,6 +3,7 @@ SSH_PK ?= ~/.ssh/scaleway
 tf := terraform -chdir=provisioning
 tf_vars := \
 	-var "ssh_private_key=$(SSH_PK)" \
+	-var "acme_production=false" \
 	-var "acme_email_address=stephane@twentyeight.solutions"
 
 ansible := ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook
