@@ -31,8 +31,14 @@ variable "acme_production" {
 locals {
   acme_production_endpoint = "https://acme-v02.api.letsencrypt.org/directory"
   acme_staging_endpoint    = "https://acme-staging-v02.api.letsencrypt.org/directory"
+
+  acme_directory = var.acme_production ? local.acme_production_endpoint : local.acme_staging_endpoint
 }
 
 provider "acme" {
-  server_url = var.acme_production ? local.acme_production_endpoint : local.acme_staging_endpoint
+  server_url = local.acme_directory
+}
+
+output "acme_directory" {
+  value = local.acme_directory
 }
