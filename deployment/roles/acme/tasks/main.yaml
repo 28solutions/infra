@@ -16,3 +16,22 @@
     locality_name: "{{ acme_locality }}"
     organization_name: "{{ acme_organization }}"
     organizational_unit_name: "{{ acme_organizational_unit }}"
+- name: Create local certificates directory
+  file:
+    path: /etc/ssl/local-certs
+    state: directory
+    mode: 0755
+- name: Create challenge for {{ common_name }}
+  community.crypto.acme_certificate:
+    acme_directory: "{{ tf_acme_directory }}"
+    acme_version: 2
+    account_key_content: "{{ tf_acme_private_key }}"
+    modify_account: no
+    challenge: dns-01
+    csr: /etc/ssl/csr/{{ common_name }}.csr
+    fullchain_dest: /etc/ssl/local-certs/{{ common_name }}.crt
+  register: challenges
+- name: Display DNS challenges
+  debug:
+    msg: "{{ item.key }} - {{ item.value['dns-01'].record }} - {{ item.value['dns-01'].resource_value }}"
+  loop: "{{ challenges.challenge_data | dict2items }}"
