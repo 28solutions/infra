@@ -35,10 +35,6 @@ resource "scaleway_instance_server" "web" {
       private_key = file(var.ssh_private_key)
     }
   }
-
-  provisioner "local-exec" {
-    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u root -i ${self.public_ip}, --private-key '${var.ssh_private_key}' ../deployment/playbook.yaml"
-  }
 }
 
 output "web_server_ip_address" {
