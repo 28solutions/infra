@@ -35,6 +35,7 @@ provision: provisioning/.terraform
 	$(tf) apply -auto-approve $(tf_vars)
 
 deploy: provision
+	ansible-galaxy install -r deployment/requirements.yml
 	@$(ansible) -i $(ip), $(ansible_auth) --extra-vars '$(ansible_vars)' deployment/playbook.yaml
 
 destroy: provisioning/.terraform
