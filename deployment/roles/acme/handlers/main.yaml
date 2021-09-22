@@ -1,0 +1,5 @@
+- name: Display DNS challenges
+  debug:
+    msg: "{{ item.key }} - {{ item.value['dns-01'].record }} - {{ item.value['dns-01'].resource_value }}"
+  loop: "{{ challenges.challenge_data | dict2items }}"
+  listen: new challenges

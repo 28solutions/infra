@@ -31,7 +31,4 @@
     csr: /etc/ssl/csr/{{ common_name }}.csr
     fullchain_dest: /etc/ssl/local-certs/{{ common_name }}.crt
   register: challenges
-- name: Display DNS challenges
-  debug:
-    msg: "{{ item.key }} - {{ item.value['dns-01'].record }} - {{ item.value['dns-01'].resource_value }}"
-  loop: "{{ challenges.challenge_data | dict2items }}"
+  notify: new challenges
