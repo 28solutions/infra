@@ -1,4 +1,4 @@
-- name: Generate private key for {{ common_name | mandatory }}
+- name: Generate private key for {{ common_name }}
   community.crypto.openssl_privatekey:
     path: /etc/ssl/private/{{ common_name }}.pem
 - name: Create CSR directory
