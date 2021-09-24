@@ -29,16 +29,16 @@ provisioning/.terraform:
 	$(tf) init
 
 plan: provisioning/.terraform
-	$(tf) plan $(tf_vars)
+	. $(HOME)/.ovh/terraform && $(tf) plan $(tf_vars)
 
 provision: provisioning/.terraform
-	$(tf) apply -auto-approve $(tf_vars)
+	. $(HOME)/.ovh/terraform && $(tf) apply -auto-approve $(tf_vars)
 
 deploy: provision
 	$(ansible_vars) | $(ansible) -i $(ip), $(ansible_auth) deployment/playbook.yaml
 
 destroy: provisioning/.terraform
-	$(tf) destroy -auto-approve $(tf_vars)
+	. $(HOME)/.ovh/terraform && $(tf) destroy -auto-approve $(tf_vars)
 
 versions:
 	@echo Terraform $(shell terraform version -json | jq -r .terraform_version)
