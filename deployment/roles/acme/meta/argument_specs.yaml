@@ -1,5 +1,0 @@
-argument_specs:
-  main:
-    options:
-      common_name:
-        required: true

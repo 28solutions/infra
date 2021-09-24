@@ -3,6 +3,3 @@
   roles:
   - common
   - docker
-  - role: acme
-    vars:
-      common_name: tools.28.solutions
