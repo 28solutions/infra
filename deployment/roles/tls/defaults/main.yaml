@@ -1,0 +1,2 @@
+tls_private_directory: /etc/ssl/private
+tls_certs_directory: /etc/ssl/local-certs
