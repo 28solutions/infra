@@ -2,6 +2,7 @@
   copy:
     content: "{{ tf.certificate_private_key }}"
     dest: "{{ tls_private_directory }}/{{ tf.domain_name }}.pem"
+    mode: 0600
 - name: Create local certificates directory
   file:
     path: "{{ tls_certs_directory }}"
@@ -11,3 +12,4 @@
   copy:
     content: "{{ tf.certificate }}"
     dest: "{{ tls_certs_directory }}/{{ tf.domain_name }}.pem"
+    mode: 0644
