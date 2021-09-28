@@ -37,6 +37,13 @@ resource "scaleway_instance_server" "web" {
   }
 }
 
+resource "ovh_domain_zone_record" "kenny_dns" {
+  zone      = "28.solutions"
+  subdomain = "kenny.hosts"
+  fieldtype = "A"
+  target    = scaleway_instance_server.web.public_ip
+}
+
 output "web_server_ip_address" {
   value = scaleway_instance_server.web.public_ip
 }
