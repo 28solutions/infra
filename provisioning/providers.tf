@@ -45,7 +45,3 @@ locals {
 provider "acme" {
   server_url = local.acme_directory
 }
-
-output "acme_directory" {
-  value = local.acme_directory
-}
