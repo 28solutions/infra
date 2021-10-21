@@ -12,6 +12,7 @@ ansible := ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook
 ansible_auth := -u root --private-key "$(SSH_PK)"
 
 ip = $(shell $(tf) output -raw web_server_ip_address)
+ssh_port = $(shell $(tf) output -raw web_server_ssh_port)
 ansible_vars = $(tf) output -json | jq -c 'map_values(.value)'
 
 .PHONY: all lint bootstrap plan provision deploy destroy versions
@@ -37,7 +38,7 @@ provision: provisioning/.terraform
 	$(cf_creds) && $(tf) apply -auto-approve $(tf_vars)
 
 deploy: provision
-	$(ansible_vars) | $(ansible) -i $(ip), $(ansible_auth) deployment/playbook.yaml
+	$(ansible_vars) | $(ansible) -i $(ip), -e ansible_port=$(ssh_port) $(ansible_auth) deployment/playbook.yaml
 
 destroy: provisioning/.terraform
 	$(cf_creds) && $(tf) destroy -auto-approve $(tf_vars)

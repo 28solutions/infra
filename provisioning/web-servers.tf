@@ -1,3 +1,9 @@
+variable "ssh_port" {
+  type        = number
+  description = "SSH listening port"
+  default     = 44265
+}
+
 variable "ssh_private_key" {
   type        = string
   description = "A matching .pub file must exist"
@@ -13,7 +19,7 @@ resource "scaleway_instance_security_group" "www" {
 
   inbound_rule {
     action = "accept"
-    port   = 22
+    port   = var.ssh_port
   }
 }
 
@@ -25,12 +31,17 @@ resource "scaleway_instance_server" "web" {
   ip_id             = scaleway_instance_ip.web_public_ip.id
   security_group_id = scaleway_instance_security_group.www.id
 
+  user_data = {
+    cloud-init = templatefile("${path.module}/cloud-init.yaml", { port = var.ssh_port })
+  }
+
   provisioner "remote-exec" {
     inline = ["uname -a"]
 
     connection {
       type        = "ssh"
       host        = self.public_ip
+      port        = var.ssh_port
       user        = "root"
       private_key = file(var.ssh_private_key)
     }
@@ -50,4 +61,8 @@ resource "cloudflare_record" "kenny_dns" {
 
 output "web_server_ip_address" {
   value = scaleway_instance_server.web.public_ip
+}
+
+output "web_server_ssh_port" {
+  value = var.ssh_port
 }

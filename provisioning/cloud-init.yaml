@@ -1,0 +1,5 @@
+#cloud-config
+
+runcmd:
+- echo "Port ${port}" > /etc/ssh/sshd_config.d/port.conf
+- service ssh reload
