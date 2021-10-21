@@ -42,7 +42,7 @@ resource "acme_certificate" "certificate" {
   certificate_request_pem = tls_cert_request.csr.cert_request_pem
 
   dns_challenge {
-    provider = "ovh"
+    provider = "cloudflare"
   }
 }
 

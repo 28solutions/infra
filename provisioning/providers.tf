@@ -3,8 +3,8 @@ terraform {
     scaleway = {
       source = "scaleway/scaleway"
     }
-    ovh = {
-      source = "ovh/ovh"
+    cloudflare = {
+      source = "cloudflare/cloudflare"
     }
     acme = {
       source = "vancluever/acme"
@@ -24,10 +24,6 @@ terraform {
 provider "scaleway" {
   zone   = "fr-par-1"
   region = "fr-par"
-}
-
-provider "ovh" {
-  endpoint = "ovh-eu"
 }
 
 variable "acme_production" {

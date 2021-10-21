@@ -37,11 +37,15 @@ resource "scaleway_instance_server" "web" {
   }
 }
 
-resource "ovh_domain_zone_record" "kenny_dns" {
-  zone      = "28.solutions"
-  subdomain = "kenny.hosts"
-  fieldtype = "A"
-  target    = scaleway_instance_server.web.public_ip
+data "cloudflare_zone" "dns_zone" {
+  name = "28.solutions"
+}
+
+resource "cloudflare_record" "kenny_dns" {
+  zone_id = data.cloudflare_zone.dns_zone.id
+  name    = "kenny.hosts"
+  type    = "A"
+  value   = scaleway_instance_server.web.public_ip
 }
 
 output "web_server_ip_address" {

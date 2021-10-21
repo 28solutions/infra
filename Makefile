@@ -1,5 +1,7 @@
 SSH_PK ?= ~/.ssh/scaleway
 
+cf_creds = . $(HOME)/.creds/terraform@cloudflare
+
 tf := terraform -chdir=provisioning
 tf_vars := \
 	-var "ssh_private_key=$(SSH_PK)" \
@@ -29,16 +31,16 @@ provisioning/.terraform:
 	$(tf) init
 
 plan: provisioning/.terraform
-	. $(HOME)/.ovh/terraform && $(tf) plan $(tf_vars)
+	$(cf_creds) && $(tf) plan $(tf_vars)
 
 provision: provisioning/.terraform
-	. $(HOME)/.ovh/terraform && $(tf) apply -auto-approve $(tf_vars)
+	$(cf_creds) && $(tf) apply -auto-approve $(tf_vars)
 
 deploy: provision
 	$(ansible_vars) | $(ansible) -i $(ip), $(ansible_auth) deployment/playbook.yaml
 
 destroy: provisioning/.terraform
-	. $(HOME)/.ovh/terraform && $(tf) destroy -auto-approve $(tf_vars)
+	$(cf_creds) && $(tf) destroy -auto-approve $(tf_vars)
 
 versions:
 	@echo Terraform $(shell terraform version -json | jq -r .terraform_version)
