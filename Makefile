@@ -8,7 +8,11 @@ tf_vars := \
 	-var "acme_production=false" \
 	-var "acme_email_address=stephane@twentyeight.solutions"
 
-ansible := ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook --ssh-common-args "-o UserKnownHostsFile=/dev/null"
+ansible := \
+	ANSIBLE_HOST_KEY_CHECKING=False \
+	ansible-playbook \
+	--ssh-common-args "-o ForwardAgent=yes -o UserKnownHostsFile=/dev/null"
+
 ansible_auth := -u root --private-key "$(SSH_PK)"
 
 ip = $(shell $(tf) output -raw web_server_ip_address)
