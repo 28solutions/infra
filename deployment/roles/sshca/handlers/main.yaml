@@ -1,0 +1,4 @@
+- name: reload SSH service
+  service:
+    name: sshd
+    state: reloaded

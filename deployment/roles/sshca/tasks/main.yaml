@@ -21,3 +21,10 @@
     identifier: kenny.hosts.28.solutions host key
     principals: [kenny.hosts.28.solutions]
   with_items: "{{ host_keys.files | map(attribute='path') }}"
+  notify: reload SSH service
+- name: Register host keys certificates
+  template:
+    src: certs.conf.j2
+    dest: /etc/ssh/sshd_config.d/certs.conf
+    mode: 0644
+  notify: reload SSH service
