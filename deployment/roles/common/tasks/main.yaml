@@ -7,3 +7,6 @@
     upgrade: yes
     autoremove: yes
     autoclean: yes
+- name: Create user
+  user:
+    name: "{{ user_name }}"
