@@ -9,4 +9,5 @@
   - common
   - sshca
   - docker
+  - users
   - tls

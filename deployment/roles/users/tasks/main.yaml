@@ -1,0 +1,14 @@
+- name: Create 'wheel' group
+  group:
+    name: wheel
+- name: Create user
+  user:
+    name: "{{ user_name }}"
+    groups:
+      - wheel
+    shell: /bin/bash
+- name: Configure sudo
+  copy:
+    content: "%wheel ALL=(ALL) NOPASSWD:ALL"
+    dest: /etc/sudoers.d/90-wheel-no-password
+    mode: 0440
