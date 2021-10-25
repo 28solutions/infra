@@ -15,6 +15,7 @@ jobs:
       run: |
         terraform -chdir=bootstrap init -backend=false
         terraform -chdir=provisioning init -backend=false
+        terraform -chdir=services init -backend=false
     - name: Install Python
       uses: actions/setup-python@v2
     - name: Install Ansible Lint
