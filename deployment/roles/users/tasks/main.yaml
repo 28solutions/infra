@@ -6,6 +6,7 @@
     name: "{{ user_name }}"
     groups:
       - wheel
+      - docker
     shell: /bin/bash
 - name: Configure sudo
   copy:
