@@ -10,4 +10,8 @@ resource "docker_container" "tools_hash" {
   ports {
     internal = 8000
   }
+
+  networks_advanced {
+    name = docker_network.tools.name
+  }
 }
