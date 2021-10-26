@@ -30,6 +30,7 @@ resource "docker_image" "reverse_proxy" {
 resource "docker_container" "reverse_proxy" {
   name  = "reverse_proxy"
   image = docker_image.reverse_proxy.latest
+  user  = "1000:1000"
 
   command = [
     "--providers.docker.endpoint=tcp://docker_proxy:2375",
