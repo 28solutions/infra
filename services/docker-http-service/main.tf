@@ -9,6 +9,7 @@ resource "docker_container" "container" {
 
   ports {
     internal = var.internal_port
+    ip       = var.listening_ip
   }
 
   networks_advanced {

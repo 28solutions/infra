@@ -14,6 +14,12 @@ variable "internal_port" {
   default     = 8000
 }
 
+variable "listening_ip" {
+  type        = string
+  description = "Publishing interface"
+  default     = "127.0.0.1"
+}
+
 variable "network" {
   type        = string
   description = "Name of Docker network"
