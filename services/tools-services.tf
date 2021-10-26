@@ -1,3 +1,7 @@
+locals {
+  traefik_host = "tools.28.solutions"
+}
+
 resource "docker_network" "tools" {
   name = "tools"
 }
@@ -8,6 +12,9 @@ module "remote_ip_service" {
   image     = "28solutions/tools-remote-ip:0.1.2"
   container = "tools_remote_ip"
   network   = docker_network.tools.name
+
+  host = local.traefik_host
+  path = "/ip"
 }
 
 module "hash_service" {
@@ -16,4 +23,7 @@ module "hash_service" {
   image     = "28solutions/tools-hash:0.1.3"
   container = "tools_hash"
   network   = docker_network.tools.name
+
+  host = local.traefik_host
+  path = "/hash"
 }

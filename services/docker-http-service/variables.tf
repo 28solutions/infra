@@ -24,3 +24,13 @@ variable "network" {
   type        = string
   description = "Name of Docker network"
 }
+
+variable "host" {
+  type        = string
+  description = "Traefik rule host"
+}
+
+variable "path" {
+  type        = string
+  description = "Traefik rule path"
+}
