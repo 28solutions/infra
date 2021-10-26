@@ -1,4 +1,4 @@
-- name: Download CA public key
+- name: Download host CA public key
   get_url:
     url: https://www.stephanedewit.be/ssh/host-ca.pub
     dest: /etc/ssh/host-ca.pub

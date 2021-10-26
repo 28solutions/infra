@@ -1,9 +1,9 @@
-- name: Download CA public key
+- name: Download user CA public key
   get_url:
     url: https://www.stephanedewit.be/ssh/user-ca.pub
     dest: /etc/ssh/user-ca.pub
     mode: 0644
-- name: Register CA
+- name: Register user CA
   copy:
     content: TrustedUserCAKeys /etc/ssh/user-ca.pub
     dest: /etc/ssh/sshd_config.d/user-ca.conf
