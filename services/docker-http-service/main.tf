@@ -1,7 +1,8 @@
 locals {
-  clean_host      = replace(replace(var.host, "/^\\W+|\\W+$/", ""), "/\\W+/", "_")
-  clean_methods   = replace(join("_", var.methods), "/\\W+/", "")
-  clean_path      = replace(replace(var.path, "/^\\W+|\\W+$/", ""), "/\\W+/", "_")
+  clean_host    = replace(replace(var.host, "/^\\W+|\\W+$/", ""), "/\\W+/", "_")
+  clean_methods = replace(join("_", var.methods), "/\\W+/", "")
+  clean_path    = replace(replace(var.path, "/^\\W+|\\W+$/", ""), "/\\W+/", "_")
+
   traefik_router  = "${local.clean_host}-${local.clean_methods}-${local.clean_path}"
   traefik_methods = "`${join("`, `", var.methods)}`"
 }
