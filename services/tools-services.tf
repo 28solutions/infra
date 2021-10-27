@@ -13,8 +13,9 @@ module "remote_ip_service" {
   container = "tools_remote_ip"
   network   = docker_network.tools.name
 
-  host = local.traefik_host
-  path = "/ip"
+  host    = local.traefik_host
+  methods = ["GET"]
+  path    = "/ip"
 }
 
 module "hash_service" {
@@ -24,6 +25,7 @@ module "hash_service" {
   container = "tools_hash"
   network   = docker_network.tools.name
 
-  host = local.traefik_host
-  path = "/hash"
+  host    = local.traefik_host
+  methods = ["POST", "PUT"]
+  path    = "/hash"
 }

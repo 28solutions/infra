@@ -30,6 +30,11 @@ variable "host" {
   description = "Traefik rule host"
 }
 
+variable "methods" {
+  type        = list(string)
+  description = "Traefik rule methods"
+}
+
 variable "path" {
   type        = string
   description = "Traefik rule path"

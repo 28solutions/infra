@@ -1,5 +1,6 @@
 locals {
-  traefik_router = "${replace(var.host, ".", "-")}_${replace(var.path, "/", "")}"
+  traefik_router  = "${replace(var.host, ".", "-")}_${replace(var.path, "/", "")}"
+  traefik_methods = "`${join("`, `", var.methods)}`"
 }
 
 resource "docker_image" "image" {
@@ -32,6 +33,6 @@ resource "docker_container" "container" {
 
   labels {
     label = "traefik.http.routers.${local.traefik_router}.rule"
-    value = "Host(`${var.host}`) && Path(`${var.path}`)"
+    value = "Host(`${var.host}`) && Path(`${var.path}`) && Method(${local.traefik_methods})"
   }
 }
