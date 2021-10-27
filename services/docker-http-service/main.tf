@@ -1,5 +1,7 @@
 locals {
-  traefik_router  = "${replace(var.host, ".", "-")}_${replace(var.path, "/", "")}"
+  clean_host      = replace(var.host, ".", "-")
+  clean_path      = replace(var.path, "/", "")
+  traefik_router  = "${local.clean_host}_${local.clean_path}"
   traefik_methods = "`${join("`, `", var.methods)}`"
 }
 
