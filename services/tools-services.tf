@@ -29,3 +29,15 @@ module "hash_service" {
   methods = ["POST", "PUT"]
   path    = "/hash"
 }
+
+module "ui_service" {
+  source = "./docker-http-service"
+
+  image         = "28solutions/tools-ui:0.0.2"
+  container     = "tools_ui"
+  internal_port = 8080
+  network       = docker_network.tools.name
+
+  host    = local.host
+  methods = ["GET"]
+}
