@@ -39,4 +39,9 @@ resource "docker_container" "container" {
     label = "traefik.http.routers.${local.traefik_router}.rule"
     value = "Host(`${var.host}`) && Path(`${var.path}`) && Method(${local.traefik_methods})"
   }
+
+  labels {
+    label = "traefik.http.services.${var.container}.loadbalancer.server.port"
+    value = var.internal_port
+  }
 }
