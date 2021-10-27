@@ -38,4 +38,5 @@ variable "methods" {
 variable "path" {
   type        = string
   description = "Traefik rule path"
+  default     = ""
 }
