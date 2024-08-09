@@ -4,5 +4,5 @@ docker_apt_repository:
     url: https://download.docker.com/linux/debian/gpg
     path: /usr/share/keyrings/docker-archive-keyring.gpg
   url: https://download.docker.com/linux/debian
-  distribution: bullseye
+  distribution: bookworm
   components: stable

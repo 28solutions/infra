@@ -32,7 +32,7 @@ resource "scaleway_instance_ip" "web_public_ip" {}
 
 resource "scaleway_instance_server" "web" {
   type              = "DEV1-S"
-  image             = "debian_bullseye"
+  image             = "debian_bookworm"
   ip_id             = scaleway_instance_ip.web_public_ip.id
   security_group_id = scaleway_instance_security_group.www.id
 
