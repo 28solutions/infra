@@ -1,13 +1,21 @@
 resource "aws_s3_bucket" "state-bucket" {
   bucket = "28s-terraform"
-  acl    = "private"
-
-  versioning {
-    enabled = true
-  }
 
   lifecycle {
     prevent_destroy = true
+  }
+}
+
+resource "aws_s3_bucket_acl" "state-bucket" {
+  bucket = aws_s3_bucket.state-bucket.id
+  acl    = "private"
+}
+
+resource "aws_s3_bucket_versioning" "state-bucket" {
+  bucket = aws_s3_bucket.state-bucket.id
+
+  versioning_configuration {
+    status = "Enabled"
   }
 }
 
