@@ -61,7 +61,7 @@ resource "cloudflare_record" "kenny_dns" {
   zone_id = data.cloudflare_zone.dns_zone.id
   name    = "kenny.hosts"
   type    = "A"
-  value   = scaleway_instance_server.web.public_ip
+  content = scaleway_instance_server.web.public_ip
 }
 
 output "web_server_ip_address" {

@@ -23,7 +23,6 @@ resource "tls_private_key" "cert_private_key" {
 }
 
 resource "tls_cert_request" "csr" {
-  key_algorithm   = "RSA"
   private_key_pem = tls_private_key.cert_private_key.private_key_pem
   dns_names       = [var.domain_name]
 
