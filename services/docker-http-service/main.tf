@@ -16,7 +16,7 @@ resource "docker_image" "image" {
 
 resource "docker_container" "container" {
   name  = var.container
-  image = docker_image.image.latest
+  image = docker_image.image.repo_digest
 
   ports {
     internal = var.internal_port

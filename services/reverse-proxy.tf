@@ -9,7 +9,7 @@ resource "docker_image" "docker_proxy" {
 
 resource "docker_container" "docker_proxy" {
   name  = "docker_proxy"
-  image = docker_image.docker_proxy.latest
+  image = docker_image.docker_proxy.repo_digest
   env   = ["CONTAINERS=1"]
 
   volumes {
@@ -29,7 +29,7 @@ resource "docker_image" "reverse_proxy" {
 
 resource "docker_container" "reverse_proxy" {
   name  = "reverse_proxy"
-  image = docker_image.reverse_proxy.latest
+  image = docker_image.reverse_proxy.repo_digest
   user  = "1000:1000"
 
   command = [
