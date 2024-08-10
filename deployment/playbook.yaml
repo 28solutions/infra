@@ -2,7 +2,7 @@
   hosts: all
   pre_tasks:
   - name: Load Terraform outputs
-    include_vars:
+    ansible.builtin.include_vars:
       file: /dev/stdin
       name: tf
   roles:

@@ -1,10 +1,10 @@
 - name: Download host CA public key
-  get_url:
+  ansible.builtin.get_url:
     url: https://www.stephanedewit.be/ssh/host-ca.pub
     dest: /etc/ssh/host-ca.pub
     mode: 0644
 - name: List host keys
-  find:
+  ansible.builtin.find:
     path: /etc/ssh
     patterns: ssh_host_*_key.pub
   register: host_keys
@@ -23,7 +23,7 @@
   with_items: "{{ host_keys.files | map(attribute='path') }}"
   notify: reload SSH service
 - name: Register host keys certificates
-  template:
+  ansible.builtin.template:
     src: host-certs.conf.j2
     dest: /etc/ssh/sshd_config.d/host-certs.conf
     mode: 0644

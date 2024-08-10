@@ -1,15 +1,15 @@
 - name: Create 'wheel' group
-  group:
+  ansible.builtin.group:
     name: wheel
 - name: Create user
-  user:
+  ansible.builtin.user:
     name: "{{ user_name }}"
     groups:
       - wheel
       - docker
     shell: /bin/bash
 - name: Configure sudo
-  copy:
+  ansible.builtin.copy:
     content: "%wheel ALL=(ALL) NOPASSWD:ALL"
     dest: /etc/sudoers.d/90-wheel-no-password
     mode: 0440
