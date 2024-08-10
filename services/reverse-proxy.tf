@@ -23,7 +23,7 @@ resource "docker_container" "docker_proxy" {
 }
 
 resource "docker_image" "reverse_proxy" {
-  name         = "traefik:2.5.3"
+  name         = "traefik:3.1.2"
   keep_locally = true
 }
 
