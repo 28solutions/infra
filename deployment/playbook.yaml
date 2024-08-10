@@ -1,13 +1,13 @@
 - name: Provision web server
   hosts: all
   pre_tasks:
-  - name: Load Terraform outputs
-    ansible.builtin.include_vars:
-      file: /dev/stdin
-      name: tf
+    - name: Load Terraform outputs
+      ansible.builtin.include_vars:
+        file: /dev/stdin
+        name: tf
   roles:
-  - common
-  - sshca
-  - docker
-  - users
-  - tls
+    - common
+    - sshca
+    - docker
+    - users
+    - tls
