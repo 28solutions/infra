@@ -1,2 +1,4 @@
-- ansible.builtin.include_tasks: host.yaml
-- ansible.builtin.include_tasks: user.yaml
+- name: Host CA
+  ansible.builtin.include_tasks: host.yaml
+- name: User CA
+  ansible.builtin.include_tasks: user.yaml
