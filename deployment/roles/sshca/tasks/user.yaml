@@ -8,4 +8,4 @@
     content: TrustedUserCAKeys /etc/ssh/user-ca.pub
     dest: /etc/ssh/sshd_config.d/user-ca.conf
     mode: "0644"
-  notify: reload SSH service
+  notify: Reload SSH service

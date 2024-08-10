@@ -21,10 +21,10 @@
     identifier: kenny.hosts.28.solutions host key
     principals: [kenny.hosts.28.solutions]
   with_items: "{{ host_keys.files | map(attribute='path') }}"
-  notify: reload SSH service
+  notify: Reload SSH service
 - name: Register host keys certificates
   ansible.builtin.template:
     src: host-certs.conf.j2
     dest: /etc/ssh/sshd_config.d/host-certs.conf
     mode: "0644"
-  notify: reload SSH service
+  notify: Reload SSH service
