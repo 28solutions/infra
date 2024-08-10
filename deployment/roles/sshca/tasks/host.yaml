@@ -2,7 +2,7 @@
   ansible.builtin.get_url:
     url: https://www.stephanedewit.be/ssh/host-ca.pub
     dest: /etc/ssh/host-ca.pub
-    mode: 0644
+    mode: "0644"
 - name: List host keys
   ansible.builtin.find:
     path: /etc/ssh
@@ -15,7 +15,7 @@
     use_agent: true
     public_key: "{{ item }}"
     path: "{{ item | replace('.pub', '-cert.pub') }}"
-    mode: 0644
+    mode: "0644"
     valid_from: always
     valid_to: forever
     identifier: kenny.hosts.28.solutions host key
@@ -26,5 +26,5 @@
   ansible.builtin.template:
     src: host-certs.conf.j2
     dest: /etc/ssh/sshd_config.d/host-certs.conf
-    mode: 0644
+    mode: "0644"
   notify: reload SSH service

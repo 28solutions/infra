@@ -2,10 +2,10 @@
   ansible.builtin.get_url:
     url: https://www.stephanedewit.be/ssh/user-ca.pub
     dest: /etc/ssh/user-ca.pub
-    mode: 0644
+    mode: "0644"
 - name: Register user CA
   ansible.builtin.copy:
     content: TrustedUserCAKeys /etc/ssh/user-ca.pub
     dest: /etc/ssh/sshd_config.d/user-ca.conf
-    mode: 0644
+    mode: "0644"
   notify: reload SSH service
