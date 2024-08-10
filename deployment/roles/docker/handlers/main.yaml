@@ -5,3 +5,4 @@
     --dearmor
     -o {{ docker_apt_repository.gpg_key.path }}
     {{ docker_apt_repository.gpg_key.path }}.ascii
+  changed_when: true # only triggered when the ASCII key changed
