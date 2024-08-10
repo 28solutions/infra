@@ -18,6 +18,7 @@
   ansible.builtin.get_url:
     url: "{{ docker_apt_repository.gpg_key.url }}"
     dest: "{{ docker_apt_repository.gpg_key.path }}.ascii"
+    mode: "0644"
   notify: Dearmor GPG key
 - name: Flush handlers
   ansible.builtin.meta: flush_handlers
