@@ -16,8 +16,10 @@
     public_key: "{{ item }}"
     path: "{{ item | replace('.pub', '-cert.pub') }}"
     mode: "0644"
-    valid_from: always
-    valid_to: forever
+    valid_from: +0s
+    valid_to: +26w
+    valid_at: +2w
+    ignore_timestamps: true
     identifier: kenny.hosts.28.solutions host key
     principals: [kenny.hosts.28.solutions]
   with_items: "{{ host_keys.files | map(attribute='path') }}"
