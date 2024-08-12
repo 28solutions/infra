@@ -4,9 +4,9 @@ locals {
   clean_path    = replace(replace(var.path, "/^\\W+|\\W+$/", ""), "/\\W+/", "_")
 
   traefik_router  = "${local.clean_host}-${local.clean_methods}-${local.clean_path}"
-  traefik_methods = "`${join("`, `", var.methods)}`"
 
-  traefik_path_rule = var.path == "" ? "" : " && Path(`${var.path}`)"
+  traefik_methods_rule = join(" || ", formatlist("Method(`%s`)", var.methods))
+  traefik_path_rule    = var.path == "" ? "" : " && Path(`${var.path}`)"
 }
 
 resource "docker_image" "image" {
@@ -39,7 +39,7 @@ resource "docker_container" "container" {
 
   labels {
     label = "traefik.http.routers.${local.traefik_router}.rule"
-    value = "Host(`${var.host}`)${local.traefik_path_rule} && Method(${local.traefik_methods})"
+    value = "Host(`${var.host}`)${local.traefik_path_rule} && (${local.traefik_methods_rule})"
   }
 
   labels {
