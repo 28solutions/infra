@@ -35,11 +35,11 @@ resource "docker_container" "reverse_proxy" {
   command = [
     "--providers.docker.endpoint=tcp://docker_proxy:2375",
     "--providers.docker.exposedbydefault=false",
-    "--entrypoints.web.address=:8080"
+    "--entrypoints.web.address=:80"
   ]
 
   ports {
-    internal = 8080
+    internal = 80
     external = 80
   }
 
