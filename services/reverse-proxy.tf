@@ -35,12 +35,39 @@ resource "docker_container" "reverse_proxy" {
   command = [
     "--providers.docker.endpoint=tcp://docker_proxy:2375",
     "--providers.docker.exposedbydefault=false",
-    "--entrypoints.web.address=:80"
+    "--entrypoints.web.address=:80",
+    "--entrypoints.api.address=:8080",
+    "--api=true"
   ]
+
+  labels {
+    label = "traefik.enable"
+    value = "true"
+  }
+
+  labels {
+    label = "traefik.http.routers.api.entrypoints"
+    value = "api"
+  }
+
+  labels {
+    label = "traefik.http.routers.api.rule"
+    value = "PathPrefix(`/api`) || PathPrefix(`/dashboard`)"
+  }
+
+  labels {
+    label = "traefik.http.routers.api.service"
+    value = "api@internal"
+  }
 
   ports {
     internal = 80
     external = 80
+  }
+
+  ports {
+    internal = 8080
+    external = 8080
   }
 
   networks_advanced {
