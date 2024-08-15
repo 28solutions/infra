@@ -4,10 +4,10 @@
     state: directory
     mode: "0750"
     group: "{{ tls_group_name }}"
-- name: Copy private key for {{ tf.domain_name }}
+- name: Copy private key for {{ tf.certificates.tools_28s.common_name }}
   ansible.builtin.copy:
-    content: "{{ tf.certificate_private_key }}"
-    dest: "{{ tls_private_directory }}/{{ tf.domain_name }}.pem"
+    content: "{{ tf.certificates.tools_28s.private_key }}"
+    dest: "{{ tls_private_directory }}/{{ tf.certificates.tools_28s.common_name }}.pem"
     mode: "0640"
     group: "{{ tls_group_name }}"
 - name: Create local certificates directory
@@ -15,8 +15,8 @@
     path: "{{ tls_certs_directory }}"
     state: directory
     mode: "0755"
-- name: Copy certificate for {{ tf.domain_name }}
+- name: Copy certificate for {{ tf.certificates.tools_28s.common_name }}
   ansible.builtin.copy:
-    content: "{{ tf.certificate }}"
-    dest: "{{ tls_certs_directory }}/{{ tf.domain_name }}.pem"
+    content: "{{ tf.certificates.tools_28s.certificate }}"
+    dest: "{{ tls_certs_directory }}/{{ tf.certificates.tools_28s.common_name }}.pem"
     mode: "0644"
