@@ -18,43 +18,24 @@ resource "acme_registration" "acme_registration" {
   email_address   = var.acme_email_address
 }
 
-resource "tls_private_key" "cert_private_key" {
-  algorithm = "RSA"
-}
+module "certificates" {
+  source = "./acme-certificate"
 
-resource "tls_cert_request" "csr" {
-  private_key_pem = tls_private_key.cert_private_key.private_key_pem
+  account_key_pem = tls_private_key.acme_private_key.private_key_pem
+  common_name     = var.domain_name
   dns_names       = [var.domain_name]
-
-  subject {
-    common_name         = var.domain_name
-    organization        = "Twenty Eight Solutions"
-    organizational_unit = "IT"
-    locality            = "Liege"
-    province            = "Liege"
-    country             = "BE"
-  }
-}
-
-resource "acme_certificate" "certificate" {
-  account_key_pem         = acme_registration.acme_registration.account_key_pem
-  certificate_request_pem = tls_cert_request.csr.cert_request_pem
-
-  dns_challenge {
-    provider = "cloudflare"
-  }
 }
 
 output "domain_name" {
-  value = var.domain_name
+  value = module.certificates.common_name
 }
 
 output "certificate" {
-  value     = "${acme_certificate.certificate.certificate_pem}${acme_certificate.certificate.issuer_pem}"
+  value     = module.certificates.certificate
   sensitive = true # not really sensitive, but it floods the console
 }
 
 output "certificate_private_key" {
-  value     = tls_private_key.cert_private_key.private_key_pem
+  value     = module.certificates.private_key
   sensitive = true
 }
