@@ -26,6 +26,11 @@ resource "scaleway_instance_security_group" "www" {
     action = "accept"
     port   = 80
   }
+
+  inbound_rule {
+    action = "accept"
+    port   = 443
+  }
 }
 
 resource "scaleway_instance_ip" "web_public_ip" {}

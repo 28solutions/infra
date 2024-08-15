@@ -36,6 +36,8 @@ resource "docker_container" "reverse_proxy" {
     "--providers.docker.endpoint=tcp://docker_proxy:2375",
     "--providers.docker.exposedbydefault=false",
     "--entrypoints.web.address=:80",
+    "--entrypoints.websecure.address=:443",
+    "--entrypoints.websecure.http.tls",
     "--entrypoints.api.address=:8080",
     "--api=true"
   ]
@@ -75,6 +77,11 @@ resource "docker_container" "reverse_proxy" {
   ports {
     internal = 80
     external = 80
+  }
+
+  ports {
+    internal = 443
+    external = 443
   }
 
   ports {
