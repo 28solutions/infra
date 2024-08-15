@@ -34,7 +34,7 @@ resource "docker_container" "container" {
 
   labels {
     label = "traefik.http.routers.${local.traefik_router}.entrypoints"
-    value = "web"
+    value = "websecure"
   }
 
   labels {
