@@ -40,6 +40,18 @@ resource "docker_container" "reverse_proxy" {
     "--api=true"
   ]
 
+  volumes {
+    host_path      = "/etc/ssl/local-certs"
+    container_path = "/etc/ssl/local-certs"
+    read_only      = true
+  }
+
+  volumes {
+    host_path      = "/etc/ssl/private"
+    container_path = "/etc/ssl/private"
+    read_only      = true
+  }
+
   labels {
     label = "traefik.enable"
     value = "true"
