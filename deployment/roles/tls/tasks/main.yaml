@@ -1,8 +1,15 @@
+- name: Create local private directory
+  ansible.builtin.file:
+    path: "{{ tls_private_directory }}"
+    state: directory
+    mode: "0750"
+    group: "{{ tls_group_name }}"
 - name: Copy private key for {{ tf.domain_name }}
   ansible.builtin.copy:
     content: "{{ tf.certificate_private_key }}"
     dest: "{{ tls_private_directory }}/{{ tf.domain_name }}.pem"
-    mode: "0600"
+    mode: "0640"
+    group: "{{ tls_group_name }}"
 - name: Create local certificates directory
   ansible.builtin.file:
     path: "{{ tls_certs_directory }}"
