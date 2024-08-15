@@ -15,5 +15,6 @@ terraform {
 }
 
 provider "docker" {
-  host = "ssh://stephdewit@kenny.hosts.28.solutions:44265"
+  host     = "ssh://stephdewit@kenny.hosts.28.solutions:44265"
+  ssh_opts = ["-o", "ControlMaster=no"]
 }

@@ -11,7 +11,7 @@ tf_vars := \
 ansible := \
 	ANSIBLE_HOST_KEY_CHECKING=False \
 	.venv/bin/ansible-playbook \
-	--ssh-common-args "-o ForwardAgent=yes -o UserKnownHostsFile=/dev/null"
+	--ssh-common-args "-o ControlMaster=no -o ForwardAgent=yes -o UserKnownHostsFile=/dev/null"
 
 ansible_auth := -u root --private-key "$(SSH_PK)"
 
