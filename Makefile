@@ -10,7 +10,7 @@ tf_vars := \
 
 ansible := \
 	ANSIBLE_HOST_KEY_CHECKING=False \
-	ansible-playbook \
+	.venv/bin/ansible-playbook \
 	--ssh-common-args "-o ForwardAgent=yes -o UserKnownHostsFile=/dev/null"
 
 ansible_auth := -u root --private-key "$(SSH_PK)"
@@ -23,11 +23,11 @@ ansible_vars = $(tf) output -json | jq -c 'map_values(.value)'
 
 all: services
 
-lint: provisioning/.terraform
+lint: provisioning/.terraform .venv
 	$(MAKE) --directory bootstrap lint
 	$(tf) fmt -check
 	$(tf) validate
-	cd deployment && ansible-lint --profile production --strict
+	cd deployment && ../.venv/bin/ansible-lint --profile production --strict
 	$(MAKE) --directory services lint
 
 bootstrap:
@@ -42,7 +42,11 @@ plan: provisioning/.terraform
 provision: provisioning/.terraform
 	$(cf_creds) && $(tf) apply -auto-approve $(tf_vars)
 
-deploy: provision
+.venv:
+	python -m venv --upgrade-deps .venv
+	.venv/bin/pip install ansible ansible-lint
+
+deploy: provision .venv
 	$(ansible_vars) | $(ansible) -i $(ip), -e ansible_port=$(ssh_port) $(ansible_auth) deployment/playbook.yaml
 
 services: deploy
@@ -52,7 +56,7 @@ destroy: provisioning/.terraform
 	$(MAKE) --directory services destroy
 	$(cf_creds) && $(tf) destroy -auto-approve $(tf_vars)
 
-versions:
+versions: .venv
 	@echo Terraform $(shell terraform version -json | jq -r .terraform_version)
-	@echo Ansible $(shell ansible --version | grep -Po '(?<=core )[0-9.]+')
-	@echo Ansible Lint $(shell ansible-lint --version | grep -Eo "[0-9.]+" | head -n 1)
+	@echo Ansible $(shell .venv/bin/ansible --version | grep -Po '(?<=core )[0-9.]+')
+	@echo Ansible Lint $(shell .venv/bin/ansible-lint --version | grep -Eo "[0-9.]+" | head -n 1)
