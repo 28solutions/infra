@@ -32,7 +32,13 @@ resource "docker_container" "reverse_proxy" {
   image = docker_image.reverse_proxy.repo_digest
   user  = "200:300"
 
+  upload {
+    file    = "/etc/traefik/dynamic/ssl.yaml"
+    content = file("traefik/ssl.yaml")
+  }
+
   command = [
+    "--providers.file.directory=/etc/traefik/dynamic",
     "--providers.docker.endpoint=tcp://docker_proxy:2375",
     "--providers.docker.exposedbydefault=false",
     "--entrypoints.web.address=:80",
