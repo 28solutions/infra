@@ -1,2 +1,5 @@
 users_admin_user:
   name: stephdewit
+users_traefik_user:
+  id: 200
+  name: traefik

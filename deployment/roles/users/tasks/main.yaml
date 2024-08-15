@@ -13,3 +13,17 @@
     content: "%wheel ALL=(ALL) NOPASSWD:ALL"
     dest: /etc/sudoers.d/90-wheel-no-password
     mode: "0440"
+- name: Create Traefik group
+  ansible.builtin.group:
+    name: "{{ users_traefik_user.name }}"
+    gid: "{{ users_traefik_user.id }}"
+    system: true
+- name: Create Traefik user
+  ansible.builtin.user:
+    name: "{{ users_traefik_user.name }}"
+    uid: "{{ users_traefik_user.id }}"
+    group: "{{ users_traefik_user.name }}"
+    system: true
+    shell: /usr/sbin/nologin
+    create_home: false
+    home: /nonexistent
