@@ -38,6 +38,7 @@ resource "docker_container" "reverse_proxy" {
   }
 
   command = [
+    "--log.level=DEBUG",
     "--providers.file.directory=/etc/traefik/dynamic",
     "--providers.docker.endpoint=tcp://docker_proxy:2375",
     "--providers.docker.exposedbydefault=false",
