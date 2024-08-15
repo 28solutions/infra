@@ -1,9 +1,9 @@
 - name: Create 'wheel' group
   ansible.builtin.group:
     name: wheel
-- name: Create user
+- name: Create admin user
   ansible.builtin.user:
-    name: "{{ users_user_name }}"
+    name: "{{ users_admin_user.name }}"
     groups:
       - wheel
       - docker
