@@ -3,3 +3,6 @@ users_admin_user:
 users_traefik_user:
   id: 200
   name: traefik
+users_tls_group:
+  id: 300
+  name: tls
