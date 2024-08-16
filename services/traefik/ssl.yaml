@@ -2,3 +2,5 @@ tls:
   certificates:
     - certFile: /etc/ssl/local-certs/tools.28.solutions.pem
       keyFile: /etc/ssl/private/tools.28.solutions.pem
+    - certFile: /etc/ssl/local-certs/twentyeight.solutions.pem
+      keyFile: /etc/ssl/private/twentyeight.solutions.pem
