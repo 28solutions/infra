@@ -6,7 +6,7 @@ http:
         replacement: "https://${1}/${2}"
         permanent: true
   routers:
-    tools-www:
+    www-prefix:
       entrypoints: [websecure]
       rule: >-
         Host(`www.tools.28.solutions`) ||
