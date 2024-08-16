@@ -10,6 +10,7 @@ http:
       entrypoints: [websecure]
       rule: >-
         Host(`www.tools.28.solutions`) ||
-        Host(`www.twentyeight.solutions`)
+        Host(`www.twentyeight.solutions`) ||
+        Host(`www.28.solutions`)
       middlewares: [remove-www]
       service: noop@internal
