@@ -10,6 +10,6 @@ module "www_service" {
   internal_port = 80
   network       = docker_network.www.name
 
-  host    = "twentyeight.solutions"
+  hosts   = ["twentyeight.solutions"]
   methods = ["GET"]
 }

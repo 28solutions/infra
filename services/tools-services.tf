@@ -13,7 +13,7 @@ module "remote_ip_service" {
   container = "tools_remote_ip"
   network   = docker_network.tools.name
 
-  host    = local.host
+  hosts   = [local.host]
   methods = ["GET"]
   path    = "/ip"
 }
@@ -25,7 +25,7 @@ module "hash_service" {
   container = "tools_hash"
   network   = docker_network.tools.name
 
-  host    = local.host
+  hosts   = [local.host]
   methods = ["POST", "PUT"]
   path    = "/hash"
 }
@@ -38,6 +38,6 @@ module "ui_service" {
   internal_port = 8080
   network       = docker_network.tools.name
 
-  host    = local.host
+  hosts   = [local.host]
   methods = ["GET"]
 }

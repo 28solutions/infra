@@ -25,9 +25,9 @@ variable "network" {
   description = "Name of Docker network"
 }
 
-variable "host" {
-  type        = string
-  description = "Traefik rule host"
+variable "hosts" {
+  type        = list(string)
+  description = "Traefik rule hosts"
 }
 
 variable "methods" {
