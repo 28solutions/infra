@@ -111,4 +111,8 @@ resource "docker_container" "reverse_proxy" {
   networks_advanced {
     name = docker_network.tools.name
   }
+
+  networks_advanced {
+    name = docker_network.www.name
+  }
 }
