@@ -37,6 +37,11 @@ resource "docker_container" "reverse_proxy" {
     content = file("traefik/ssl.yaml")
   }
 
+  upload {
+    file    = "/etc/traefik/dynamic/redirects.yaml"
+    content = file("traefik/redirects.yaml")
+  }
+
   command = [
     "--log.level=DEBUG",
     "--providers.file.directory=/etc/traefik/dynamic",

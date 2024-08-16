@@ -1,0 +1,13 @@
+http:
+  middlewares:
+    remove-www:
+      redirectRegex:
+        regex: "^https://www[.]([^/]+)/(.*)"
+        replacement: "https://${1}/${2}"
+        permanent: true
+  routers:
+    tools-www:
+      entrypoints: [websecure]
+      rule: "Host(`www.tools.28.solutions`)"
+      middlewares: [remove-www]
+      service: noop@internal
