@@ -8,6 +8,8 @@ http:
   routers:
     tools-www:
       entrypoints: [websecure]
-      rule: "Host(`www.tools.28.solutions`) || Host(`www.twentyeight.solutions`)"
+      rule: >-
+        Host(`www.tools.28.solutions`) ||
+        Host(`www.twentyeight.solutions`)
       middlewares: [remove-www]
       service: noop@internal
