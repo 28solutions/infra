@@ -5,6 +5,9 @@ tf := terraform
 provision: .terraform
 	$(tf) apply -auto-approve
 
+plan: .terraform
+	$(tf) plan
+
 .terraform:
 	$(tf) init
 
