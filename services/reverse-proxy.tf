@@ -17,6 +17,8 @@ resource "docker_container" "docker_proxy" {
     container_path = "/var/run/docker.sock"
   }
 
+  network_mode = "bridge"
+
   networks_advanced {
     name = docker_network.socket.name
   }
@@ -103,6 +105,8 @@ resource "docker_container" "reverse_proxy" {
     ip       = "127.0.0.1"
     external = 8080
   }
+
+  network_mode = "bridge"
 
   networks_advanced {
     name = docker_network.socket.name

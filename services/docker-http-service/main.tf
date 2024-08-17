@@ -24,6 +24,8 @@ resource "docker_container" "container" {
     ip       = var.listening_ip
   }
 
+  network_mode = "bridge"
+
   networks_advanced {
     name = var.network
   }
