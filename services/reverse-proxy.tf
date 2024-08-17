@@ -9,7 +9,7 @@ resource "docker_image" "docker_proxy" {
 
 resource "docker_container" "docker_proxy" {
   name  = "docker_proxy"
-  image = docker_image.docker_proxy.repo_digest
+  image = docker_image.docker_proxy.image_id
   env   = ["CONTAINERS=1"]
 
   volumes {
@@ -29,7 +29,7 @@ resource "docker_image" "reverse_proxy" {
 
 resource "docker_container" "reverse_proxy" {
   name  = "reverse_proxy"
-  image = docker_image.reverse_proxy.repo_digest
+  image = docker_image.reverse_proxy.image_id
   user  = "200:300"
 
   upload {
