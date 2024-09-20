@@ -4,7 +4,7 @@ resource "tls_private_key" "cert_private_key" {
 
 resource "tls_cert_request" "csr" {
   private_key_pem = tls_private_key.cert_private_key.private_key_pem
-  dns_names       = var.dns_names
+  dns_names       = flatten([for d in var.dns_names : [d, "www.${d}"]])
 
   subject {
     common_name         = var.common_name

@@ -8,14 +8,11 @@ variable "domain_names" {
   description = "Common name for TLS certificate"
   default = {
     tools_28s = [
-      "tools.28.solutions",
-      "www.tools.28.solutions"
+      "tools.28.solutions"
     ]
     www_28s = [
       "twentyeight.solutions",
-      "www.twentyeight.solutions",
-      "28.solutions",
-      "www.28.solutions"
+      "28.solutions"
     ]
   }
 }
