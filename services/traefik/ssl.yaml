@@ -4,3 +4,5 @@ tls:
       keyFile: /etc/ssl/private/tools.28.solutions.pem
     - certFile: /etc/ssl/local-certs/twentyeight.solutions.pem
       keyFile: /etc/ssl/private/twentyeight.solutions.pem
+    - certFile: /etc/ssl/local-certs/stephanedewit.be.pem
+      keyFile: /etc/ssl/private/stephanedewit.be.pem

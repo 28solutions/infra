@@ -14,6 +14,14 @@ variable "domain_names" {
       "twentyeight.solutions",
       "28.solutions"
     ]
+    www_sdw = [
+      "stephanedewit.be",
+      "stephanedew.it",
+      "stephdew.it",
+      "d3w.it",
+      "phane.be", "st.phane.be", "ste.phane.be",
+      "sdw.ovh"
+    ]
   }
 }
 
