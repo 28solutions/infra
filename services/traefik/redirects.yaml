@@ -10,6 +10,10 @@ http:
         regex: "^https://([^/]+)/(.*)"
         replacement: "https://www.${1}/${2}"
         permanent: true
+    redirect-to-sdwbe:
+      redirectRegex:
+        regex: "^https://[^/]+/(.*)"
+        replacement: "https://www.stephanedewit.be/${1}"
   routers:
     www-prefix:
       entrypoints: [websecure]
@@ -24,4 +28,13 @@ http:
       rule: >-
         Host(`stephanedewit.be`)
       middlewares: [prepend-www]
+      service: noop@internal
+    sdwbe-alias:
+      entrypoints: [websecure]
+      rule: >-
+        Host(`stephanedew.it`) || Host(`www.stephanedew.it`) ||
+        Host(`stephdew.it`) || Host(`www.stephdew.it`) ||
+        Host(`phane.be`) || Host(`st.phane.be`) || Host(`ste.phane.be`) ||
+        Host(`sdw.ovh`) || Host(`www.sdw.ovh`)
+      middlewares: [redirect-to-sdwbe]
       service: noop@internal
