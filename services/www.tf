@@ -16,3 +16,17 @@ module "www_28s_service" {
   ]
   methods = ["GET"]
 }
+
+module "www_sdw_service" {
+  source = "./docker-http-service"
+
+  image         = "stephdewit/www:0.1.0"
+  container     = "www_sdw"
+  internal_port = 8080
+  network       = docker_network.www.name
+
+  hosts = [
+    "www.stephanedewit.be"
+  ]
+  methods = ["GET"]
+}
