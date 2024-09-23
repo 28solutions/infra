@@ -20,7 +20,8 @@ http:
       rule: >-
         Host(`www.tools.28.solutions`) ||
         Host(`www.twentyeight.solutions`) ||
-        Host(`www.28.solutions`)
+        Host(`www.28.solutions`) ||
+        Host(`www.id.stephanedewit.be`)
       middlewares: [remove-www]
       service: noop@internal
     sdwbe-apex:
