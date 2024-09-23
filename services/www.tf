@@ -30,3 +30,17 @@ module "www_sdw_service" {
   ]
   methods = ["GET"]
 }
+
+module "www_sdw_id_service" {
+  source = "./docker-http-service"
+
+  image         = "stephdewit/www-openid:0.1.0"
+  container     = "www_sdw_id"
+  internal_port = 8080
+  network       = docker_network.www.name
+
+  hosts = [
+    "id.stephanedewit.be"
+  ]
+  methods = ["GET"]
+}
