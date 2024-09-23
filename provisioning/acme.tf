@@ -18,7 +18,6 @@ variable "domain_names" {
       "stephanedewit.be",
       "stephanedew.it",
       "stephdew.it",
-      "d3w.it",
       "phane.be", "st.phane.be", "ste.phane.be",
       "sdw.ovh"
     ]
