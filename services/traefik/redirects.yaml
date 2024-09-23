@@ -5,6 +5,11 @@ http:
         regex: "^https://www[.]([^/]+)/(.*)"
         replacement: "https://${1}/${2}"
         permanent: true
+    prepend-www:
+      redirectRegex:
+        regex: "^https://([^/]+)/(.*)"
+        replacement: "https://www.${1}/${2}"
+        permanent: true
   routers:
     www-prefix:
       entrypoints: [websecure]
@@ -13,4 +18,10 @@ http:
         Host(`www.twentyeight.solutions`) ||
         Host(`www.28.solutions`)
       middlewares: [remove-www]
+      service: noop@internal
+    sdwbe-apex:
+      entrypoints: [websecure]
+      rule: >-
+        Host(`stephanedewit.be`)
+      middlewares: [prepend-www]
       service: noop@internal
