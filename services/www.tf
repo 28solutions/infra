@@ -2,7 +2,7 @@ resource "docker_network" "www" {
   name = "www"
 }
 
-module "www_service" {
+module "www_28s_service" {
   source = "./docker-http-service"
 
   image         = "28solutions/www:0.2.0"
