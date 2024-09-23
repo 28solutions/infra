@@ -21,6 +21,9 @@ variable "domain_names" {
       "phane.be", "st.phane.be", "ste.phane.be",
       "sdw.ovh"
     ]
+    www_sdw_id = [
+      "id.stephanedewit.be"
+    ]
   }
 }
 
