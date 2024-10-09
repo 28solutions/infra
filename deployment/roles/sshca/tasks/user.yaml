@@ -3,6 +3,7 @@
     url: https://www.stephanedewit.be/ssh/user-ca.pub
     dest: /etc/ssh/user-ca.pub
     mode: "0644"
+  notify: Reload SSH service
 - name: Register user CA
   ansible.builtin.copy:
     content: TrustedUserCAKeys /etc/ssh/user-ca.pub
