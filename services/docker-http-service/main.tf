@@ -16,8 +16,9 @@ resource "docker_image" "image" {
 }
 
 resource "docker_container" "container" {
-  name  = var.container
-  image = docker_image.image.image_id
+  name    = var.container
+  image   = docker_image.image.image_id
+  restart = "unless-stopped"
 
   ports {
     internal = var.internal_port

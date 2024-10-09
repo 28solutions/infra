@@ -8,9 +8,10 @@ resource "docker_image" "docker_proxy" {
 }
 
 resource "docker_container" "docker_proxy" {
-  name  = "docker_proxy"
-  image = docker_image.docker_proxy.image_id
-  env   = ["CONTAINERS=1"]
+  name    = "docker_proxy"
+  image   = docker_image.docker_proxy.image_id
+  restart = "unless-stopped"
+  env     = ["CONTAINERS=1"]
 
   volumes {
     host_path      = "/var/run/docker.sock"
@@ -30,9 +31,10 @@ resource "docker_image" "reverse_proxy" {
 }
 
 resource "docker_container" "reverse_proxy" {
-  name  = "reverse_proxy"
-  image = docker_image.reverse_proxy.image_id
-  user  = "200:300"
+  name    = "reverse_proxy"
+  image   = docker_image.reverse_proxy.image_id
+  restart = "unless-stopped"
+  user    = "200:300"
 
   upload {
     file    = "/etc/traefik/dynamic/ssl.yaml"
