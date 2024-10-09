@@ -22,8 +22,9 @@ terraform {
 }
 
 provider "scaleway" {
-  zone   = "fr-par-1"
-  region = "fr-par"
+  profile = "web"
+  zone    = "fr-par-1"
+  region  = "fr-par"
 }
 
 variable "acme_production" {
