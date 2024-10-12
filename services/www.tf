@@ -20,7 +20,7 @@ module "www_28s_service" {
 module "www_sdw_service" {
   source = "./docker-http-service"
 
-  image         = "stephdewit/www:0.1.2"
+  image         = "stephdewit/www:0.1.3"
   container     = "www_sdw"
   internal_port = 8080
   network       = docker_network.www.name
