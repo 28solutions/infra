@@ -25,7 +25,7 @@ all: services
 
 lint: provisioning/.terraform .venv
 	$(MAKE) --directory bootstrap lint
-	$(tf) fmt -check
+	$(tf) fmt -recursive -check
 	$(tf) validate
 	cd deployment && ../.venv/bin/ansible-lint --profile production --strict
 	$(MAKE) --directory services lint

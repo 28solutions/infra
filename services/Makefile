@@ -12,7 +12,7 @@ plan: .terraform
 	$(tf) init
 
 lint: .terraform
-	$(tf) fmt -check
+	$(tf) fmt -recursive -check
 	$(tf) validate
 
 destroy: .terraform
