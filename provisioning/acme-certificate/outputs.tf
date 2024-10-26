@@ -3,7 +3,7 @@ output "common_name" {
 }
 
 output "certificate" {
-  value     = "${acme_certificate.certificate.certificate_pem}${acme_certificate.certificate.issuer_pem}"
+  value = "${acme_certificate.certificate.certificate_pem}${acme_certificate.certificate.issuer_pem}"
 }
 
 output "private_key" {

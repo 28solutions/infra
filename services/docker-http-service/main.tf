@@ -3,7 +3,7 @@ locals {
   clean_methods = replace(join("_", var.methods), "/\\W+/", "")
   clean_path    = replace(replace(var.path, "/^\\W+|\\W+$/", ""), "/\\W+/", "_")
 
-  traefik_router  = "${local.clean_host}-${local.clean_methods}${local.clean_path != "" ? "-" : ""}${local.clean_path}"
+  traefik_router = "${local.clean_host}-${local.clean_methods}${local.clean_path != "" ? "-" : ""}${local.clean_path}"
 
   traefik_hosts_rule   = join(" || ", formatlist("Host(`%s`)", var.hosts))
   traefik_methods_rule = join(" || ", formatlist("Method(`%s`)", var.methods))
