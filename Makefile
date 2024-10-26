@@ -19,12 +19,13 @@ ip = $(shell $(tf) output -raw web_server_ip_address)
 ssh_port = $(shell $(tf) output -raw web_server_ssh_port)
 ansible_vars = $(tf) output -json | jq -c 'map_values(.value)'
 
-.PHONY: all lint bootstrap plan provision deploy services destroy versions
+.PHONY: all lint bootstrap storage plan provision deploy services destroy versions
 
-all: services
+all: storage services
 
 lint: provisioning/.terraform .venv
 	$(MAKE) --directory bootstrap lint
+	$(MAKE) --directory storage lint
 	$(tf) fmt -recursive -check
 	$(tf) validate
 	cd deployment && ../.venv/bin/ansible-lint --profile production --strict
@@ -32,6 +33,9 @@ lint: provisioning/.terraform .venv
 
 bootstrap:
 	$(MAKE) --directory bootstrap
+
+storage:
+	$(MAKE) --directory storage
 
 provisioning/.terraform:
 	$(tf) init
