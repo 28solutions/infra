@@ -1,0 +1,25 @@
+http:
+  routers:
+    wkd:
+      entrypoints: [websecure]
+      rule: >-
+        Host(`openpgpkey.stephanedewit.be`) ||
+        Host(`openpgpkey.twentyeight.solutions`)
+      middlewares:
+        - add-wkd-prefix
+        - add-cors-headers
+      service: wkd
+  middlewares:
+    add-wkd-prefix:
+      addPrefix:
+        prefix: /gpg/wkd
+    add-cors-headers:
+      headers:
+        accessControlAllowMethods: [GET]
+        accessControlAllowOriginList: ["*"]
+  services:
+    wkd:
+      loadBalancer:
+        passHostHeader: false
+        servers:
+          - url: https://d1bsykl6ylae3i.cloudfront.net/
