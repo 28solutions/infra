@@ -8,3 +8,5 @@ tls:
       keyFile: /etc/ssl/private/stephanedewit.be.pem
     - certFile: /etc/ssl/local-certs/id.stephanedewit.be.pem
       keyFile: /etc/ssl/private/id.stephanedewit.be.pem
+    - certFile: /etc/ssl/local-certs/pki.stephanedewit.be.pem
+      keyFile: /etc/ssl/private/pki.stephanedewit.be.pem

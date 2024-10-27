@@ -24,6 +24,11 @@ variable "domain_names" {
     www_sdw_id = [
       "id.stephanedewit.be"
     ]
+    www_sdw_pki = [
+      "pki.stephanedewit.be",
+      "openpgpkey.stephanedewit.be",
+      "openpgpkey.twentyeight.solutions"
+    ]
   }
 }
 
