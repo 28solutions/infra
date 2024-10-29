@@ -8,27 +8,16 @@ tf_vars := \
 	-var "acme_production=true" \
 	-var "acme_email_address=stephane@twentyeight.solutions"
 
-ansible := \
-	ANSIBLE_HOST_KEY_CHECKING=False \
-	.venv/bin/ansible-playbook \
-	--ssh-common-args "-o ControlMaster=no -o ForwardAgent=yes -o UserKnownHostsFile=/dev/null"
-
-ansible_auth := -u root --private-key "$(SSH_PK)"
-
-ip = $(shell $(tf) output -raw web_server_ip_address)
-ssh_port = $(shell $(tf) output -raw web_server_ssh_port)
-ansible_vars = $(tf) output -json | jq -c 'map_values(.value)'
-
 .PHONY: all lint bootstrap storage plan provision deploy services destroy versions
 
 all: storage services
 
-lint: provisioning/.terraform .venv
+lint: provisioning/.terraform
 	$(MAKE) --directory bootstrap lint
 	$(MAKE) --directory storage lint
 	$(tf) fmt -recursive -check
 	$(tf) validate
-	cd deployment && ../.venv/bin/ansible-lint --profile production --strict
+	$(MAKE) --directory deployment lint
 	$(MAKE) --directory services lint
 
 bootstrap:
@@ -46,12 +35,8 @@ plan: provisioning/.terraform
 provision: provisioning/.terraform
 	$(cf_creds) && $(tf) apply -auto-approve $(tf_vars)
 
-.venv:
-	python -m venv --upgrade-deps .venv
-	.venv/bin/pip install ansible ansible-lint
-
-deploy: provision .venv
-	$(ansible_vars) | $(ansible) -i $(ip), -e ansible_port=$(ssh_port) $(ansible_auth) deployment/playbook.yaml
+deploy: provision
+	$(MAKE) --directory deployment SSH_PK=$(SSH_PK)
 
 services: deploy
 	$(MAKE) --directory services
@@ -60,7 +45,6 @@ destroy: provisioning/.terraform
 	$(MAKE) --directory services destroy
 	$(cf_creds) && $(tf) destroy -auto-approve $(tf_vars)
 
-versions: .venv
+versions:
 	@echo Terraform $(shell terraform version -json | jq -r .terraform_version)
-	@echo Ansible $(shell .venv/bin/ansible --version | grep -Po '(?<=core )[0-9.]+')
-	@echo Ansible Lint $(shell .venv/bin/ansible-lint --version | grep -Eo "[0-9.]+" | head -n 1)
+	$(MAKE) --directory deployment versions
