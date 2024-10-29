@@ -22,4 +22,4 @@ http:
       loadBalancer:
         passHostHeader: false
         servers:
-          - url: https://d1bsykl6ylae3i.cloudfront.net/
+          - url: https://${pki_domain_name}/
