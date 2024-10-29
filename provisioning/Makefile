@@ -2,10 +2,7 @@ cf_creds = . $(HOME)/.creds/terraform@cloudflare
 
 tf := terraform
 
-tf_vars := \
-	-var "ssh_private_key=$(SSH_PK)" \
-	-var "acme_production=true" \
-	-var "acme_email_address=stephane@twentyeight.solutions"
+tf_vars := -var "ssh_private_key=$(SSH_PK)"
 
 .PHONY: all lint check-ssh-pk plan provision destroy versions
 
