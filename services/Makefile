@@ -1,4 +1,5 @@
 tf := terraform
+tf_backend_config := config.s3.tfbackend
 
 .PHONY: provision lint destroy
 
@@ -9,7 +10,7 @@ plan: .terraform
 	$(tf) plan
 
 .terraform:
-	$(tf) init
+	$(tf) init -backend-config=$(tf_backend_config)
 
 lint: .terraform
 	$(tf) fmt -recursive -check

@@ -1,0 +1,4 @@
+bucket         = "28s-terraform"
+region         = "eu-central-1"
+profile        = "terraform"
+dynamodb_table = "TerraformStateLocks"

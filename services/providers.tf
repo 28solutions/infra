@@ -6,11 +6,7 @@ terraform {
   }
 
   backend "s3" {
-    bucket         = "28s-terraform"
-    key            = "states/services.tfstate"
-    region         = "eu-central-1"
-    profile        = "terraform"
-    dynamodb_table = "TerraformStateLocks"
+    key = "states/services.tfstate"
   }
 }
 
