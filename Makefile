@@ -10,7 +10,7 @@ tf_vars := \
 
 .PHONY: all lint bootstrap storage plan provision deploy services destroy versions
 
-all: storage services
+all: services
 
 lint: provisioning/.terraform
 	$(MAKE) --directory bootstrap lint
@@ -38,7 +38,7 @@ provision: provisioning/.terraform
 deploy: provision
 	$(MAKE) --directory deployment SSH_PK=$(SSH_PK)
 
-services: deploy
+services: deploy storage
 	$(MAKE) --directory services
 
 destroy: provisioning/.terraform
