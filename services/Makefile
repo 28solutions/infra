@@ -1,5 +1,5 @@
 tf := terraform
-tf_backend_config := config.s3.tfbackend
+tf_backend_config := ../shared/config.s3.tfbackend
 
 .PHONY: provision lint destroy
 
