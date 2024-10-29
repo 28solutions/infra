@@ -10,7 +10,12 @@ terraform {
   }
 }
 
+locals {
+  ssh_host = data.terraform_remote_state.infra.outputs.web_server_hostname
+  ssh_port = data.terraform_remote_state.infra.outputs.web_server_ssh_port
+}
+
 provider "docker" {
-  host     = "ssh://stephdewit@kenny.hosts.28.solutions:44265"
+  host     = "ssh://stephdewit@${local.ssh_host}:${local.ssh_port}"
   ssh_opts = ["-o", "ControlMaster=no"]
 }
