@@ -73,6 +73,10 @@ output "web_server_ip_address" {
   value = scaleway_instance_server.web.public_ip
 }
 
+output "web_server_hostname" {
+  value = cloudflare_record.kenny_dns.hostname
+}
+
 output "web_server_ssh_port" {
   value = var.ssh_port
 }
