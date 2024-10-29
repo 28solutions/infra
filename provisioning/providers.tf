@@ -13,11 +13,7 @@ terraform {
   required_version = ">= 0.13"
 
   backend "s3" {
-    bucket         = "28s-terraform"
-    key            = "states/infra.tfstate"
-    region         = "eu-central-1"
-    profile        = "terraform"
-    dynamodb_table = "TerraformStateLocks"
+    key = "states/infra.tfstate"
   }
 }
 

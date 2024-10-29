@@ -38,7 +38,7 @@ storage:
 	$(MAKE) --directory storage
 
 provisioning/.terraform:
-	$(tf) init
+	$(tf) init -backend-config=../shared/config.s3.tfbackend
 
 plan: provisioning/.terraform
 	$(cf_creds) && $(tf) plan $(tf_vars)
