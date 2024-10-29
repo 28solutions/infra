@@ -30,7 +30,7 @@ provision: check-ssh-pk .terraform
 	$(cf_creds) && $(tf) apply -auto-approve $(tf_vars)
 
 destroy: check-ssh-pk .terraform
-	$(cf_creds) && $(tf) destroy -auto-approve $(tf_vars)
+	$(cf_creds) && $(tf) destroy $(tf_vars)
 
 versions:
 	@echo Terraform $(shell terraform version -json | jq -r .terraform_version)

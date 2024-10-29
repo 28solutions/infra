@@ -17,4 +17,4 @@ lint: .terraform
 	$(tf) validate
 
 destroy: .terraform
-	$(tf) destroy -auto-approve
+	$(tf) destroy
