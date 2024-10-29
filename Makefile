@@ -1,6 +1,6 @@
 SSH_PK ?= ~/.ssh/scaleway
 
-.PHONY: all lint bootstrap storage provision deploy services destroy versions
+.PHONY: all lint bootstrap plan storage provision deploy services destroy versions
 
 all: services
 
@@ -13,6 +13,11 @@ lint:
 
 bootstrap:
 	$(MAKE) --directory bootstrap
+
+plan:
+	$(MAKE) --directory storage plan
+	$(MAKE) --directory provisioning plan SSH_PK=$(SSH_PK)
+	$(MAKE) --directory services plan
 
 storage:
 	$(MAKE) --directory storage
