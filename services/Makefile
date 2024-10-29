@@ -1,7 +1,7 @@
 tf := terraform
 tf_backend_config := ../shared/config.s3.tfbackend
 
-.PHONY: provision lint destroy
+.PHONY: provision plan lint destroy
 
 provision: .terraform
 	$(tf) apply -auto-approve -var-file=$(tf_backend_config)
