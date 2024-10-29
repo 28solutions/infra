@@ -1,22 +1,13 @@
 SSH_PK ?= ~/.ssh/scaleway
 
-cf_creds = . $(HOME)/.creds/terraform@cloudflare
-
-tf := terraform -chdir=provisioning
-tf_vars := \
-	-var "ssh_private_key=$(SSH_PK)" \
-	-var "acme_production=true" \
-	-var "acme_email_address=stephane@twentyeight.solutions"
-
-.PHONY: all lint bootstrap storage plan provision deploy services destroy versions
+.PHONY: all lint bootstrap storage provision deploy services destroy versions
 
 all: services
 
-lint: provisioning/.terraform
+lint:
 	$(MAKE) --directory bootstrap lint
 	$(MAKE) --directory storage lint
-	$(tf) fmt -recursive -check
-	$(tf) validate
+	$(MAKE) --directory provisioning lint
 	$(MAKE) --directory deployment lint
 	$(MAKE) --directory services lint
 
@@ -26,14 +17,8 @@ bootstrap:
 storage:
 	$(MAKE) --directory storage
 
-provisioning/.terraform:
-	$(tf) init -backend-config=../shared/config.s3.tfbackend
-
-plan: provisioning/.terraform
-	$(cf_creds) && $(tf) plan $(tf_vars)
-
-provision: provisioning/.terraform
-	$(cf_creds) && $(tf) apply -auto-approve $(tf_vars)
+provision:
+	$(MAKE) --directory provisioning SSH_PK=$(SSH_PK)
 
 deploy: provision
 	$(MAKE) --directory deployment SSH_PK=$(SSH_PK)
@@ -41,10 +26,10 @@ deploy: provision
 services: deploy storage
 	$(MAKE) --directory services
 
-destroy: provisioning/.terraform
+destroy:
 	$(MAKE) --directory services destroy
-	$(cf_creds) && $(tf) destroy -auto-approve $(tf_vars)
+	$(MAKE) --directory provisioning destroy
 
 versions:
-	@echo Terraform $(shell terraform version -json | jq -r .terraform_version)
+	$(MAKE) --directory provisioning versions
 	$(MAKE) --directory deployment versions
