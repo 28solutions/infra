@@ -3,33 +3,9 @@ variable "acme_email_address" {
   description = "ACME account email address"
 }
 
-variable "domain_names" {
+variable "acme_domain_names" {
   type        = map(list(string))
   description = "Common name for TLS certificate"
-  default = {
-    tools_28s = [
-      "tools.28.solutions"
-    ]
-    www_28s = [
-      "twentyeight.solutions",
-      "28.solutions"
-    ]
-    www_sdw = [
-      "stephanedewit.be",
-      "stephanedew.it",
-      "stephdew.it",
-      "phane.be", "st.phane.be", "ste.phane.be",
-      "sdw.ovh"
-    ]
-    www_sdw_id = [
-      "id.stephanedewit.be"
-    ]
-    www_sdw_pki = [
-      "pki.stephanedewit.be",
-      "openpgpkey.stephanedewit.be",
-      "openpgpkey.twentyeight.solutions"
-    ]
-  }
 }
 
 resource "tls_private_key" "acme_private_key" {
@@ -42,7 +18,7 @@ resource "acme_registration" "acme_registration" {
 }
 
 module "certificates" {
-  for_each = var.domain_names
+  for_each = var.acme_domain_names
 
   source = "./acme-certificate"
 
