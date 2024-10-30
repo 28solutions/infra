@@ -1,6 +1,8 @@
-ansible := \
+ansible_pb := .venv/bin/ansible-playbook
+
+ansible_cmd := \
 	ANSIBLE_HOST_KEY_CHECKING=False \
-	.venv/bin/ansible-playbook \
+	$(ansible_pb) \
 	--ssh-common-args "-o ControlMaster=no -o ForwardAgent=yes -o UserKnownHostsFile=/dev/null"
 
 ansible_auth := -u root --private-key "$(SSH_PK)"
@@ -19,7 +21,7 @@ lint: .venv
 	.venv/bin/ansible-lint --profile production --strict
 
 deploy: check-ssh-pk .venv
-	$(ansible_vars) | $(ansible) -i $(ip), -e ansible_port=$(ssh_port) $(ansible_auth) playbook.yaml
+	$(ansible_vars) | $(ansible_cmd) -i $(ip), -e ansible_port=$(ssh_port) $(ansible_auth) playbook.yaml
 
 check-ssh-pk:
 ifndef SSH_PK
