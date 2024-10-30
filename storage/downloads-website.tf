@@ -1,7 +1,3 @@
-resource "scaleway_object_bucket" "downloads" {
-  name = "sdw-downloads"
-}
-
 resource "scaleway_object_bucket_acl" "downloads_acl" {
   bucket = scaleway_object_bucket.downloads.id
   acl    = "public-read"
@@ -23,14 +19,6 @@ resource "scaleway_object_bucket_policy" "downloads_policy" {
       }
     ]
   })
-}
-
-resource "scaleway_object" "downloads_index" {
-  bucket = scaleway_object_bucket.downloads.id
-  key    = "index.html"
-
-  file = "downloads/index.html"
-  hash = filemd5("downloads/index.html")
 }
 
 resource "scaleway_object_bucket_website_configuration" "downloads_website" {
