@@ -20,6 +20,7 @@
     dest: "{{ docker_apt_repository.gpg_key.path }}.ascii"
     mode: "0644"
   notify: Dearmor GPG key
+  when: not ansible_check_mode # Ansible bug #65687
 - name: Flush handlers
   ansible.builtin.meta: flush_handlers
 - name: Add APT repository

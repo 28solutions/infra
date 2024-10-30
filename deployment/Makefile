@@ -13,12 +13,15 @@ ip = $(shell $(tf) output -raw web_server_ip_address)
 ssh_port = $(shell $(tf) output -raw web_server_ssh_port)
 ansible_vars = $(tf) output -json | jq -c 'map_values(.value)'
 
-.PHONY: all lint deploy check-ssh-pk versions
+.PHONY: all lint plan deploy check-ssh-pk versions
 
 all: deploy
 
 lint: .venv
 	.venv/bin/ansible-lint --profile production --strict
+
+plan:
+	$(MAKE) deploy SSH_PK=$(SSH_PK) ansible_pb="$(ansible_pb) --check --diff"
 
 deploy: check-ssh-pk .venv
 	$(ansible_vars) | $(ansible_cmd) -i $(ip), -e ansible_port=$(ssh_port) $(ansible_auth) playbook.yaml

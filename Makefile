@@ -17,6 +17,7 @@ bootstrap:
 plan:
 	$(MAKE) --directory storage plan
 	$(MAKE) --directory provisioning plan SSH_PK=$(SSH_PK)
+	$(MAKE) --directory deployment plan SSH_PK=$(SSH_PK)
 	$(MAKE) --directory services plan
 
 storage:

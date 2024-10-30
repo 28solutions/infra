@@ -4,6 +4,7 @@
     dest: /etc/ssh/user-ca.pub
     mode: "0644"
   notify: Reload SSH service
+  when: not ansible_check_mode # Ansible bug #65687
 - name: Register user CA
   ansible.builtin.copy:
     content: TrustedUserCAKeys /etc/ssh/user-ca.pub
