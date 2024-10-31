@@ -1,12 +1,6 @@
 tls:
   certificates:
-    - certFile: /etc/ssl/local-certs/tools.28.solutions.pem
-      keyFile: /etc/ssl/private/tools.28.solutions.pem
-    - certFile: /etc/ssl/local-certs/twentyeight.solutions.pem
-      keyFile: /etc/ssl/private/twentyeight.solutions.pem
-    - certFile: /etc/ssl/local-certs/stephanedewit.be.pem
-      keyFile: /etc/ssl/private/stephanedewit.be.pem
-    - certFile: /etc/ssl/local-certs/id.stephanedewit.be.pem
-      keyFile: /etc/ssl/private/id.stephanedewit.be.pem
-    - certFile: /etc/ssl/local-certs/pki.stephanedewit.be.pem
-      keyFile: /etc/ssl/private/pki.stephanedewit.be.pem
+%{ for common_name in common_names ~}
+    - certFile: /etc/ssl/local-certs/${common_name}.pem
+      keyFile: /etc/ssl/private/${common_name}.pem
+%{ endfor ~}

@@ -30,6 +30,10 @@ resource "docker_image" "reverse_proxy" {
   keep_locally = true
 }
 
+locals {
+  certificates = data.terraform_remote_state.infra.outputs.certificates
+}
+
 resource "docker_container" "reverse_proxy" {
   name    = "reverse_proxy"
   image   = docker_image.reverse_proxy.image_id
@@ -37,8 +41,13 @@ resource "docker_container" "reverse_proxy" {
   user    = "200:300"
 
   upload {
-    file    = "/etc/traefik/dynamic/ssl.yaml"
-    content = file("traefik/ssl.yaml")
+    file = "/etc/traefik/dynamic/ssl.yaml"
+    content = templatefile(
+      "traefik/ssl.yaml",
+      {
+        common_names = sort(values(local.certificates)[*].common_name)
+      }
+    )
   }
 
   upload {
