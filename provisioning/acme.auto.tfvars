@@ -24,4 +24,8 @@ acme_domain_names = {
     "openpgpkey.stephanedewit.be",
     "openpgpkey.twentyeight.solutions"
   ]
+  downloads = [
+    "downloads.stephanedewit.be",
+    "downloads.twentyeight.solutions"
+  ]
 }
