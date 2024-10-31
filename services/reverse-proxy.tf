@@ -31,7 +31,16 @@ resource "docker_image" "reverse_proxy" {
 }
 
 locals {
-  certificates = data.terraform_remote_state.infra.outputs.certificates
+  certificates = values(data.terraform_remote_state.infra.outputs.certificates)
+
+  sorted_common_names = sort(local.certificates[*].common_name)
+  sorted_certificates = flatten(
+    [for common_name in local.sorted_common_names :
+      [for certificate in local.certificates :
+        certificate if common_name == certificate.common_name
+      ]
+    ]
+  )
 }
 
 resource "docker_container" "reverse_proxy" {
@@ -45,7 +54,7 @@ resource "docker_container" "reverse_proxy" {
     content = templatefile(
       "traefik/ssl.yaml",
       {
-        common_names = sort(values(local.certificates)[*].common_name)
+        certificates = local.sorted_certificates
       }
     )
   }
