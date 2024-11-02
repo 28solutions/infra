@@ -1,13 +1,13 @@
 tf := terraform
-tf_vars := -var "aws_profile=terraform"
+tf_backend_config := ../shared/config.s3.tfbackend
 
 .PHONY: provision plan lint
 
 provision: .terraform
-	$(tf) apply -auto-approve $(tf_vars)
+	$(tf) apply -auto-approve -var-file=$(tf_backend_config)
 
 plan: .terraform
-	$(tf) plan $(tf_vars)
+	$(tf) plan -var-file=$(tf_backend_config)
 
 .terraform:
 	$(tf) init
