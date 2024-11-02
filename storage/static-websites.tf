@@ -3,9 +3,11 @@ module "pki_website" {
 
   cloud_provider = "aws"
 
-  bucket = "sdw-pki"
-  title  = "PKI"
-  icon   = "key"
+  bucket            = "sdw-pki"
+  bucket_versioning = true
+
+  title = "PKI"
+  icon  = "key"
 }
 
 output "pki_domain_name" {
@@ -18,8 +20,9 @@ module "downloads_website" {
   cloud_provider = "scw"
 
   bucket = "sdw-downloads"
-  title  = "Downloads"
-  icon   = "download"
+
+  title = "Downloads"
+  icon  = "download"
 }
 
 output "downloads_domain_name" {

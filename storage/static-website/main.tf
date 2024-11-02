@@ -3,9 +3,11 @@ module "aws_website" {
 
   count = var.cloud_provider == "aws" ? 1 : 0
 
-  bucket = var.bucket
-  title  = var.title
-  icon   = var.icon
+  bucket            = var.bucket
+  bucket_versioning = var.bucket_versioning
+
+  title = var.title
+  icon  = var.icon
 }
 
 module "scaleway_website" {
@@ -13,9 +15,11 @@ module "scaleway_website" {
 
   count = var.cloud_provider == "scw" ? 1 : 0
 
-  bucket = var.bucket
-  title  = var.title
-  icon   = var.icon
+  bucket            = var.bucket
+  bucket_versioning = var.bucket_versioning
+
+  title = var.title
+  icon  = var.icon
 }
 
 output "domain_name" {

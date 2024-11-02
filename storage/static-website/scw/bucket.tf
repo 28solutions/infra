@@ -1,5 +1,9 @@
 resource "scaleway_object_bucket" "bucket" {
   name = var.bucket
+
+  versioning {
+    enabled = var.bucket_versioning
+  }
 }
 
 module "bucket_index" {
