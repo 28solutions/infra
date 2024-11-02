@@ -37,5 +37,5 @@ destroy:
 	$(MAKE) --directory provisioning destroy
 
 versions:
-	$(MAKE) --directory provisioning versions
-	$(MAKE) --directory deployment versions
+	@$(MAKE) --no-print-directory --directory provisioning versions
+	@$(MAKE) --no-print-directory --directory deployment versions
