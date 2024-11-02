@@ -5,6 +5,7 @@ ansible_cmd := \
 	$(ansible_pb) \
 	--ssh-common-args "-o ControlMaster=no -o ForwardAgent=yes -o UserKnownHostsFile=/dev/null"
 
+ansible_inventory = -i $(ip), -e ansible_port=$(ssh_port)
 ansible_auth := -u root --private-key "$(SSH_PK)"
 
 tf_provisioning := terraform -chdir=../provisioning
@@ -24,7 +25,7 @@ plan:
 	$(MAKE) deploy SSH_PK=$(SSH_PK) ansible_pb="$(ansible_pb) --check --diff"
 
 deploy: check-ssh-pk .venv
-	$(ansible_vars) | $(ansible_cmd) -i $(ip), -e ansible_port=$(ssh_port) $(ansible_auth) playbook.yaml
+	$(ansible_vars) | $(ansible_cmd) $(ansible_inventory) $(ansible_auth) playbook.yaml
 
 check-ssh-pk:
 ifndef SSH_PK
