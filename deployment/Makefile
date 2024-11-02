@@ -7,11 +7,11 @@ ansible_cmd := \
 
 ansible_auth := -u root --private-key "$(SSH_PK)"
 
-tf := terraform -chdir=../provisioning
+tf_provisioning := terraform -chdir=../provisioning
 
-ip = $(shell $(tf) output -raw web_server_ip_address)
-ssh_port = $(shell $(tf) output -raw web_server_ssh_port)
-ansible_vars = $(tf) output -json | jq -c 'map_values(.value)'
+ip = $(shell $(tf_provisioning) output -raw web_server_ip_address)
+ssh_port = $(shell $(tf_provisioning) output -raw web_server_ssh_port)
+ansible_vars = $(tf_provisioning) output -json | jq -c 'map_values(.value)'
 
 .PHONY: all lint plan deploy check-ssh-pk versions
 
