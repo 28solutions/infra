@@ -8,6 +8,8 @@ ansible_cmd := \
 ansible_inventory = -i $(ip), -e ansible_port=$(ssh_port)
 ansible_auth := -u root --private-key "$(SSH_PK)"
 
+ansible_lint := . .venv/bin/activate && ansible-lint
+
 tf_provisioning := terraform -chdir=../provisioning
 tf_storage := terraform -chdir=../storage
 
@@ -21,7 +23,7 @@ pki_domain_name = $(shell $(tf_storage) output -raw pki_domain_name)
 all: deploy
 
 lint: .venv
-	.venv/bin/ansible-lint --profile production --strict
+	$(ansible_lint) --profile production --strict
 
 plan:
 	$(MAKE) deploy SSH_PK=$(SSH_PK) ansible_pb="$(ansible_pb) --check --diff"
@@ -45,4 +47,4 @@ endif
 
 versions: .venv
 	@echo Ansible $(shell .venv/bin/ansible --version | grep -Po '(?<=core )[0-9.]+')
-	@echo Ansible Lint $(shell .venv/bin/ansible-lint --version | grep -Eo "[0-9.]+" | head -n 1)
+	@echo Ansible Lint $(shell $(ansible_lint) --version | grep -Eo "[0-9.]+" | head -n 1)
