@@ -21,8 +21,8 @@
     valid_to: +26w
     valid_at: +2w
     ignore_timestamps: true
-    identifier: kenny.hosts.28.solutions host key
-    principals: [kenny.hosts.28.solutions]
+    identifier: "{{ tf.web_server_hostname }} host key"
+    principals: ["{{ tf.web_server_hostname }}"]
   with_items: "{{ host_keys.files | map(attribute='path') }}"
   notify: Reload SSH service
 - name: Register host keys certificates
