@@ -25,7 +25,11 @@ plan:
 	$(MAKE) deploy SSH_PK=$(SSH_PK) ansible_pb="$(ansible_pb) --check --diff"
 
 deploy: check-ssh-pk .venv
-	$(ansible_vars) | $(ansible_cmd) $(ansible_inventory) $(ansible_auth) playbook.yaml
+	$(ansible_vars) | \
+		$(ansible_cmd) \
+			$(ansible_inventory) \
+			$(ansible_auth) \
+			playbook.yaml
 
 check-ssh-pk:
 ifndef SSH_PK
