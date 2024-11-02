@@ -9,10 +9,12 @@ ansible_inventory = -i $(ip), -e ansible_port=$(ssh_port)
 ansible_auth := -u root --private-key "$(SSH_PK)"
 
 tf_provisioning := terraform -chdir=../provisioning
+tf_storage := terraform -chdir=../storage
 
 ip = $(shell $(tf_provisioning) output -raw web_server_ip_address)
 ssh_port = $(shell $(tf_provisioning) output -raw web_server_ssh_port)
 ansible_vars = $(tf_provisioning) output -json | jq -c 'map_values(.value)'
+pki_domain_name = $(shell $(tf_storage) output -raw pki_domain_name)
 
 .PHONY: all lint plan deploy check-ssh-pk versions
 
@@ -29,6 +31,7 @@ deploy: check-ssh-pk .venv
 		$(ansible_cmd) \
 			$(ansible_inventory) \
 			$(ansible_auth) \
+			--extra-vars "pki_domain_name=$(pki_domain_name)" \
 			playbook.yaml
 
 check-ssh-pk:

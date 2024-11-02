@@ -1,6 +1,6 @@
 - name: Download user CA public key
   ansible.builtin.get_url:
-    url: https://www.stephanedewit.be/ssh/user-ca.pub
+    url: https://{{ pki_domain_name }}/ssh/ca/user.pub
     dest: /etc/ssh/user-ca.pub
     mode: "0644"
   notify: Reload SSH service

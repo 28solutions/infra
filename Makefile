@@ -26,7 +26,7 @@ storage:
 provision:
 	$(MAKE) --directory provisioning SSH_PK=$(SSH_PK)
 
-deploy: provision
+deploy: provision storage
 	$(MAKE) --directory deployment SSH_PK=$(SSH_PK)
 
 services: deploy storage
