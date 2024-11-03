@@ -4,7 +4,7 @@ ansible_lint := ansible-lint
 
 activate_venv = . .venv/bin/activate
 
-ansible_cmd := \
+pb_cmd := \
 	ANSIBLE_HOST_KEY_CHECKING=False \
 	$(ansible_pb) \
 	--ssh-common-args "-o ControlMaster=no -o ForwardAgent=yes -o UserKnownHostsFile=/dev/null"
@@ -32,7 +32,7 @@ plan:
 
 deploy: check-ssh-pk .venv
 	$(activate_venv) && $(ansible_vars) | \
-		$(ansible_cmd) \
+		$(pb_cmd) \
 			$(ansible_inventory) \
 			$(ansible_auth) \
 			--extra-vars "pki_domain_name=$(pki_domain_name)" \
