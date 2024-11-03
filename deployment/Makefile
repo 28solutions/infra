@@ -1,4 +1,8 @@
-ansible_pb := .venv/bin/ansible-playbook
+ansible := ansible
+ansible_pb := ansible-playbook
+ansible_lint := ansible-lint
+
+activate_venv = . .venv/bin/activate
 
 ansible_cmd := \
 	ANSIBLE_HOST_KEY_CHECKING=False \
@@ -7,8 +11,6 @@ ansible_cmd := \
 
 ansible_inventory = -i $(ip), -e ansible_port=$(ssh_port)
 ansible_auth := -u root --private-key "$(SSH_PK)"
-
-ansible_lint := . .venv/bin/activate && ansible-lint
 
 tf_provisioning := terraform -chdir=../provisioning
 tf_storage := terraform -chdir=../storage
@@ -23,13 +25,13 @@ pki_domain_name = $(shell $(tf_storage) output -raw pki_domain_name)
 all: deploy
 
 lint: .venv
-	$(ansible_lint) --profile production --strict
+	$(activate_venv) && $(ansible_lint) --profile production --strict
 
 plan:
 	$(MAKE) deploy SSH_PK=$(SSH_PK) ansible_pb="$(ansible_pb) --check --diff"
 
 deploy: check-ssh-pk .venv
-	$(ansible_vars) | \
+	$(activate_venv) && $(ansible_vars) | \
 		$(ansible_cmd) \
 			$(ansible_inventory) \
 			$(ansible_auth) \
@@ -43,8 +45,8 @@ endif
 
 .venv:
 	python -m venv --upgrade-deps .venv
-	.venv/bin/pip install ansible ansible-lint
+	$(activate_venv) && pip install ansible ansible-lint
 
 versions: .venv
-	@echo Ansible $(shell .venv/bin/ansible --version | grep -Po '(?<=core )[0-9.]+')
-	@echo Ansible Lint $(shell $(ansible_lint) --version | grep -Eo "[0-9.]+" | head -n 1)
+	@echo Ansible $(shell $(activate_venv) && $(ansible) --version | grep -Po '(?<=core )[0-9.]+')
+	@echo Ansible Lint $(shell $(activate_venv) && $(ansible_lint) --version | grep -Eo "[0-9.]+" | head -n 1)
