@@ -2,23 +2,23 @@ ansible := ansible
 ansible_pb := ansible-playbook
 ansible_lint := ansible-lint
 
-activate_venv = . .venv/bin/activate
+activate_venv := . .venv/bin/activate
 
 pb_cmd := \
 	ANSIBLE_HOST_KEY_CHECKING=False \
 	$(ansible_pb) \
 	--ssh-common-args "-o ControlMaster=no -o ForwardAgent=yes -o UserKnownHostsFile=/dev/null"
 
-ansible_inventory = -i $(ip), -e ansible_port=$(ssh_port)
-ansible_auth := -u root --private-key "$(SSH_PK)"
-
 tf_provisioning := terraform -chdir=../provisioning
 tf_storage := terraform -chdir=../storage
 
-ip = $(shell $(tf_provisioning) output -raw web_server_ip_address)
-ssh_port = $(shell $(tf_provisioning) output -raw web_server_ssh_port)
-ansible_vars = $(tf_provisioning) output -json | jq -c 'map_values(.value)'
-pki_domain_name = $(shell $(tf_storage) output -raw pki_domain_name)
+ip := $(shell $(tf_provisioning) output -raw web_server_ip_address)
+ssh_port := $(shell $(tf_provisioning) output -raw web_server_ssh_port)
+ansible_vars := $(tf_provisioning) output -json | jq -c 'map_values(.value)'
+pki_domain_name := $(shell $(tf_storage) output -raw pki_domain_name)
+
+ansible_inventory := -i $(ip), -e ansible_port=$(ssh_port)
+ansible_auth := -u root --private-key "$(SSH_PK)"
 
 .PHONY: all lint plan deploy check-ssh-pk versions
 
