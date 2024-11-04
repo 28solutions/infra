@@ -50,7 +50,7 @@ resource "scaleway_instance_server" "web" {
 
     connection {
       type        = "ssh"
-      host        = self.public_ip
+      host        = self.public_ips[0].address
       port        = var.ssh_port
       user        = "root"
       private_key = file(var.ssh_private_key)
@@ -66,11 +66,11 @@ resource "cloudflare_record" "kenny_dns" {
   zone_id = data.cloudflare_zone.dns_zone.id
   name    = "kenny.hosts"
   type    = "A"
-  content = scaleway_instance_server.web.public_ip
+  content = scaleway_instance_server.web.public_ips[0].address
 }
 
 output "web_server_ip_address" {
-  value = scaleway_instance_server.web.public_ip
+  value = scaleway_instance_server.web.public_ips[0].address
 }
 
 output "web_server_hostname" {
