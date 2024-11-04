@@ -19,7 +19,7 @@ ansible_ssh_opts = \
 	--ssh-common-args "-o ControlMaster=no -o ForwardAgent=yes -o UserKnownHostsFile=/dev/null"
 ansible_extra_vars = --extra-vars "pki_domain_name=$(pki_domain_name)"
 
-.PHONY: all lint plan deploy check-ssh-pk versions
+.PHONY: all lint plan deploy check-ssh-pk upgrade versions
 
 all: deploy
 
@@ -46,6 +46,9 @@ endif
 .venv:
 	python -m venv --upgrade-deps .venv
 	$(activate_venv) && pip install ansible ansible-lint
+
+upgrade: .venv
+	$(activate_venv) && pip install --upgrade ansible ansible-lint
 
 versions: .venv
 	@echo Ansible $(shell $(activate_venv) && $(ansible) --version | grep -Po '(?<=core )[0-9.]+')

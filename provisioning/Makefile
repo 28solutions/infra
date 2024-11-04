@@ -1,10 +1,11 @@
 cf_creds = . $(HOME)/.creds/terraform@cloudflare
 
 tf := terraform
+tf_init := $(tf) init -backend-config=../shared/config.s3.tfbackend
 
 tf_vars := -var "ssh_private_key=$(SSH_PK)"
 
-.PHONY: all lint check-ssh-pk plan provision destroy versions
+.PHONY: all upgrade lint check-ssh-pk plan provision destroy versions
 
 all: provision
 
@@ -13,7 +14,10 @@ lint:
 	$(tf) validate
 
 .terraform:
-	$(tf) init -backend-config=../shared/config.s3.tfbackend
+	$(tf_init)
+
+upgrade: .terraform
+	$(tf_init) -upgrade
 
 check-ssh-pk:
 ifndef SSH_PK
