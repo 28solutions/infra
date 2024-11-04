@@ -34,4 +34,4 @@ destroy: check-ssh-pk .terraform
 	$(cf_creds) && $(tf) destroy $(tf_vars)
 
 versions:
-	@echo Terraform $(shell terraform version -json | jq -r .terraform_version)
+	@echo Terraform $(shell $(tf) version -json | jq -r .terraform_version)
