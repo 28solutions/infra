@@ -17,6 +17,7 @@ ansible_inventory := -i $(ip), -e ansible_port=$(ssh_port)
 ansible_auth := -u root --private-key "$(SSH_PK)"
 ansible_ssh_opts := \
 	--ssh-common-args "-o ControlMaster=no -o ForwardAgent=yes -o UserKnownHostsFile=/dev/null"
+ansible_extra_vars := --extra-vars "pki_domain_name=$(pki_domain_name)"
 
 .PHONY: all lint plan deploy check-ssh-pk versions
 
@@ -34,7 +35,7 @@ deploy: check-ssh-pk .venv
 			$(ansible_ssh_opts) \
 			$(ansible_inventory) \
 			$(ansible_auth) \
-			--extra-vars "pki_domain_name=$(pki_domain_name)" \
+			$(ansible_extra_vars) \
 			playbook.yaml
 
 check-ssh-pk:
