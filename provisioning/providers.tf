@@ -13,7 +13,7 @@ terraform {
   required_version = ">= 0.13"
 
   backend "s3" {
-    key = "states/infra.tfstate"
+    key = "states/provisioning.tfstate"
   }
 }
 

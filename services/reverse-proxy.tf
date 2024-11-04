@@ -31,7 +31,7 @@ resource "docker_image" "reverse_proxy" {
 }
 
 locals {
-  certificates = values(data.terraform_remote_state.infra.outputs.certificates)
+  certificates = values(data.terraform_remote_state.provisioning.outputs.certificates)
 
   sorted_common_names = sort(local.certificates[*].common_name)
   sorted_certificates = flatten(

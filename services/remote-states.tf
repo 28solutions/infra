@@ -10,12 +10,12 @@ data "terraform_remote_state" "storage" {
   }
 }
 
-data "terraform_remote_state" "infra" {
+data "terraform_remote_state" "provisioning" {
   backend = "s3"
 
   config = {
     bucket         = var.bucket
-    key            = "states/infra.tfstate"
+    key            = "states/provisioning.tfstate"
     region         = var.region
     profile        = var.profile
     dynamodb_table = var.dynamodb_table

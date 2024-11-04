@@ -11,8 +11,8 @@ terraform {
 }
 
 locals {
-  ssh_host = data.terraform_remote_state.infra.outputs.web_server_hostname
-  ssh_port = data.terraform_remote_state.infra.outputs.web_server_ssh_port
+  ssh_host = data.terraform_remote_state.provisioning.outputs.web_server_hostname
+  ssh_port = data.terraform_remote_state.provisioning.outputs.web_server_ssh_port
 }
 
 provider "docker" {
