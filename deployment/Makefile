@@ -7,17 +7,17 @@ activate_venv := . .venv/bin/activate
 tf_provisioning := terraform -chdir=../provisioning
 tf_storage := terraform -chdir=../storage
 
-ip := $(shell $(tf_provisioning) output -raw web_server_ip_address)
-ssh_port := $(shell $(tf_provisioning) output -raw web_server_ssh_port)
-ansible_vars := $(tf_provisioning) output -json | jq -c 'map_values(.value)'
-pki_domain_name := $(shell $(tf_storage) output -raw pki_domain_name)
+ip = $(shell $(tf_provisioning) output -raw web_server_ip_address)
+ssh_port = $(shell $(tf_provisioning) output -raw web_server_ssh_port)
+ansible_vars = $(tf_provisioning) output -json | jq -c 'map_values(.value)'
+pki_domain_name = $(shell $(tf_storage) output -raw pki_domain_name)
 
 ansible_env = ANSIBLE_HOST_KEY_CHECKING=False
-ansible_inventory := -i $(ip), -e ansible_port=$(ssh_port)
-ansible_auth := -u root --private-key "$(SSH_PK)"
-ansible_ssh_opts := \
+ansible_inventory = -i $(ip), -e ansible_port=$(ssh_port)
+ansible_auth = -u root --private-key "$(SSH_PK)"
+ansible_ssh_opts = \
 	--ssh-common-args "-o ControlMaster=no -o ForwardAgent=yes -o UserKnownHostsFile=/dev/null"
-ansible_extra_vars := --extra-vars "pki_domain_name=$(pki_domain_name)"
+ansible_extra_vars = --extra-vars "pki_domain_name=$(pki_domain_name)"
 
 .PHONY: all lint plan deploy check-ssh-pk versions
 
