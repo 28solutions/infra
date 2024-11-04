@@ -10,7 +10,6 @@ terraform {
       source = "vancluever/acme"
     }
   }
-  required_version = ">= 0.13"
 
   backend "s3" {
     key = "states/provisioning.tfstate"
