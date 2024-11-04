@@ -5,7 +5,6 @@ ansible_lint := ansible-lint
 activate_venv := . .venv/bin/activate
 
 pb_cmd := \
-	ANSIBLE_HOST_KEY_CHECKING=False \
 	$(ansible_pb) \
 	--ssh-common-args "-o ControlMaster=no -o ForwardAgent=yes -o UserKnownHostsFile=/dev/null"
 
@@ -17,6 +16,7 @@ ssh_port := $(shell $(tf_provisioning) output -raw web_server_ssh_port)
 ansible_vars := $(tf_provisioning) output -json | jq -c 'map_values(.value)'
 pki_domain_name := $(shell $(tf_storage) output -raw pki_domain_name)
 
+ansible_env = ANSIBLE_HOST_KEY_CHECKING=False
 ansible_inventory := -i $(ip), -e ansible_port=$(ssh_port)
 ansible_auth := -u root --private-key "$(SSH_PK)"
 
@@ -32,7 +32,7 @@ plan:
 
 deploy: check-ssh-pk .venv
 	$(activate_venv) && $(ansible_vars) | \
-		$(pb_cmd) \
+		$(ansible_env) $(pb_cmd) \
 			$(ansible_inventory) \
 			$(ansible_auth) \
 			--extra-vars "pki_domain_name=$(pki_domain_name)" \
