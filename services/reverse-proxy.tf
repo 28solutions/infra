@@ -77,6 +77,7 @@ resource "docker_container" "reverse_proxy" {
   command = [
     "--global.sendAnonymousUsage",
     "--log.level=DEBUG",
+    "--accesslog=true",
     "--providers.file.directory=/etc/traefik/dynamic",
     "--providers.docker.endpoint=tcp://docker_proxy:2375",
     "--providers.docker.exposedbydefault=false",
