@@ -4,10 +4,6 @@ ansible_lint := ansible-lint
 
 activate_venv := . .venv/bin/activate
 
-pb_cmd := \
-	$(ansible_pb) \
-	--ssh-common-args "-o ControlMaster=no -o ForwardAgent=yes -o UserKnownHostsFile=/dev/null"
-
 tf_provisioning := terraform -chdir=../provisioning
 tf_storage := terraform -chdir=../storage
 
@@ -19,6 +15,8 @@ pki_domain_name := $(shell $(tf_storage) output -raw pki_domain_name)
 ansible_env = ANSIBLE_HOST_KEY_CHECKING=False
 ansible_inventory := -i $(ip), -e ansible_port=$(ssh_port)
 ansible_auth := -u root --private-key "$(SSH_PK)"
+ansible_ssh_opts := \
+	--ssh-common-args "-o ControlMaster=no -o ForwardAgent=yes -o UserKnownHostsFile=/dev/null"
 
 .PHONY: all lint plan deploy check-ssh-pk versions
 
@@ -32,7 +30,8 @@ plan:
 
 deploy: check-ssh-pk .venv
 	$(activate_venv) && $(ansible_vars) | \
-		$(ansible_env) $(pb_cmd) \
+		$(ansible_env) $(ansible_pb) \
+			$(ansible_ssh_opts) \
 			$(ansible_inventory) \
 			$(ansible_auth) \
 			--extra-vars "pki_domain_name=$(pki_domain_name)" \
