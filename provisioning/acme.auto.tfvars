@@ -28,4 +28,7 @@ acme_domain_names = {
     "downloads.stephanedewit.be",
     "downloads.twentyeight.solutions"
   ]
+  traefik = [
+    "traefik.sdw.ovh"
+  ]
 }
