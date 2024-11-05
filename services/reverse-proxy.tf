@@ -43,6 +43,25 @@ locals {
   )
 }
 
+data "onepassword_vault" "iac_vault" {
+  name = "IaC"
+}
+
+data "onepassword_item" "api_account" {
+  vault = data.onepassword_vault.iac_vault.uuid
+  title = "Traefik dashboard"
+}
+
+locals {
+  api_realm = "traefik"
+  api_users = [
+    {
+      username = data.onepassword_item.api_account.username
+      password = data.onepassword_item.api_account.password
+    }
+  ]
+}
+
 resource "docker_container" "reverse_proxy" {
   name    = "reverse_proxy"
   image   = docker_image.reverse_proxy.image_id
@@ -60,8 +79,17 @@ resource "docker_container" "reverse_proxy" {
   }
 
   upload {
-    file    = "/etc/traefik/dynamic/api.yaml"
-    content = file("traefik/api.yaml")
+    file = "/etc/traefik/dynamic/api.yaml"
+    content = templatefile(
+      "traefik/api.yaml",
+      {
+        realm = local.api_realm
+        users = [for user in local.api_users : {
+          username        = user.username
+          hashed_password = md5("${user.username}:${local.api_realm}:${user.password}")
+        }]
+      }
+    )
   }
 
   upload {

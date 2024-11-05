@@ -4,3 +4,17 @@ http:
       entrypoints: [api]
       rule: PathPrefix(`/api`) || PathPrefix(`/dashboard`)
       service: api@internal
+    api-web:
+      entrypoints: [websecure]
+      rule: Host(`traefik.sdw.ovh`)
+      middlewares: [api-auth]
+      service: api@internal
+  middlewares:
+    api-auth:
+      digestAuth:
+        removeHeader: true
+        realm: ${realm}
+        users:
+%{ for user in users ~}
+          - ${user.username}:${realm}:${user.hashed_password}
+%{ endfor ~}
