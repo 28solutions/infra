@@ -60,6 +60,11 @@ resource "docker_container" "reverse_proxy" {
   }
 
   upload {
+    file    = "/etc/traefik/dynamic/api.yaml"
+    content = file("traefik/api.yaml")
+  }
+
+  upload {
     file    = "/etc/traefik/dynamic/redirects.yaml"
     content = file("traefik/redirects.yaml")
   }
@@ -100,26 +105,6 @@ resource "docker_container" "reverse_proxy" {
     host_path      = "/etc/ssl/private"
     container_path = "/etc/ssl/private"
     read_only      = true
-  }
-
-  labels {
-    label = "traefik.enable"
-    value = "true"
-  }
-
-  labels {
-    label = "traefik.http.routers.api.entrypoints"
-    value = "api"
-  }
-
-  labels {
-    label = "traefik.http.routers.api.rule"
-    value = "PathPrefix(`/api`) || PathPrefix(`/dashboard`)"
-  }
-
-  labels {
-    label = "traefik.http.routers.api.service"
-    value = "api@internal"
   }
 
   ports {
