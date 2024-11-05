@@ -3,6 +3,9 @@ terraform {
     docker = {
       source = "kreuzwerker/docker"
     }
+    onepassword = {
+      source = "1Password/onepassword"
+    }
   }
 
   backend "s3" {
