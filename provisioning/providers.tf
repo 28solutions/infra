@@ -9,6 +9,9 @@ terraform {
     acme = {
       source = "vancluever/acme"
     }
+    onepassword = {
+      source = "1Password/onepassword"
+    }
   }
 
   backend "s3" {

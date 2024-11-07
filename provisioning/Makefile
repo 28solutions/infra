@@ -1,4 +1,5 @@
 cf_creds = . $(HOME)/.creds/terraform@cloudflare
+1p_creds = . $(HOME)/.creds/terraform@1password
 
 tf := terraform
 tf_init := $(tf) init -backend-config=../shared/config.s3.tfbackend
@@ -25,13 +26,13 @@ ifndef SSH_PK
 endif
 
 plan: check-ssh-pk .terraform
-	$(cf_creds) && $(tf) plan $(tf_vars)
+	$(cf_creds) && $(1p_creds) && $(tf) plan $(tf_vars)
 
 provision: check-ssh-pk .terraform
-	$(cf_creds) && $(tf) apply -auto-approve $(tf_vars)
+	$(cf_creds) && $(1p_creds) && $(tf) apply -auto-approve $(tf_vars)
 
 destroy: check-ssh-pk .terraform
-	$(cf_creds) && $(tf) destroy $(tf_vars)
+	$(cf_creds) && $(1p_creds) && $(tf) destroy $(tf_vars)
 
 versions:
 	@echo Terraform $(shell $(tf) version -json | jq -r .terraform_version)
