@@ -14,7 +14,7 @@ output "pki_domain_name" {
   value = module.pki_website.domain_name
 }
 
-module "downloads_website" {
+module "downloads_sdw_website" {
   source = "./static-website"
 
   cloud_provider = "scw"
@@ -25,6 +25,6 @@ module "downloads_website" {
   icon  = "download"
 }
 
-output "downloads_domain_name" {
-  value = module.downloads_website.domain_name
+output "downloads_sdw_domain_name" {
+  value = module.downloads_sdw_website.domain_name
 }
