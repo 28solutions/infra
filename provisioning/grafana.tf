@@ -6,6 +6,23 @@ resource "scaleway_cockpit" "cockpit" {
   plan = "free"
 }
 
+resource "scaleway_cockpit_token" "traefik" {
+  project_id = data.scaleway_account_project.project.project_id
+  name       = "traefik"
+
+  scopes {
+    write_logs = false
+
+    write_metrics = true
+    write_traces  = true
+  }
+}
+
+output "traefik_metrics_token" {
+  value     = scaleway_cockpit_token.traefik.secret_key
+  sensitive = true
+}
+
 resource "scaleway_cockpit_grafana_user" "user" {
   project_id = data.scaleway_account_project.project.project_id
 
