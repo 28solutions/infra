@@ -26,7 +26,9 @@ acme_domain_names = {
   ]
   downloads = [
     "downloads.stephanedewit.be",
-    "downloads.twentyeight.solutions"
+    "downloads-r.stephanedewit.be",
+    "downloads.twentyeight.solutions",
+    "downloads-r.twentyeight.solutions"
   ]
   traefik = [
     "traefik.sdw.ovh"
