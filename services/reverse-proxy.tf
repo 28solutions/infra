@@ -71,8 +71,6 @@ locals {
       password = onepassword_item.api_account.password
     }
   ]
-
-  otel_collector_grpc = "otel-collector:4317"
 }
 
 resource "docker_container" "reverse_proxy" {
@@ -80,6 +78,16 @@ resource "docker_container" "reverse_proxy" {
   image   = docker_image.reverse_proxy.image_id
   restart = "unless-stopped"
   user    = "200:300"
+
+  upload {
+    file = "/etc/traefik/traefik.yaml"
+    content = templatefile(
+      "traefik/static.yaml",
+      {
+        otel_collector_grpc = "otel-collector:4317"
+      }
+    )
+  }
 
   upload {
     file = "/etc/traefik/dynamic/ssl.yaml"
@@ -119,29 +127,6 @@ resource "docker_container" "reverse_proxy" {
       }
     )
   }
-
-  command = [
-    "--global.sendAnonymousUsage",
-    "--log.level=DEBUG",
-    "--accesslog=true",
-    "--metrics.otlp.grpc.endpoint=${local.otel_collector_grpc}",
-    "--metrics.otlp.grpc.insecure=true",
-    "--metrics.otlp.addEntryPointsLabels=true",
-    "--metrics.otlp.addRoutersLabels=true",
-    "--metrics.otlp.addServicesLabels=true",
-    "--tracing.otlp.grpc.endpoint=${local.otel_collector_grpc}",
-    "--tracing.otlp.grpc.insecure=true",
-    "--providers.file.directory=/etc/traefik/dynamic",
-    "--providers.docker.endpoint=tcp://docker_proxy:2375",
-    "--providers.docker.exposedbydefault=false",
-    "--entrypoints.web.address=:80",
-    "--entrypoints.web.http.redirections.entryPoint.to=websecure",
-    "--entrypoints.web.http.redirections.entryPoint.scheme=https",
-    "--entrypoints.websecure.address=:443",
-    "--entrypoints.websecure.http.tls",
-    "--entrypoints.api.address=:8080",
-    "--api=true"
-  ]
 
   volumes {
     host_path      = "/etc/ssl/local-certs"
