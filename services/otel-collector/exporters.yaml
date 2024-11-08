@@ -1,0 +1,9 @@
+exporters:
+  prometheusremotewrite:
+    endpoint: ${metrics_endpoint}
+    headers:
+      X-TOKEN: ${token}
+  otlphttp:
+    endpoint: ${replace(traces_endpoint, "/v1/traces", "")}
+    headers:
+      X-TOKEN: ${token}

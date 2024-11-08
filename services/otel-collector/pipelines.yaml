@@ -1,0 +1,8 @@
+service:
+  pipelines:
+    metrics:
+      receivers: [otlp]
+      exporters: [prometheusremotewrite]
+    traces:
+      receivers: [otlp]
+      exporters: [otlphttp]
