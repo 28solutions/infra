@@ -23,6 +23,17 @@ output "traefik_metrics_token" {
   sensitive = true
 }
 
+resource "scaleway_cockpit_source" "traefik_metrics" {
+  project_id = data.scaleway_account_project.project.project_id
+
+  name = "traefik_metrics"
+  type = "metrics"
+}
+
+output "traefik_metrics_push_url" {
+  value = scaleway_cockpit_source.traefik_metrics.push_url
+}
+
 resource "scaleway_cockpit_grafana_user" "user" {
   project_id = data.scaleway_account_project.project.project_id
 
