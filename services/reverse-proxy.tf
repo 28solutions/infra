@@ -47,17 +47,28 @@ data "onepassword_vault" "iac_vault" {
   name = "IaC"
 }
 
-data "onepassword_item" "api_account" {
+resource "onepassword_item" "api_account" {
   vault = data.onepassword_vault.iac_vault.uuid
-  title = "Traefik dashboard"
+
+  title    = "Traefik dashboard"
+  category = "login"
+
+  username = "stephdewit"
+
+  password_recipe {
+    length  = 64
+    symbols = false
+  }
+
+  url = "https://${data.terraform_remote_state.provisioning.outputs.certificates["traefik"].common_name}"
 }
 
 locals {
   api_realm = "traefik"
   api_users = [
     {
-      username = data.onepassword_item.api_account.username
-      password = data.onepassword_item.api_account.password
+      username = onepassword_item.api_account.username
+      password = onepassword_item.api_account.password
     }
   ]
 }
