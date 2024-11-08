@@ -71,6 +71,8 @@ locals {
       password = onepassword_item.api_account.password
     }
   ]
+
+  otel_collector_grpc = "otel-collector:4317"
 }
 
 resource "docker_container" "reverse_proxy" {
@@ -122,6 +124,13 @@ resource "docker_container" "reverse_proxy" {
     "--global.sendAnonymousUsage",
     "--log.level=DEBUG",
     "--accesslog=true",
+    "--metrics.otlp.grpc.endpoint=${local.otel_collector_grpc}",
+    "--metrics.otlp.grpc.insecure=true",
+    "--metrics.otlp.addEntryPointsLabels=true",
+    "--metrics.otlp.addRoutersLabels=true",
+    "--metrics.otlp.addServicesLabels=true",
+    "--tracing.otlp.grpc.endpoint=${local.otel_collector_grpc}",
+    "--tracing.otlp.grpc.insecure=true",
     "--providers.file.directory=/etc/traefik/dynamic",
     "--providers.docker.endpoint=tcp://docker_proxy:2375",
     "--providers.docker.exposedbydefault=false",
@@ -166,6 +175,10 @@ resource "docker_container" "reverse_proxy" {
 
   networks_advanced {
     name = docker_network.socket.name
+  }
+
+  networks_advanced {
+    name = docker_network.otel.name
   }
 
   networks_advanced {
