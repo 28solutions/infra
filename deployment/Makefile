@@ -1,3 +1,5 @@
+1p_creds = . $(HOME)/.creds/terraform@1password
+
 ansible := ansible
 ansible_pb := ansible-playbook
 ansible_lint := ansible-lint
@@ -14,12 +16,12 @@ pki_domain_name = $(shell $(tf_storage) output -raw pki_domain_name)
 
 ansible_env = ANSIBLE_HOST_KEY_CHECKING=False
 ansible_inventory = -i $(ip), -e ansible_port=$(ssh_port)
-ansible_auth = -u root --private-key "$(SSH_PK)"
+ansible_auth = -u root
 ansible_ssh_opts = \
 	--ssh-common-args "-o ControlMaster=no -o ForwardAgent=yes -o UserKnownHostsFile=/dev/null"
 ansible_extra_vars = --extra-vars "pki_domain_name=$(pki_domain_name)"
 
-.PHONY: all lint plan deploy check-ssh-pk upgrade versions
+.PHONY: all lint plan deploy upgrade versions
 
 all: deploy
 
@@ -27,9 +29,14 @@ lint: .venv
 	$(activate_venv) && $(ansible_lint) --profile production --strict
 
 plan:
-	$(MAKE) deploy SSH_PK=$(SSH_PK) ansible_pb="$(ansible_pb) --check --diff"
+	$(MAKE) deploy ansible_pb="$(ansible_pb) --check --diff"
 
-deploy: check-ssh-pk .venv
+ifeq ($(SSH_AUTH_SOCK),)
+deploy:
+	ssh-agent $(MAKE) deploy
+else
+deploy: .venv
+	$(1p_creds) && op read 'op://IaC/Scaleway SSH key/private key' | ssh-add -
 	$(activate_venv) && $(ansible_vars) | \
 		$(ansible_env) $(ansible_pb) \
 			$(ansible_ssh_opts) \
@@ -37,10 +44,6 @@ deploy: check-ssh-pk .venv
 			$(ansible_auth) \
 			$(ansible_extra_vars) \
 			playbook.yaml
-
-check-ssh-pk:
-ifndef SSH_PK
-	$(error SSH_PK is undefined)
 endif
 
 .venv:
