@@ -16,10 +16,6 @@ locals {
   )
 }
 
-data "onepassword_vault" "iac_vault" {
-  name = "IaC"
-}
-
 resource "onepassword_item" "api_account" {
   vault = data.onepassword_vault.iac_vault.uuid
 
