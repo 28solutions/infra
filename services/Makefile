@@ -23,4 +23,4 @@ lint: .terraform
 	$(tf) validate
 
 destroy: .terraform
-	$(tf) destroy
+	$(1p_creds) && $(tf) destroy
