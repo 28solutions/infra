@@ -25,6 +25,20 @@ provider "scaleway" {
   region  = "fr-par"
 }
 
+data "onepassword_item" "cloudflare_zone_read" {
+  vault = data.onepassword_vault.iac_vault.uuid
+  title = "Cloudflare | Zone:Read"
+}
+
+data "onepassword_item" "cloudflare_dns_edit" {
+  vault = data.onepassword_vault.iac_vault.uuid
+  title = "Cloudflare | DNS:Edit"
+}
+
+provider "cloudflare" {
+  api_token = data.onepassword_item.cloudflare_dns_edit.credential
+}
+
 variable "acme_production" {
   type        = bool
   description = "Use production ACME endpoint"

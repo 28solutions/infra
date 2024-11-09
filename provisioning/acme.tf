@@ -25,6 +25,11 @@ module "certificates" {
   account_key_pem = tls_private_key.acme_private_key.private_key_pem
   common_name     = each.value[0]
   dns_names       = each.value
+
+  cloudflare_tokens = {
+    zone_read = data.onepassword_item.cloudflare_zone_read.credential
+    dns_edit  = data.onepassword_item.cloudflare_dns_edit.credential
+  }
 }
 
 output "certificates" {

@@ -22,5 +22,10 @@ resource "acme_certificate" "certificate" {
 
   dns_challenge {
     provider = "cloudflare"
+
+    config = {
+      CF_ZONE_API_TOKEN = var.cloudflare_tokens.zone_read
+      CF_DNS_API_TOKEN  = var.cloudflare_tokens.dns_edit
+    }
   }
 }
