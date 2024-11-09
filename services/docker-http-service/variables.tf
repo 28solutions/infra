@@ -28,6 +28,11 @@ variable "network" {
 variable "hosts" {
   type        = list(string)
   description = "Traefik rule hosts"
+
+  validation {
+    condition     = length(var.hosts) == length(toset(var.hosts))
+    error_message = "Duplicated hosts"
+  }
 }
 
 variable "methods" {
