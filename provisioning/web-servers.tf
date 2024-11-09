@@ -4,13 +4,13 @@ variable "ssh_port" {
   default     = 44265
 }
 
-variable "ssh_private_key" {
-  type        = string
-  description = "A matching .pub file must exist"
+data "onepassword_item" "ssh_key" {
+  vault = data.onepassword_vault.iac_vault.uuid
+  title = "Scaleway SSH key"
 }
 
 resource "scaleway_account_ssh_key" "main" {
-  public_key = file("${var.ssh_private_key}.pub")
+  public_key = data.onepassword_item.ssh_key.public_key
 }
 
 resource "scaleway_instance_security_group" "www" {
@@ -53,7 +53,7 @@ resource "scaleway_instance_server" "web" {
       host        = self.public_ips[0].address
       port        = var.ssh_port
       user        = "root"
-      private_key = file(var.ssh_private_key)
+      private_key = data.onepassword_item.ssh_key.private_key
     }
   }
 }
