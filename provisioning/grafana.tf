@@ -52,10 +52,6 @@ resource "scaleway_cockpit_grafana_user" "user" {
   role  = "editor"
 }
 
-data "onepassword_vault" "iac_vault" {
-  name = "IaC"
-}
-
 resource "onepassword_item" "grafana_login" {
   vault = data.onepassword_vault.iac_vault.uuid
 
