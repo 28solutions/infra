@@ -10,6 +10,7 @@ data "onepassword_item" "ssh_key" {
 }
 
 resource "scaleway_account_ssh_key" "main" {
+  name       = "Terraform"
   public_key = data.onepassword_item.ssh_key.public_key
 }
 
