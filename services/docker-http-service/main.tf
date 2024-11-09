@@ -5,9 +5,16 @@ locals {
 
   traefik_router = "${local.clean_host}-${local.clean_methods}${local.clean_path != "" ? "-" : ""}${local.clean_path}"
 
-  traefik_hosts_rule   = join(" || ", formatlist("Host(`%s`)", var.hosts))
-  traefik_methods_rule = join(" || ", formatlist("Method(`%s`)", var.methods))
-  traefik_path_rule    = var.path == "" ? "" : " && Path(`${var.path}`)"
+  traefik_hosts_rule = join(" || ", formatlist("Host(`%s`)", var.hosts))
+  traefik_path_rule  = var.path == "" ? "" : " && Path(`${var.path}`)"
+
+  traefik_methods_rule = join(
+    " || ",
+    formatlist(
+      "Method(`%s`)",
+      contains(var.methods, "GET") && var.add_head ? setunion(var.methods, ["HEAD"]) : var.methods
+    )
+  )
 }
 
 resource "docker_image" "image" {

@@ -31,8 +31,14 @@ variable "hosts" {
 }
 
 variable "methods" {
-  type        = list(string)
+  type        = set(string)
   description = "Traefik rule methods"
+}
+
+variable "add_head" {
+  type        = bool
+  description = "Add HEAD method if GET is present"
+  default     = true
 }
 
 variable "path" {
