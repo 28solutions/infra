@@ -1,5 +1,5 @@
 resource "docker_network" "socket" {
-  name = "socket_docker"
+  name = "docker-socket"
 }
 
 resource "docker_image" "docker_proxy" {
@@ -8,7 +8,7 @@ resource "docker_image" "docker_proxy" {
 }
 
 resource "docker_container" "docker_proxy" {
-  name    = "docker_proxy"
+  name    = "docker-proxy"
   image   = docker_image.docker_proxy.image_id
   restart = "unless-stopped"
   env     = ["CONTAINERS=1"]
@@ -74,7 +74,7 @@ locals {
 }
 
 resource "docker_container" "reverse_proxy" {
-  name    = "reverse_proxy"
+  name    = "reverse-proxy"
   image   = docker_image.reverse_proxy.image_id
   restart = "unless-stopped"
   user    = "200:300"
