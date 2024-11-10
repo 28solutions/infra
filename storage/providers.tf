@@ -6,6 +6,9 @@ terraform {
     aws = {
       source = "hashicorp/aws"
     }
+    onepassword = {
+      source = "1Password/onepassword"
+    }
   }
 
   backend "s3" {
