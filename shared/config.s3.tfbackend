@@ -1,4 +1,4 @@
-bucket         = "28s-terraform"
-region         = "eu-central-1"
 profile        = "terraform"
+region         = "eu-central-1"
+bucket         = "28s-terraform"
 dynamodb_table = "TerraformStateLocks"

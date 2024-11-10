@@ -1,6 +1,6 @@
-variable "bucket" {
+variable "profile" {
   type        = string
-  description = "State S3 bucket"
+  description = "State AWS profile"
 }
 
 variable "region" {
@@ -8,9 +8,9 @@ variable "region" {
   description = "State AWS region"
 }
 
-variable "profile" {
+variable "bucket" {
   type        = string
-  description = "State AWS profile"
+  description = "State S3 bucket"
 }
 
 variable "dynamodb_table" {
