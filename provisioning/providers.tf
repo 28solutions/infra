@@ -40,11 +40,6 @@ provider "scaleway" {
   zone   = "fr-par-1"
 }
 
-data "onepassword_item" "cloudflare_zone_read" {
-  vault = data.onepassword_vault.iac_vault.uuid
-  title = "Cloudflare | Zone:Read"
-}
-
 data "onepassword_item" "cloudflare_dns_edit" {
   vault = data.onepassword_vault.iac_vault.uuid
   title = "Cloudflare | DNS:Edit"

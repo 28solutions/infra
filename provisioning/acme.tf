@@ -17,6 +17,11 @@ resource "acme_registration" "acme_registration" {
   email_address   = var.acme_email_address
 }
 
+data "onepassword_item" "cloudflare_zone_read" {
+  vault = data.onepassword_vault.iac_vault.uuid
+  title = "Cloudflare | Zone:Read"
+}
+
 module "certificates" {
   for_each = var.acme_domain_names
 
