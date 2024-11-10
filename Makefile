@@ -13,21 +13,22 @@ bootstrap:
 	$(MAKE) --directory bootstrap
 
 plan:
+	$(MAKE) --directory bootstrap plan
 	$(MAKE) --directory storage plan
 	$(MAKE) --directory provisioning plan
 	$(MAKE) --directory deployment plan
 	$(MAKE) --directory services plan
 
-storage:
+storage: bootstrap
 	$(MAKE) --directory storage
 
-provision:
+provision: bootstrap
 	$(MAKE) --directory provisioning
 
 deploy: provision storage
 	$(MAKE) --directory deployment
 
-services: deploy storage
+services: bootstrap deploy storage
 	$(MAKE) --directory services
 
 destroy:
