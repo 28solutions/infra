@@ -7,10 +7,10 @@ tf_init := $(tf) init -backend-config=$(tf_backend_config)
 .PHONY: provision plan upgrade lint
 
 provision: .terraform
-	$(tf) apply -auto-approve
+	$(1p_creds) && $(tf) apply -auto-approve
 
 plan: .terraform
-	$(tf) plan
+	$(1p_creds) && $(tf) plan
 
 .terraform:
 	$(1p_creds) && $(tf_init)
