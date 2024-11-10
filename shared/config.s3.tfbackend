@@ -1,4 +1,5 @@
-profile        = "terraform"
+access_key     = "{{ op://IaC/Amazon Web Services - 28s terraform-state/username }}"
+secret_key     = "{{ op://IaC/Amazon Web Services - 28s terraform-state/credential }}"
 region         = "eu-central-1"
 bucket         = "28s-terraform"
 dynamodb_table = "TerraformStateLocks"

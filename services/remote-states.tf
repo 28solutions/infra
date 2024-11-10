@@ -2,7 +2,8 @@ data "terraform_remote_state" "storage" {
   backend = "s3"
 
   config = {
-    profile        = var.profile
+    access_key     = var.access_key
+    secret_key     = var.secret_key
     region         = var.region
     bucket         = var.bucket
     key            = "states/storage.tfstate"
@@ -14,7 +15,8 @@ data "terraform_remote_state" "provisioning" {
   backend = "s3"
 
   config = {
-    profile        = var.profile
+    access_key     = var.access_key
+    secret_key     = var.secret_key
     region         = var.region
     bucket         = var.bucket
     key            = "states/provisioning.tfstate"

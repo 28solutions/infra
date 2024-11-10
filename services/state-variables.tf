@@ -1,6 +1,13 @@
-variable "profile" {
+variable "access_key" {
   type        = string
-  description = "State AWS profile"
+  description = "State AWS access key ID"
+  sensitive   = true
+}
+
+variable "secret_key" {
+  type        = string
+  description = "State AWS secret access key"
+  sensitive   = true
 }
 
 variable "region" {
