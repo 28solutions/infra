@@ -19,10 +19,25 @@ terraform {
   }
 }
 
+data "onepassword_item" "scaleway_web" {
+  vault = data.onepassword_vault.iac_vault.uuid
+  title = "Scaleway - web"
+}
+
+locals {
+  op_project_section = [for s in data.onepassword_item.scaleway_web.section : s if s.label == "Project"][0]
+  op_project_fields  = { for f in local.op_project_section.field : f.label => f.value }
+}
+
 provider "scaleway" {
-  profile = "web"
-  zone    = "fr-par-1"
-  region  = "fr-par"
+  access_key = data.onepassword_item.scaleway_web.username
+  secret_key = data.onepassword_item.scaleway_web.credential
+
+  organization_id = local.op_project_fields["Organization ID"]
+  project_id      = local.op_project_fields["Project ID"]
+
+  region = "fr-par"
+  zone   = "fr-par-1"
 }
 
 data "onepassword_item" "cloudflare_zone_read" {
