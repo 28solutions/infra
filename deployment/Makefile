@@ -19,6 +19,7 @@ ansible_inventory = -i $(ip), -e ansible_port=$(ssh_port)
 ansible_auth = -u root
 ansible_ssh_opts = \
 	--ssh-common-args "-o ControlMaster=no -o ForwardAgent=yes -o UserKnownHostsFile=/dev/null"
+ansible_tags = --skip-tags upgrade
 ansible_extra_vars = --extra-vars "pki_domain_name=$(pki_domain_name)"
 
 .PHONY: all lint plan deploy upgrade versions
@@ -42,6 +43,7 @@ deploy: .venv
 			$(ansible_ssh_opts) \
 			$(ansible_inventory) \
 			$(ansible_auth) \
+			$(ansible_tags) \
 			$(ansible_extra_vars) \
 			playbook.yaml
 endif
