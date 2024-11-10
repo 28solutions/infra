@@ -13,6 +13,11 @@ resource "docker_container" "otel_collector" {
   restart = "unless-stopped"
 
   upload {
+    file    = "/etc/otelcol-contrib/processors.yaml"
+    content = file("otel-collector/processors.yaml")
+  }
+
+  upload {
     file = "/etc/otelcol-contrib/exporters.yaml"
     content = templatefile(
       "otel-collector/exporters.yaml",
@@ -31,6 +36,7 @@ resource "docker_container" "otel_collector" {
 
   command = [
     "--config", "/etc/otelcol-contrib/config.yaml",
+    "--config", "/etc/otelcol-contrib/processors.yaml",
     "--config", "/etc/otelcol-contrib/exporters.yaml",
     "--config", "/etc/otelcol-contrib/pipelines.yaml",
   ]

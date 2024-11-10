@@ -2,7 +2,9 @@ service:
   pipelines:
     metrics:
       receivers: [otlp]
+      processors: [batch]
       exporters: [prometheusremotewrite]
     traces:
       receivers: [otlp]
+      processors: [batch]
       exporters: [otlphttp]
