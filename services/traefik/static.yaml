@@ -12,6 +12,7 @@ metrics:
     addRoutersLabels: true
     addServicesLabels: true
 tracing:
+  sampleRate: 0.1
   otlp:
     grpc:
       endpoint: ${otel_collector_grpc}
