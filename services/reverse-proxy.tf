@@ -42,6 +42,18 @@ locals {
   ]
 }
 
+variable "enabled_telemetry" {
+  type = object({
+    metrics = bool
+    traces  = bool
+  })
+
+  default = {
+    metrics = false
+    traces  = true
+  }
+}
+
 resource "docker_container" "reverse_proxy" {
   name    = "reverse-proxy"
   image   = docker_image.reverse_proxy.image_id
@@ -54,6 +66,7 @@ resource "docker_container" "reverse_proxy" {
       "traefik/static.yaml",
       {
         otel_collector_grpc = "otel-collector:4317"
+        enabled_telemetry   = var.enabled_telemetry
       }
     )
   }
