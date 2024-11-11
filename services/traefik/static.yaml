@@ -10,7 +10,7 @@ metrics:
       insecure: true
     addEntryPointsLabels: true
     addRoutersLabels: true
-    addServicesLabels: true
+    addServicesLabels: false
 tracing:
   sampleRate: 0.1
   otlp:
