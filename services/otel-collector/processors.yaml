@@ -1,3 +1,9 @@
 processors:
   batch:
     timeout: 2s
+  filter/dockerproxy:
+    metrics:
+      exclude:
+        match_type: expr
+        expressions:
+          - Label("net.peer.name") == "docker-proxy"
