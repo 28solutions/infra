@@ -65,8 +65,9 @@ resource "docker_container" "reverse_proxy" {
     content = templatefile(
       "traefik/static.yaml",
       {
-        otel_collector_grpc = "otel-collector:4317"
-        enabled_telemetry   = var.enabled_telemetry
+        docker_proxy_endpoint = "${docker_container.docker_proxy.name}:2375"
+        otel_collector_grpc   = "${docker_container.otel_collector.name}:4317"
+        enabled_telemetry     = var.enabled_telemetry
       }
     )
   }

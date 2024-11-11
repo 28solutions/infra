@@ -26,7 +26,7 @@ providers:
   file:
     directory: /etc/traefik/dynamic
   docker:
-    endpoint: tcp://docker-proxy:2375
+    endpoint: tcp://${docker_proxy_endpoint}
     exposedByDefault: false
 entryPoints:
   web:
