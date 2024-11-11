@@ -5,6 +5,7 @@ log:
 accessLog: {}
 metrics:
   otlp:
+    explicitBoundaries: [0.1, 0.3, 1.2, 5]
     grpc:
       endpoint: ${otel_collector_grpc}
       insecure: true
