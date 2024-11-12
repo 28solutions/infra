@@ -1,7 +1,7 @@
 1p_creds = . $(HOME)/.creds/terraform@1password
 
 tf := terraform
-tf_backend_config := <(op inject -i ../shared/config.s3.tfbackend)
+tf_backend_config := <(grep -vE '^(access|secret)_key' ../shared/config.s3.tfbackend)
 tf_init := $(tf) init
 
 .PHONY: provision plan upgrade lint
