@@ -8,7 +8,7 @@ http:
       middlewares:
         - add-wkd-prefix
         - add-cors-headers
-      service: wkd
+      service: pki
   middlewares:
     add-wkd-prefix:
       addPrefix:
@@ -17,9 +17,3 @@ http:
       headers:
         accessControlAllowMethods: [GET]
         accessControlAllowOriginList: ["*"]
-  services:
-    wkd:
-      loadBalancer:
-        passHostHeader: false
-        servers:
-          - url: https://${pki_domain_name}/

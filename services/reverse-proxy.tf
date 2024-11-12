@@ -121,13 +121,18 @@ resource "docker_container" "reverse_proxy" {
   }
 
   upload {
-    file = "/etc/traefik/dynamic/wkd.yaml"
+    file = "/etc/traefik/dynamic/pki.yaml"
     content = templatefile(
-      "traefik/wkd.yaml",
+      "traefik/pki.yaml",
       {
         pki_domain_name = data.terraform_remote_state.storage.outputs.pki_domain_name
       }
     )
+  }
+
+  upload {
+    file    = "/etc/traefik/dynamic/wkd.yaml"
+    content = file("traefik/wkd.yaml")
   }
 
   volumes {

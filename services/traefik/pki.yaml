@@ -1,0 +1,12 @@
+http:
+  routers:
+    pki:
+      entrypoints: [websecure]
+      rule: Host(`pki.stephanedewit.be`)
+      service: pki
+  services:
+    pki:
+      loadBalancer:
+        passHostHeader: false
+        servers:
+          - url: https://${pki_domain_name}/
