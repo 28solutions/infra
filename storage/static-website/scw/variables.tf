@@ -18,3 +18,8 @@ variable "icon" {
   type        = string
   description = "Icon to display on the HTML page"
 }
+
+variable "owner" {
+  type        = string
+  description = "Owner to display"
+}

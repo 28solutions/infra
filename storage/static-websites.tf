@@ -6,6 +6,7 @@ locals {
       versioning = true
       title      = "PKI"
       icon       = "key"
+      owner      = "Stéphane de Wit"
     }
     downloads_sdw = {
       provider   = "scw"
@@ -13,6 +14,7 @@ locals {
       versioning = false
       title      = "Downloads"
       icon       = "download"
+      owner      = "Stéphane de Wit"
     }
     downloads_28s = {
       provider   = "scw"
@@ -20,6 +22,7 @@ locals {
       versioning = false
       title      = "Downloads"
       icon       = "download"
+      owner      = "Twenty Eight Solutions"
     }
   }
 }
@@ -36,6 +39,7 @@ module "website" {
 
   title = each.value.title
   icon  = each.value.icon
+  owner = each.value.owner
 }
 
 output "pki_domain_name" {

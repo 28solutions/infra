@@ -15,6 +15,7 @@ module "bucket_index" {
 
   title = var.title
   icon  = var.icon
+  owner = var.owner
 }
 
 resource "aws_s3_object" "index" {

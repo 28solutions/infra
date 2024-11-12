@@ -4,6 +4,7 @@ locals {
     {
       title = var.title
       icon  = var.icon
+      owner = var.owner
     }
   )
 }

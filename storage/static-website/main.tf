@@ -8,6 +8,7 @@ module "aws_website" {
 
   title = var.title
   icon  = var.icon
+  owner = var.owner
 }
 
 module "scaleway_website" {
@@ -20,6 +21,7 @@ module "scaleway_website" {
 
   title = var.title
   icon  = var.icon
+  owner = var.owner
 }
 
 output "domain_name" {
