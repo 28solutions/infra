@@ -1,0 +1,28 @@
+http:
+  routers:
+%{ for k, v in websites ~}
+    downloads-${k}:
+      entrypoints: [websecure]
+      rule: Host(`downloads.${v.tld}`)
+      service: downloads-${k}
+    downloads-${k}-redirect:
+      entrypoints: [websecure]
+      rule: Host(`downloads-r.${v.tld}`)
+      middlewares: [redirect-downloads-${k}]
+      service: noop@internal
+%{ endfor ~}
+  middlewares:
+%{ for k, v in websites ~}
+    redirect-downloads-${k}:
+      redirectRegex:
+        regex: "^https://[^/]+/(.*)"
+        replacement: "https://${v.target}/$${1}"
+%{ endfor ~}
+  services:
+%{ for k, v in websites ~}
+    downloads-${k}:
+      loadBalancer:
+        passHostHeader: false
+        servers:
+          - url: https://${v.target}
+%{ endfor ~}

@@ -102,6 +102,25 @@ resource "docker_container" "reverse_proxy" {
   }
 
   upload {
+    file = "/etc/traefik/dynamic/downloads.yaml"
+    content = templatefile(
+      "traefik/downloads.yaml",
+      {
+        websites = {
+          sdw = {
+            tld    = "stephanedewit.be"
+            target = data.terraform_remote_state.storage.outputs.downloads_sdw_domain_name
+          }
+          "28s" = {
+            tld    = "twentyeight.solutions"
+            target = data.terraform_remote_state.storage.outputs.downloads_28s_domain_name
+          }
+        }
+      }
+    )
+  }
+
+  upload {
     file = "/etc/traefik/dynamic/wkd.yaml"
     content = templatefile(
       "traefik/wkd.yaml",
