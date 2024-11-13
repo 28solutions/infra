@@ -1,4 +1,6 @@
-1p_creds = . $(HOME)/.creds/terraform@1password
+ifndef OP_SERVICE_ACCOUNT_TOKEN
+	1p_creds = . $(HOME)/.creds/terraform@1password &&
+endif
 
 tf := terraform
 tf_init := $(tf) init
@@ -8,7 +10,7 @@ ifeq ("$(notdir $(CURDIR))","bootstrap")
 	tf_backend_config := <(grep -vE '^(access|secret)_key' $(tf_backend_config_path))
 else
 	tf_backend_config := <(op inject -i $(tf_backend_config_path))
-	tf_init := $(1p_creds) && $(tf_init) -backend-config=$(tf_backend_config)
+	tf_init := $(1p_creds) $(tf_init) -backend-config=$(tf_backend_config)
 endif
 
 ifneq ("$(wildcard state-variables.tf)","")
@@ -33,16 +35,16 @@ lint: .terraform
 	$(tf) validate
 
 plan: .terraform
-	$(1p_creds) && $(tf) plan $(tf_plan_params) $(backend_vars)
+	$(1p_creds) $(tf) plan $(tf_plan_params) $(backend_vars)
 
 detect-drift:
 	$(MAKE) plan tf_plan_params=-detailed-exitcode
 
 provision: .terraform
-	$(1p_creds) && $(tf) apply -auto-approve $(backend_vars)
+	$(1p_creds) $(tf) apply -auto-approve $(backend_vars)
 
 destroy: .terraform
-	$(1p_creds) && $(tf) destroy
+	$(1p_creds) $(tf) destroy
 
 versions:
 	@echo Terraform $(shell $(tf) version -json | jq -r .terraform_version)

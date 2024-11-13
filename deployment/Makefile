@@ -1,4 +1,6 @@
-1p_creds = . $(HOME)/.creds/terraform@1password
+ifndef OP_SERVICE_ACCOUNT_TOKEN
+	1p_creds = . $(HOME)/.creds/terraform@1password &&
+endif
 
 ansible := ansible
 ansible_pb := ansible-playbook
@@ -40,7 +42,7 @@ deploy:
 	ssh-agent $(MAKE) deploy
 else
 deploy: .venv
-	$(1p_creds) && op read 'op://IaC/Scaleway SSH key/private key' | ssh-add -
+	$(1p_creds) op read 'op://IaC/Scaleway SSH key/private key' | ssh-add -
 	$(activate_venv) && $(ansible_vars) | \
 		$(ansible_env) $(ansible_pb) \
 			$(ansible_ssh_opts) \
