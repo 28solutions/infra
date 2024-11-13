@@ -22,7 +22,7 @@ ansible_ssh_opts = \
 ansible_tags = --skip-tags upgrade
 ansible_extra_vars = --extra-vars "pki_domain_name=$(pki_domain_name)"
 
-.PHONY: all lint plan deploy upgrade versions
+.PHONY: all lint plan detect-drift deploy upgrade versions
 
 all: deploy
 
@@ -31,6 +31,9 @@ lint: .venv
 
 plan:
 	$(MAKE) deploy ansible_pb="$(ansible_pb) --check --diff"
+
+detect-drift:
+	$(MAKE) plan | sed '/changed=0.*failed=0/,$$b;$$q1'
 
 ifeq ($(SSH_AUTH_SOCK),)
 deploy:

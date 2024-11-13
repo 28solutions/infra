@@ -20,11 +20,11 @@ plan:
 	$(MAKE) --directory services plan
 
 detect-drift:
-	$(MAKE) --directory bootstrap plan tf_plan_params=-detailed-exitcode
-	$(MAKE) --directory storage plan tf_plan_params=-detailed-exitcode
-	$(MAKE) --directory provisioning plan tf_plan_params=-detailed-exitcode
-	$(MAKE) --directory deployment plan | sed '/changed=0.*failed=0/,$$b;$$q1'
-	$(MAKE) --directory services plan tf_plan_params=-detailed-exitcode
+	$(MAKE) --directory bootstrap detect-drift
+	$(MAKE) --directory storage detect-drift
+	$(MAKE) --directory provisioning detect-drift
+	$(MAKE) --directory deployment detect-drift
+	$(MAKE) --directory services detect-drift
 
 storage: bootstrap
 	$(MAKE) --directory storage
