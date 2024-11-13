@@ -10,7 +10,7 @@ provision: .terraform
 	$(1p_creds) && $(tf) apply -auto-approve
 
 plan: .terraform
-	$(1p_creds) && $(tf) plan
+	$(1p_creds) && $(tf) plan $(tf_plan_params)
 
 .terraform:
 	$(1p_creds) && $(tf_init)

@@ -10,7 +10,7 @@ provision: .terraform
 	$(1p_creds) && $(tf) apply -auto-approve -var-file=$(tf_backend_config)
 
 plan: .terraform
-	$(1p_creds) && $(tf) plan -var-file=$(tf_backend_config)
+	$(1p_creds) && $(tf) plan $(tf_plan_params) -var-file=$(tf_backend_config)
 
 .terraform:
 	$(1p_creds) && $(tf_init)

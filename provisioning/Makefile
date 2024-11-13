@@ -19,7 +19,7 @@ upgrade: .terraform
 	$(1p_creds) && $(tf_init) -upgrade
 
 plan: .terraform
-	$(1p_creds) && $(tf) plan
+	$(1p_creds) && $(tf) plan $(tf_plan_params)
 
 provision: .terraform
 	$(1p_creds) && $(tf) apply -auto-approve
