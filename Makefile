@@ -1,4 +1,4 @@
-.PHONY: all for-each lint bootstrap plan detect-drift storage provision deploy services destroy upgrade versions
+.PHONY: all for-each lint bootstrap plan detect-drift storage provision deploy services upgrade versions
 
 all: services
 
@@ -29,10 +29,6 @@ deploy: provision storage
 
 services: bootstrap deploy storage
 	$(MAKE) --directory services
-
-destroy:
-	$(MAKE) --directory services destroy
-	$(MAKE) --directory provisioning destroy
 
 upgrade: for-each
 
