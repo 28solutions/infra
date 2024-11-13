@@ -15,11 +15,14 @@ ifneq ("$(wildcard state-variables.tf)","")
 	backend_vars := -var-file=$(tf_backend_config)
 endif
 
-.PHONY: all upgrade lint plan provision destroy versions
+.PHONY: all init upgrade lint plan provision destroy versions
 
 all: provision
 
 .terraform:
+	$(MAKE) init
+
+init:
 	$(tf_init)
 
 upgrade: .terraform
