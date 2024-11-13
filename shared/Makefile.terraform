@@ -44,7 +44,7 @@ provision: .terraform
 	$(1p_creds) $(tf) apply -auto-approve $(backend_vars)
 
 destroy: .terraform
-	$(1p_creds) $(tf) destroy
+	$(1p_creds) $(tf) destroy $(backend_vars)
 
 versions:
 	@echo Terraform $(shell $(tf) version -json | jq -r .terraform_version)
