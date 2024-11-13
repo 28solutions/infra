@@ -1,30 +1,22 @@
-.PHONY: all lint bootstrap plan detect-drift storage provision deploy services destroy upgrade versions
+.PHONY: all for-each lint bootstrap plan detect-drift storage provision deploy services destroy upgrade versions
 
 all: services
 
-lint:
-	$(MAKE) --directory bootstrap lint
-	$(MAKE) --directory storage lint
-	$(MAKE) --directory provisioning lint
-	$(MAKE) --directory deployment lint
-	$(MAKE) --directory services lint
+for-each:
+	$(MAKE) --directory bootstrap $(MAKECMDGOALS)
+	$(MAKE) --directory storage $(MAKECMDGOALS)
+	$(MAKE) --directory provisioning $(MAKECMDGOALS)
+	$(MAKE) --directory deployment $(MAKECMDGOALS)
+	$(MAKE) --directory services $(MAKECMDGOALS)
+
+lint: for-each
 
 bootstrap:
 	$(MAKE) --directory bootstrap
 
-plan:
-	$(MAKE) --directory bootstrap plan
-	$(MAKE) --directory storage plan
-	$(MAKE) --directory provisioning plan
-	$(MAKE) --directory deployment plan
-	$(MAKE) --directory services plan
+plan: for-each
 
-detect-drift:
-	$(MAKE) --directory bootstrap detect-drift
-	$(MAKE) --directory storage detect-drift
-	$(MAKE) --directory provisioning detect-drift
-	$(MAKE) --directory deployment detect-drift
-	$(MAKE) --directory services detect-drift
+detect-drift: for-each
 
 storage: bootstrap
 	$(MAKE) --directory storage
@@ -42,12 +34,7 @@ destroy:
 	$(MAKE) --directory services destroy
 	$(MAKE) --directory provisioning destroy
 
-upgrade:
-	$(MAKE) --directory bootstrap upgrade
-	$(MAKE) --directory storage upgrade
-	$(MAKE) --directory provisioning upgrade
-	$(MAKE) --directory deployment upgrade
-	$(MAKE) --directory services upgrade
+upgrade: for-each
 
 versions:
 	@$(MAKE) --no-print-directory --directory provisioning versions
