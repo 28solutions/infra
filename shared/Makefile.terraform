@@ -1,8 +1,15 @@
 1p_creds = . $(HOME)/.creds/terraform@1password
 
 tf := terraform
-tf_backend_config := <(op inject -i ../shared/config.s3.tfbackend)
-tf_init := $(1p_creds) && $(tf) init -backend-config=$(tf_backend_config)
+tf_init := $(tf) init
+tf_backend_config_path := ../shared/config.s3.tfbackend
+
+ifeq ("$(notdir $(CURDIR))","bootstrap")
+	tf_backend_config := <(grep -vE '^(access|secret)_key' $(tf_backend_config_path))
+else
+	tf_backend_config := <(op inject -i $(tf_backend_config_path))
+	tf_init := $(1p_creds) && $(tf_init) -backend-config=$(tf_backend_config)
+endif
 
 ifneq ("$(wildcard state-variables.tf)","")
 	backend_vars := -var-file=$(tf_backend_config)
