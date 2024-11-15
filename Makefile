@@ -27,7 +27,7 @@ provision: bootstrap
 deploy: provision storage
 	$(MAKE) --directory deployment
 
-services: bootstrap deploy storage
+services: bootstrap provision deploy storage
 	$(MAKE) --directory services
 
 upgrade: for-each
