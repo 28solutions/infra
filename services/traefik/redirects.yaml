@@ -36,6 +36,7 @@ http:
         Host(`stephanedew.it`) || Host(`www.stephanedew.it`) ||
         Host(`stephdew.it`) || Host(`www.stephdew.it`) ||
         Host(`phane.be`) || Host(`st.phane.be`) || Host(`ste.phane.be`) ||
-        Host(`sdw.ovh`) || Host(`www.sdw.ovh`)
+        Host(`sdw.ovh`) || Host(`www.sdw.ovh`) ||
+        Host(`sdw-home.ovh`) || Host(`www.sdw-home.ovh`)
       middlewares: [redirect-to-sdwbe]
       service: noop@internal
