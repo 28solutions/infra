@@ -37,7 +37,7 @@ plan:
 detect-drift:
 	$(MAKE) plan | sed '/changed=0.*failed=0/,$$b;$$q1'
 
-ifeq ($(SSH_AUTH_SOCK),)
+ifndef SSH_AUTH_SOCK
 deploy:
 	ssh-agent $(MAKE) deploy
 else
