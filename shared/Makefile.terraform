@@ -19,6 +19,12 @@ ifneq ("$(wildcard state-variables.tf)","")
 	backend_vars := -var-file=$(tf_backend_config)
 endif
 
+ifeq ("$(notdir $(CURDIR))","bootstrap")
+ifdef CI
+	bootstrap_on_ci := 1
+endif
+endif
+
 .PHONY: all init upgrade lint plan detect-drift provision destroy versions
 
 all: provision
@@ -36,17 +42,28 @@ lint: .terraform
 	$(tf) fmt -recursive -check
 	$(tf) validate
 
+ifdef bootstrap_on_ci
+plan:
+	$(info Skipping bootstrapping when running on CI)
+
+provision:
+	$(info Skipping bootstrapping when running on CI)
+
+destroy:
+	$(info Skipping bootstrapping when running on CI)
+else
 plan: .terraform
 	$(1p_creds) $(tf) plan $(tf_plan_params) $(backend_vars)
-
-detect-drift:
-	$(MAKE) plan tf_plan_params=-detailed-exitcode
 
 provision: .terraform
 	$(1p_creds) $(tf) apply -auto-approve $(backend_vars)
 
 destroy: .terraform
 	$(1p_creds) $(tf) destroy $(backend_vars)
+endif
+
+detect-drift:
+	$(MAKE) plan tf_plan_params=-detailed-exitcode
 
 versions:
 	@echo Terraform $(shell $(tf) version -json | jq -r .terraform_version)
