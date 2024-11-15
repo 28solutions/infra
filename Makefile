@@ -1,3 +1,5 @@
+SHELL := /bin/bash
+
 .PHONY: all for-each lint bootstrap plan detect-drift storage provision deploy services upgrade versions
 
 all: services

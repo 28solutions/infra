@@ -1,3 +1,5 @@
+SHELL := /bin/bash
+
 ifndef OP_SERVICE_ACCOUNT_TOKEN
 	1p_creds = . $(HOME)/.creds/terraform@1password &&
 endif
