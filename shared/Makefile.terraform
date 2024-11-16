@@ -16,7 +16,12 @@ ifdef bootstrap
 	tf_backend_config := <(grep -vE '^(access|secret)_key' $(tf_backend_config_path))
 else
 	tf_backend_config := <(op inject -i $(tf_backend_config_path))
+endif
+
+ifndef bootstrap
+ifeq (,$(findstring -backend=false,$(tf_init_params)))
 	tf_init := $(1p_creds) $(tf_init) -backend-config=$(tf_backend_config)
+endif
 endif
 
 ifneq ("$(wildcard state-variables.tf)","")
