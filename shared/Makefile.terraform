@@ -33,7 +33,7 @@ all: provision
 	$(MAKE) init
 
 init:
-	$(tf_init)
+	$(tf_init) $(tf_init_params)
 
 upgrade: .terraform
 	$(tf_init) -upgrade
