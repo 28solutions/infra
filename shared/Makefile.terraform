@@ -9,6 +9,10 @@ tf_init := $(tf) init
 tf_backend_config_path := ../shared/config.s3.tfbackend
 
 ifeq ("$(notdir $(CURDIR))","bootstrap")
+	bootstrap := 1
+endif
+
+ifdef bootstrap
 	tf_backend_config := <(grep -vE '^(access|secret)_key' $(tf_backend_config_path))
 else
 	tf_backend_config := <(op inject -i $(tf_backend_config_path))
@@ -19,7 +23,7 @@ ifneq ("$(wildcard state-variables.tf)","")
 	backend_vars := -var-file=$(tf_backend_config)
 endif
 
-ifeq ("$(notdir $(CURDIR))","bootstrap")
+ifdef bootstrap
 ifdef CI
 	bootstrap_on_ci := 1
 endif
