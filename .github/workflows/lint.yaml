@@ -11,17 +11,11 @@ jobs:
       uses: hashicorp/setup-terraform@v3
       with:
         terraform_wrapper: false
-    - name: Initialize Terraform
-      run: |
-        terraform -chdir=bootstrap init -backend=false
-        terraform -chdir=storage init -backend=false
-        terraform -chdir=provisioning init -backend=false
-        terraform -chdir=services init -backend=false
     - name: Install Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.12'
-    - name: Install Ansible
-      run: make --directory deployment .venv
+    - name: Initialize all projects
+      run: tf_init_params=-backend=false make init
     - name: Lint
       run: make versions lint
