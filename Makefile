@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-.PHONY: all for-each lint bootstrap plan detect-drift storage provision deploy services upgrade versions
+.PHONY: all for-each init lint bootstrap plan detect-drift storage provision deploy services upgrade versions
 
 all: services
 
@@ -10,6 +10,8 @@ for-each:
 	$(MAKE) --directory provisioning $(MAKECMDGOALS)
 	$(MAKE) --directory deployment $(MAKECMDGOALS)
 	$(MAKE) --directory services $(MAKECMDGOALS)
+
+init: for-each
 
 lint: for-each
 
