@@ -18,4 +18,6 @@ jobs:
     - name: Initialize all projects
       run: tf_init_params=-backend=false make init
     - name: Lint
-      run: make versions lint
+      run: |
+        make versions
+        make lint
