@@ -59,6 +59,8 @@ endif
 	python -m venv --upgrade-deps .venv
 	$(activate_venv) && pip install ansible ansible-lint
 
+init: .venv
+
 upgrade: .venv
 	$(activate_venv) && pip install --upgrade ansible ansible-lint
 
