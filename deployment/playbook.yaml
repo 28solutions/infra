@@ -8,7 +8,7 @@
         file: /dev/stdin
         name: tf
   roles:
-    - common
+    - upgrade
     - sshca
     - docker
     - users
