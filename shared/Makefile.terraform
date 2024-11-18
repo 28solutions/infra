@@ -34,17 +34,7 @@ ifdef CI
 endif
 endif
 
-ifeq ("$(notdir $(CURDIR))","services")
-	need_ssh := add-ssh-key
-endif
-
-ifdef need_ssh
-ifndef SSH_AUTH_SOCK
-	need_ssh_agent := 1
-endif
-endif
-
-.PHONY: all init upgrade lint add-ssh-key plan detect-drift provision destroy versions
+.PHONY: all init upgrade lint plan detect-drift provision destroy versions
 
 all: provision
 
@@ -70,26 +60,14 @@ provision:
 
 destroy:
 	$(info Skipping bootstrapping when running on CI)
-else ifdef need_ssh_agent
-plan:
-	ssh-agent $(MAKE) plan
-
-provision:
-	ssh-agent $(MAKE) provision
-
-destroy:
-	ssh-agent $(MAKE) destroy
 else
-add-ssh-key:
-	$(1p_creds) op read 'op://IaC/Terraform SSH key/private key' | ssh-add -
-
-plan: .terraform $(need_ssh)
+plan: .terraform
 	$(1p_creds) $(tf) plan $(tf_plan_params) $(backend_vars)
 
-provision: .terraform $(need_ssh)
+provision: .terraform
 	$(1p_creds) $(tf) apply -auto-approve $(backend_vars)
 
-destroy: .terraform $(need_ssh)
+destroy: .terraform
 	$(1p_creds) $(tf) destroy $(backend_vars)
 endif
 
