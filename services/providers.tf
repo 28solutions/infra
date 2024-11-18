@@ -13,15 +13,39 @@ terraform {
   }
 }
 
-locals {
-  ssh_host = data.terraform_remote_state.provisioning.outputs.web_server_hostname
-  ssh_port = data.terraform_remote_state.provisioning.outputs.web_server_ssh_port
+data "onepassword_item" "docker_host" {
+  vault = data.onepassword_vault.iac_vault.uuid
+  title = "Docker SSL server certificate - Kenny"
+}
 
-  ssh_cert_file = "/ssh/terraform-cert.pub"
-  ssh_cert_opt  = fileexists(local.ssh_cert_file) ? ["-o", "CertificateFile=${local.ssh_cert_file}"] : []
+data "http" "ca_certificate" {
+  url = "https://${data.terraform_remote_state.storage.outputs.pki_domain_name}/ssl/ca/certificate.pem"
+
+  lifecycle {
+    postcondition {
+      condition     = self.status_code == 200
+      error_message = "Invalid status code"
+    }
+  }
+}
+
+data "onepassword_item" "ssl_certificate" {
+  vault = data.onepassword_vault.iac_vault.uuid
+  title = "Docker SSL client certificate - Terraform"
+}
+
+locals {
+  docker_host = data.terraform_remote_state.provisioning.outputs.web_server_hostname
+  docker_port = [for field in data.onepassword_item.docker_host.section[0].field : field.value if field.label == "port"][0]
+
+  docker_cert = [for file in data.onepassword_item.ssl_certificate.section[0].file : file.content if file.name == "certificate.pem"][0]
+  docker_key  = [for file in data.onepassword_item.ssl_certificate.section[0].file : file.content if file.name == "private-key.pem"][0]
 }
 
 provider "docker" {
-  host     = "ssh://stephdewit@${local.ssh_host}:${local.ssh_port}"
-  ssh_opts = concat(["-o", "ControlMaster=no"], local.ssh_cert_opt)
+  host = "tcp://${local.docker_host}:${local.docker_port}"
+
+  ca_material   = data.http.ca_certificate.response_body
+  cert_material = local.docker_cert
+  key_material  = local.docker_key
 }
