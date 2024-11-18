@@ -4,7 +4,6 @@ jobs:
   plan:
     name: plan
     runs-on: ubuntu-latest
-    container: stephdewit/gitea-runner:latest
     steps:
     - name: Checkout
       uses: actions/checkout@v4
