@@ -22,7 +22,7 @@ ansible_env = ANSIBLE_HOST_KEY_CHECKING=False
 ansible_inventory = -i $(ip), -e ansible_port=$(ssh_port)
 ansible_auth = -u root
 ansible_ssh_opts = \
-	--ssh-common-args "-o ControlMaster=no -o ForwardAgent=yes -o UserKnownHostsFile=/dev/null"
+	--ssh-common-args "-o ForwardAgent=yes -o UserKnownHostsFile=/dev/null"
 ansible_tags = --skip-tags upgrade
 ansible_extra_vars = --extra-vars "pki_domain_name=$(pki_domain_name)"
 
