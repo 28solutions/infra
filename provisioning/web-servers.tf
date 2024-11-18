@@ -14,6 +14,15 @@ resource "scaleway_account_ssh_key" "main" {
   public_key = data.onepassword_item.ssh_key.public_key
 }
 
+data "onepassword_item" "docker_host" {
+  vault = data.onepassword_vault.iac_vault.uuid
+  title = "Docker SSL server certificate - Kenny"
+}
+
+locals {
+  docker_port = [for field in data.onepassword_item.docker_host.section[0].field : field.value if field.label == "port"][0]
+}
+
 resource "scaleway_instance_security_group" "www" {
   inbound_default_policy  = "drop"
   outbound_default_policy = "accept"
@@ -21,6 +30,11 @@ resource "scaleway_instance_security_group" "www" {
   inbound_rule {
     action = "accept"
     port   = var.ssh_port
+  }
+
+  inbound_rule {
+    action = "accept"
+    port   = local.docker_port
   }
 
   inbound_rule {

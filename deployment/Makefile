@@ -45,7 +45,7 @@ deploy:
 else
 deploy: .venv
 	$(1p_creds) op read 'op://IaC/Scaleway SSH key/private key' | ssh-add -
-	$(activate_venv) && $(ansible_vars) | \
+	$(activate_venv) && $(1p_creds) $(ansible_vars) | \
 		$(ansible_env) $(ansible_pb) \
 			$(ansible_ssh_opts) \
 			$(ansible_inventory) \

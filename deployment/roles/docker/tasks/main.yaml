@@ -1,2 +1,4 @@
 - name: Install
   ansible.builtin.include_tasks: install.yaml
+- name: TCP socket
+  ansible.builtin.include_tasks: tcp-socket.yaml

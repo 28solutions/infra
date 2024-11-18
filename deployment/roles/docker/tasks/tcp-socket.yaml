@@ -1,0 +1,48 @@
+- name: Create Systemd override directory
+  ansible.builtin.file:
+    path: /etc/systemd/system/docker.service.d
+    state: directory
+    mode: "0755"
+- name: Remove socket configuration from Systemd
+  ansible.builtin.copy:
+    src: 10-remove-sockets.conf
+    dest: /etc/systemd/system/docker.service.d/10-remove-sockets.conf
+    mode: "0644"
+  notify:
+    - Reload Systemd
+    - Restart Docker service
+- name: Create configuration directory
+  ansible.builtin.file:
+    path: "{{ docker_configuration_directory }}"
+    state: directory
+    mode: "0755"
+- name: Create SSL directory
+  ansible.builtin.file:
+    path: "{{ docker_ssl_directory }}"
+    state: directory
+    mode: "0755"
+- name: Download CA certificate
+  ansible.builtin.get_url:
+    url: https://{{ pki_domain_name }}/ssl/ca/certificate.pem
+    dest: "{{ docker_ssl_directory }}/ca.pem"
+    mode: "0644"
+  notify: Restart Docker service
+  when: not ansible_check_mode # Ansible bug #65687
+- name: Add server certificate
+  ansible.builtin.copy:
+    content: "{{ lookup('ansible.builtin.pipe', 'op read \"op://IaC/Docker SSL server certificate - Kenny/certificate.pem\"') }}"
+    dest: "{{ docker_ssl_directory }}/certificate.pem"
+    mode: "0644"
+  notify: Restart Docker service
+- name: Add server private key
+  ansible.builtin.copy:
+    content: "{{ lookup('ansible.builtin.pipe', 'op read \"op://IaC/Docker SSL server certificate - Kenny/private-key.pem\"') }}"
+    dest: "{{ docker_ssl_directory }}/private-key.pem"
+    mode: "0600"
+  notify: Restart Docker service
+- name: Configure daemon sockets
+  ansible.builtin.template:
+    src: daemon.json.j2
+    dest: "{{ docker_configuration_directory }}/daemon.json"
+    mode: "0644"
+  notify: Reload Docker service
