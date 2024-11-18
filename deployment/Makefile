@@ -18,7 +18,7 @@ ssh_port = $(shell $(tf_provisioning) output -raw web_server_ssh_port)
 ansible_vars = $(tf_provisioning) output -json | jq -c 'map_values(.value)'
 pki_domain_name = $(shell $(tf_storage) output -raw pki_domain_name)
 
-ansible_env = ANSIBLE_HOST_KEY_CHECKING=False
+ansible_env = ANSIBLE_HOST_KEY_CHECKING=False ANSIBLE_PIPELINING=True
 ansible_inventory = -i $(ip), -e ansible_port=$(ssh_port)
 ansible_auth = -u root
 ansible_ssh_opts = \
