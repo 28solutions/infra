@@ -30,13 +30,13 @@
   when: not ansible_check_mode # Ansible bug #65687
 - name: Add server certificate
   ansible.builtin.copy:
-    content: "{{ lookup('ansible.builtin.pipe', 'op read \"op://IaC/Docker SSL server certificate - Kenny/certificate.pem\"') }}"
+    content: "{{ docker_tcp_cert }}"
     dest: "{{ docker_ssl_directory }}/certificate.pem"
     mode: "0644"
   notify: Restart Docker service
 - name: Add server private key
   ansible.builtin.copy:
-    content: "{{ lookup('ansible.builtin.pipe', 'op read \"op://IaC/Docker SSL server certificate - Kenny/private-key.pem\"') }}"
+    content: "{{ docker_tcp_key }}"
     dest: "{{ docker_ssl_directory }}/private-key.pem"
     mode: "0600"
   notify: Restart Docker service

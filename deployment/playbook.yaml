@@ -10,6 +10,10 @@
   roles:
     - upgrade
     - sshca
-    - docker
+    - role: docker
+      vars:
+        docker_tcp_port: "{{ lookup('ansible.builtin.pipe', 'op read \"op://IaC/Docker SSL server certificate - Kenny/port\"') }}"
+        docker_tcp_cert: "{{ lookup('ansible.builtin.pipe', 'op read \"op://IaC/Docker SSL server certificate - Kenny/certificate.pem\"') }}"
+        docker_tcp_key: "{{ lookup('ansible.builtin.pipe', 'op read \"op://IaC/Docker SSL server certificate - Kenny/private-key.pem\"') }}"
     - users
     - tls

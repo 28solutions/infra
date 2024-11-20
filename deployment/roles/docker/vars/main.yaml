@@ -5,4 +5,3 @@ docker_apt_repository_entry: >-
   {{ docker_apt_repository.url }}
   {{ docker_apt_repository.distribution }}
   {{ docker_apt_repository.components }}
-docker_tcp_port: "{{ lookup('ansible.builtin.pipe', 'op read \"op://IaC/Docker SSL server certificate - Kenny/port\"') }}"
