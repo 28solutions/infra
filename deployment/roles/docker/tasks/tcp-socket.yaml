@@ -21,9 +21,9 @@
     path: "{{ docker_ssl_directory }}"
     state: directory
     mode: "0755"
-- name: Download CA certificate
-  ansible.builtin.get_url:
-    url: https://{{ pki_domain_name }}/ssl/ca/certificate.pem
+- name: Add CA certificate
+  ansible.builtin.copy:
+    content: "{{ docker_tcp_ca }}"
     dest: "{{ docker_ssl_directory }}/ca.pem"
     mode: "0644"
   notify: Restart Docker service

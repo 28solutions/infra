@@ -4,6 +4,9 @@ argument_specs:
       docker_tcp_port:
         type: "int"
         required: true
+      docker_tcp_ca:
+        type: "str"
+        required: true
       docker_tcp_cert:
         type: "str"
         required: true
