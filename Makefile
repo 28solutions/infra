@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-.PHONY: all bootstrap provision storage deploy services for-each init lint plan detect-drift upgrade versions
+.PHONY: all bootstrap provision storage deploy services for-each init lint plan detect-drift upgrade versions git-sync
 
 all: services
 
@@ -39,3 +39,14 @@ upgrade: for-each
 versions:
 	@$(MAKE) --no-print-directory --directory provisioning versions
 	@$(MAKE) --no-print-directory --directory deployment versions
+
+git-sync:
+ifneq ("$(shell git status --porcelain -z)","")
+	$(error Uncommited changes)
+endif
+	git checkout main
+	git pull --rebase github main
+	git pull --rebase gitea main
+	git push github main
+	git push gitea main
+	git checkout -
