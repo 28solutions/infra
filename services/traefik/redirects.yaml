@@ -10,6 +10,10 @@ http:
         regex: "^https://([^/]+)/(.*)"
         replacement: "https://www.${1}/${2}"
         permanent: true
+    redirect-to-28s:
+      redirectRegex:
+        regex: "^https://[^/]+/(.*)"
+        replacement: "https://twentyeight.solutions/${1}"
     redirect-to-sdwbe:
       redirectRegex:
         regex: "^https://[^/]+/(.*)"
@@ -23,6 +27,13 @@ http:
         Host(`www.28.solutions`) ||
         Host(`www.id.stephanedewit.be`)
       middlewares: [remove-www]
+      service: noop@internal
+    28s-alias:
+      entrypoints: [websecure]
+      rule: >-
+        Host(`28solutions.be`) ||
+        Host(`www.28solutions.be`)
+      middlewares: [redirect-to-28s]
       service: noop@internal
     sdwbe-apex:
       entrypoints: [websecure]

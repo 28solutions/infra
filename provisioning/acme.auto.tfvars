@@ -7,7 +7,8 @@ acme_domain_names = {
   ]
   www_28s = [
     "twentyeight.solutions",
-    "28.solutions"
+    "28.solutions",
+    "28solutions.be"
   ]
   www_sdw_ovh = [
     "sdw.ovh",
