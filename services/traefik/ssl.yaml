@@ -4,3 +4,6 @@ tls:
     - certFile: /etc/ssl/local-certs/${certificate.common_name}.pem # Expires on ${certificate.not_after}
       keyFile: /etc/ssl/private/${certificate.common_name}.pem
 %{ endfor ~}
+  options:
+    default:
+      sniStrict: true
