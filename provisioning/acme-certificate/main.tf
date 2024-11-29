@@ -1,5 +1,6 @@
 resource "tls_private_key" "cert_private_key" {
-  algorithm = "RSA"
+  algorithm   = "ECDSA"
+  ecdsa_curve = "P384"
 }
 
 resource "tls_cert_request" "csr" {
