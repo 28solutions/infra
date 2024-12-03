@@ -61,5 +61,10 @@ resource "onepassword_item" "grafana_login" {
   username = scaleway_cockpit_grafana_user.user.login
   password = scaleway_cockpit_grafana_user.user.password
 
-  url = "https://${scaleway_cockpit_grafana_user.user.project_id}.dashboard.cockpit.fr-par.scw.cloud"
+  # 'scaleway_cockpit.cockpit.endpoints[0].grafana_url' is deprecated...
+  url = format(
+    "https://%s.dashboard.cockpit.%s.scw.cloud",
+    scaleway_cockpit_token.traefik.project_id,
+    scaleway_cockpit_token.traefik.region
+  )
 }
