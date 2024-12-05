@@ -20,3 +20,21 @@ resource "cloudflare_record" "dkim" {
 resource "scaleway_tem_domain_validation" "validation" {
   domain_id = scaleway_tem_domain.domain.id
 }
+
+resource "scaleway_iam_application" "gitea" {
+  name = "Gitea"
+}
+
+resource "scaleway_iam_policy" "gitea" {
+  name = "Gitea SMTP"
+
+  application_id = scaleway_iam_application.gitea.id
+  rule {
+    project_ids          = [scaleway_tem_domain.domain.project_id]
+    permission_set_names = ["TransactionalEmailEmailFullAccess"]
+  }
+}
+
+resource "scaleway_iam_api_key" "gitea" {
+  application_id = scaleway_iam_application.gitea.id
+}
