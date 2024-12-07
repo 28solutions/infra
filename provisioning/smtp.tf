@@ -21,33 +21,45 @@ resource "scaleway_tem_domain_validation" "validation" {
   domain_id = scaleway_tem_domain.domain.id
 }
 
-resource "scaleway_iam_application" "gitea" {
-  name = "Gitea"
+resource "scaleway_iam_application" "smtp" {
+  for_each = toset(["Gitea", "Cartman"])
+
+  name = each.key
 }
 
-resource "scaleway_iam_policy" "gitea" {
-  name = "Gitea SMTP"
+resource "scaleway_iam_group" "smtp" {
+  name = "SMTP"
 
-  application_id = scaleway_iam_application.gitea.id
+  application_ids = [for app in scaleway_iam_application.smtp : app.id]
+}
+
+resource "scaleway_iam_policy" "smtp" {
+  name = "SMTP"
+
+  group_id = scaleway_iam_group.smtp.id
   rule {
     project_ids          = [scaleway_tem_domain.domain.project_id]
     permission_set_names = ["TransactionalEmailEmailFullAccess"]
   }
 }
 
-resource "scaleway_iam_api_key" "gitea" {
-  application_id = scaleway_iam_application.gitea.id
-  description    = "SMTP | Gitea"
+resource "scaleway_iam_api_key" "smtp" {
+  for_each = scaleway_iam_application.smtp
+
+  application_id = each.value.id
+  description    = "SMTP | ${each.key}"
 }
 
-resource "onepassword_item" "gitea_smtp_login" {
+resource "onepassword_item" "smtp_login" {
+  for_each = scaleway_iam_api_key.smtp
+
   vault = data.onepassword_vault.iac_vault.uuid
 
-  title    = "Scaleway ${scaleway_iam_api_key.gitea.description}"
+  title    = "Scaleway ${each.value.description}"
   category = "login"
 
   username = scaleway_tem_domain.domain.smtps_auth_user
-  password = scaleway_iam_api_key.gitea.secret_key
+  password = each.value.secret_key
 
   url = format(
     "smtp://%s:%d",
