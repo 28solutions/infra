@@ -37,12 +37,13 @@ resource "scaleway_iam_policy" "gitea" {
 
 resource "scaleway_iam_api_key" "gitea" {
   application_id = scaleway_iam_application.gitea.id
+  description    = "SMTP | Gitea"
 }
 
 resource "onepassword_item" "gitea_smtp_login" {
   vault = data.onepassword_vault.iac_vault.uuid
 
-  title    = "Scaleway SMTP | Gitea"
+  title    = "Scaleway ${scaleway_iam_api_key.gitea.description}"
   category = "login"
 
   username = scaleway_tem_domain.domain.smtps_auth_user
