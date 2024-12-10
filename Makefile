@@ -16,7 +16,7 @@ storage: bootstrap
 deploy: provision storage
 	$(MAKE) --directory deployment
 
-services: bootstrap provision storage deploy
+services: deploy
 	$(MAKE) --directory services
 
 for-each:
