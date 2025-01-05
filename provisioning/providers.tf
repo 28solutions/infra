@@ -1,16 +1,24 @@
 terraform {
   required_providers {
     scaleway = {
-      source = "scaleway/scaleway"
+      source  = "scaleway/scaleway"
+      version = "~> 2.48.0"
     }
     cloudflare = {
-      source = "cloudflare/cloudflare"
+      source  = "cloudflare/cloudflare"
+      version = "~> 4.48.0"
     }
     acme = {
-      source = "vancluever/acme"
+      source  = "vancluever/acme"
+      version = "~> 2.28.3"
     }
     onepassword = {
-      source = "1Password/onepassword"
+      source  = "1Password/onepassword"
+      version = "~> 2.1.2"
+    }
+    tls = {
+      source  = "hashicorp/tls"
+      version = "~> 4.0.6"
     }
   }
 

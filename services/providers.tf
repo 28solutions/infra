@@ -1,10 +1,16 @@
 terraform {
   required_providers {
     docker = {
-      source = "kreuzwerker/docker"
+      source  = "kreuzwerker/docker"
+      version = "~> 3.0.2"
     }
     onepassword = {
-      source = "1Password/onepassword"
+      source  = "1Password/onepassword"
+      version = "~> 2.1.2"
+    }
+    http = {
+      source  = "hashicorp/http"
+      version = "~> 3.4.5"
     }
   }
 
