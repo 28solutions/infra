@@ -20,7 +20,7 @@ data "onepassword_item" "docker_host" {
 }
 
 locals {
-  docker_port = [for field in data.onepassword_item.docker_host.section[0].field : field.value if field.label == "port"][0]
+  docker_port = tonumber([for field in data.onepassword_item.docker_host.section[0].field : field.value if field.label == "port"][0])
 }
 
 resource "scaleway_instance_security_group" "www" {
