@@ -1,9 +1,3 @@
-variable "ssh_port" {
-  type        = number
-  description = "SSH listening port"
-  default     = 44265
-}
-
 data "onepassword_item" "ssh_key" {
   vault = data.onepassword_vault.iac_vault.uuid
   title = "Scaleway SSH key"
@@ -19,8 +13,14 @@ data "onepassword_item" "docker_host" {
   title = "Docker SSL server certificate - Kenny"
 }
 
+data "onepassword_item" "ssh" {
+  vault = data.onepassword_vault.iac_vault.uuid
+  title = "SSH - Kenny"
+}
+
 locals {
   docker_port = tonumber([for field in data.onepassword_item.docker_host.section[0].field : field.value if field.label == "port"][0])
+  ssh_port    = tonumber([for field in data.onepassword_item.ssh.section[0].field : field.value if field.label == "port"][0])
 }
 
 resource "scaleway_instance_security_group" "www" {
@@ -29,7 +29,7 @@ resource "scaleway_instance_security_group" "www" {
 
   inbound_rule {
     action = "accept"
-    port   = var.ssh_port
+    port   = local.ssh_port
   }
 
   inbound_rule {
@@ -57,7 +57,7 @@ resource "scaleway_instance_server" "web" {
   security_group_id = scaleway_instance_security_group.www.id
 
   user_data = {
-    cloud-init = templatefile("${path.module}/cloud-init.yaml", { port = var.ssh_port })
+    cloud-init = templatefile("${path.module}/cloud-init.yaml", { port = local.ssh_port })
   }
 
   provisioner "remote-exec" {
@@ -66,7 +66,7 @@ resource "scaleway_instance_server" "web" {
     connection {
       type        = "ssh"
       host        = self.public_ips[0].address
-      port        = var.ssh_port
+      port        = local.ssh_port
       user        = "root"
       private_key = data.onepassword_item.ssh_key.private_key
     }
@@ -93,5 +93,6 @@ output "web_server_hostname" {
 }
 
 output "web_server_ssh_port" {
-  value = var.ssh_port
+  value     = local.ssh_port
+  sensitive = true
 }
