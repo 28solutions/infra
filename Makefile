@@ -47,6 +47,6 @@ endif
 	git checkout main
 	git pull --rebase github main
 	git pull --rebase gitea main
-	git push github main
-	git push gitea main
+	git push --follow-tags github main
+	git push --follow-tags gitea main
 	git checkout -
