@@ -24,8 +24,9 @@ output "traefik_metrics_token" {
 resource "scaleway_cockpit_source" "traefik_metrics" {
   project_id = data.scaleway_account_project.project.project_id
 
-  name = "traefik_metrics"
-  type = "metrics"
+  name           = "traefik_metrics"
+  type           = "metrics"
+  retention_days = 7
 }
 
 output "traefik_metrics_push_url" {
@@ -35,8 +36,9 @@ output "traefik_metrics_push_url" {
 resource "scaleway_cockpit_source" "traefik_traces" {
   project_id = data.scaleway_account_project.project.project_id
 
-  name = "traefik_traces"
-  type = "traces"
+  name           = "traefik_traces"
+  type           = "traces"
+  retention_days = 7
 }
 
 output "traefik_traces_push_url" {
