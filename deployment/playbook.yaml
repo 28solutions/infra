@@ -2,6 +2,7 @@
   hosts: all
   vars:
     ansible_python_interpreter: auto_silent
+    admin_user: stephdewit
   pre_tasks:
     - name: Load Terraform outputs
       ansible.builtin.include_vars:
@@ -16,5 +17,7 @@
         docker_tcp_ca: "{{ lookup('ansible.builtin.url', 'https://{{ pki_domain_name }}/ssl/ca/certificate.pem', split_lines=False) }}"
         docker_tcp_cert: "{{ lookup('ansible.builtin.pipe', 'op read \"op://IaC/Docker SSL server certificate - Kenny/certificate.pem\"') }}"
         docker_tcp_key: "{{ lookup('ansible.builtin.pipe', 'op read \"op://IaC/Docker SSL server certificate - Kenny/private-key.pem\"') }}"
-    - users
+    - role: users
+      vars:
+        users_admin_user: "{{ admin_user }}"
     - tls

@@ -1,0 +1,6 @@
+argument_specs:
+  main:
+    options:
+      users_admin_user:
+        type: "str"
+        required: true

@@ -3,7 +3,7 @@
     name: wheel
 - name: Create admin user
   ansible.builtin.user:
-    name: "{{ users_admin_user.name }}"
+    name: "{{ users_admin_user }}"
     groups:
       - wheel
       - docker
