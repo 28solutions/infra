@@ -21,3 +21,6 @@
       vars:
         users_admin_user: "{{ admin_user }}"
     - tls
+    - role: common
+      vars:
+        common_admin_user: "{{ admin_user }}"
