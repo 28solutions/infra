@@ -23,6 +23,7 @@ resource "docker_container" "otel_collector" {
       "otel-collector/exporters.yaml",
       {
         token            = data.terraform_remote_state.provisioning.outputs.traefik_metrics_token
+        logs_endpoint    = data.terraform_remote_state.provisioning.outputs.traefik_logs_push_url
         metrics_endpoint = data.terraform_remote_state.provisioning.outputs.traefik_metrics_push_url
         traces_endpoint  = data.terraform_remote_state.provisioning.outputs.traefik_traces_push_url
       }

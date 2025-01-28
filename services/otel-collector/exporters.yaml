@@ -1,4 +1,8 @@
 exporters:
+  otlphttp/logs:
+    endpoint: ${replace(logs_endpoint, "/loki/api/v1/push", "/otlp")}
+    headers:
+      X-TOKEN: ${token}
   prometheusremotewrite:
     endpoint: ${metrics_endpoint}
     headers:
