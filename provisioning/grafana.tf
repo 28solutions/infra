@@ -9,8 +9,7 @@ resource "scaleway_cockpit_token" "traefik" {
   name       = "traefik"
 
   scopes {
-    write_logs = false
-
+    write_logs    = true
     write_metrics = true
     write_traces  = true
   }
@@ -19,6 +18,18 @@ resource "scaleway_cockpit_token" "traefik" {
 output "traefik_metrics_token" {
   value     = scaleway_cockpit_token.traefik.secret_key
   sensitive = true
+}
+
+resource "scaleway_cockpit_source" "traefik_logs" {
+  project_id = data.scaleway_account_project.project.project_id
+
+  name           = "traefik_logs"
+  type           = "logs"
+  retention_days = 7
+}
+
+output "traefik_logs_push_url" {
+  value = scaleway_cockpit_source.traefik_logs.push_url
 }
 
 resource "scaleway_cockpit_source" "traefik_metrics" {
