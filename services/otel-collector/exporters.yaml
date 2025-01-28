@@ -3,7 +3,7 @@ exporters:
     endpoint: ${metrics_endpoint}
     headers:
       X-TOKEN: ${token}
-  otlphttp:
+  otlphttp/traces:
     endpoint: ${replace(traces_endpoint, "/v1/traces", "")}
     headers:
       X-TOKEN: ${token}
