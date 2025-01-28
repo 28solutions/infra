@@ -44,11 +44,13 @@ locals {
 
 variable "enabled_telemetry" {
   type = object({
+    logs    = bool
     metrics = bool
     traces  = bool
   })
 
   default = {
+    logs    = true
     metrics = false
     traces  = true
   }

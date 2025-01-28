@@ -1,8 +1,26 @@
 global:
   sendAnonymousUsage: true
+%{ if enabled_telemetry.logs }
+experimental:
+  otlpLogs: true
+%{ endif }
 log:
   level: DEBUG
+%{ if enabled_telemetry.logs }
+  otlp:
+    grpc:
+      endpoint: ${otel_collector_grpc}
+      insecure: true
+%{ endif }
+%{ if enabled_telemetry.logs }
+accessLog:
+  otlp:
+    grpc:
+      endpoint: ${otel_collector_grpc}
+      insecure: true
+%{ else }
 accessLog: {}
+%{ endif }
 %{ if enabled_telemetry.metrics }
 metrics:
   otlp:
