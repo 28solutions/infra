@@ -4,10 +4,16 @@ locals {
   auto_ttl     = 1
 }
 
-data "cloudflare_zone" "zones" {
+data "cloudflare_zones" "zones_search" {
   for_each = local.apex
 
   name = each.key
+}
+
+data "cloudflare_zone" "zones" {
+  for_each = data.cloudflare_zones.zones_search
+
+  zone_id = each.value.result[0].id
 }
 
 resource "cloudflare_record" "caa_issue" {

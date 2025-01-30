@@ -73,8 +73,12 @@ resource "scaleway_instance_server" "web" {
   }
 }
 
-data "cloudflare_zone" "dns_zone" {
+data "cloudflare_zones" "dns_zone_search" {
   name = "28.solutions"
+}
+
+data "cloudflare_zone" "dns_zone" {
+  zone_id = data.cloudflare_zones.dns_zone_search.result[0].id
 }
 
 resource "cloudflare_record" "kenny_dns" {
