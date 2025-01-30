@@ -16,7 +16,7 @@ data "cloudflare_zone" "zones" {
   zone_id = each.value.result[0].id
 }
 
-resource "cloudflare_record" "caa_issue" {
+resource "cloudflare_dns_record" "caa_issue" {
   for_each = data.cloudflare_zone.zones
 
   zone_id = each.value.id
@@ -24,8 +24,8 @@ resource "cloudflare_record" "caa_issue" {
   ttl     = local.auto_ttl
   type    = "CAA"
 
-  data {
-    flags = 0
+  data = {
+    flags = "0"
     tag   = "issue"
     value = "letsencrypt.org"
   }
