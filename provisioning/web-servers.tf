@@ -154,7 +154,11 @@ output "web_server_ip_address" {
 }
 
 output "web_server_hostname" {
-  value = cloudflare_dns_record.kenny_dns_ipv4.hostname
+  value = format(
+    "%s.%s",
+    cloudflare_dns_record.kenny_dns_ipv4.name,
+    data.cloudflare_zone.dns_zone.name
+  )
 }
 
 output "web_server_ssh_port" {
