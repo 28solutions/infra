@@ -7,6 +7,7 @@ resource "cloudflare_dns_record" "spf" {
   zone_id = data.cloudflare_zone.dns_zone.zone_id
   name    = "@"
   type    = "TXT"
+  ttl     = local.dns_records_auto_ttl
   content = "\"v=spf1 include:_spf.google.com ${scaleway_tem_domain.domain.spf_config} ~all\""
 }
 
@@ -14,6 +15,7 @@ resource "cloudflare_dns_record" "dkim" {
   zone_id = data.cloudflare_zone.dns_zone.zone_id
   name    = "${scaleway_tem_domain.domain.project_id}._domainkey"
   type    = "TXT"
+  ttl     = local.dns_records_auto_ttl
   content = format("\"%s\"", join("\" \"", regexall(".{1,255}", scaleway_tem_domain.domain.dkim_config)))
 }
 
