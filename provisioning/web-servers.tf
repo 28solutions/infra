@@ -85,6 +85,7 @@ resource "cloudflare_dns_record" "kenny_dns" {
   zone_id = data.cloudflare_zone.dns_zone.id
   name    = "kenny.hosts"
   type    = "A"
+  ttl     = 1 # auto
   content = scaleway_instance_server.web.public_ips[0].address
 }
 
