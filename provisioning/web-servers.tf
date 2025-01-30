@@ -137,6 +137,7 @@ resource "cloudflare_dns_record" "kenny_dns_ipv4" {
   zone_id = data.cloudflare_zone.dns_zone.zone_id
   name    = "kenny.hosts"
   type    = "A"
+  ttl     = local.dns_records_auto_ttl
   content = scaleway_instance_server.web.public_ips[0].address
 }
 
@@ -144,6 +145,7 @@ resource "cloudflare_dns_record" "kenny_dns_ipv6" {
   zone_id = data.cloudflare_zone.dns_zone.zone_id
   name    = "kenny.hosts"
   type    = "AAAA"
+  ttl     = local.dns_records_auto_ttl
   content = scaleway_instance_server.web.public_ips[1].address
 }
 
