@@ -133,14 +133,14 @@ data "cloudflare_zone" "dns_zone" {
   zone_id = data.cloudflare_zones.dns_zone_search.result[0].id
 }
 
-resource "cloudflare_record" "kenny_dns_ipv4" {
+resource "cloudflare_dns_record" "kenny_dns_ipv4" {
   zone_id = data.cloudflare_zone.dns_zone.zone_id
   name    = "kenny.hosts"
   type    = "A"
   content = scaleway_instance_server.web.public_ips[0].address
 }
 
-resource "cloudflare_record" "kenny_dns_ipv6" {
+resource "cloudflare_dns_record" "kenny_dns_ipv6" {
   zone_id = data.cloudflare_zone.dns_zone.zone_id
   name    = "kenny.hosts"
   type    = "AAAA"
@@ -152,7 +152,7 @@ output "web_server_ip_address" {
 }
 
 output "web_server_hostname" {
-  value = cloudflare_record.kenny_dns_ipv4.hostname
+  value = cloudflare_dns_record.kenny_dns_ipv4.hostname
 }
 
 output "web_server_ssh_port" {

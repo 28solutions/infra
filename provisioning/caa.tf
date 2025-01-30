@@ -16,7 +16,7 @@ data "cloudflare_zone" "zones" {
   zone_id = each.value.result[0].id
 }
 
-resource "cloudflare_record" "caa_issue" {
+resource "cloudflare_dns_record" "caa_issue" {
   for_each = data.cloudflare_zone.zones
 
   zone_id = each.value.zone_id
