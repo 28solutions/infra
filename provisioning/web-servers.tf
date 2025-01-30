@@ -81,7 +81,7 @@ data "cloudflare_zone" "dns_zone" {
   zone_id = data.cloudflare_zones.dns_zone_search.result[0].id
 }
 
-resource "cloudflare_record" "kenny_dns" {
+resource "cloudflare_dns_record" "kenny_dns" {
   zone_id = data.cloudflare_zone.dns_zone.id
   name    = "kenny.hosts"
   type    = "A"
