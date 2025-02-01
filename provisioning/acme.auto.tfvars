@@ -35,6 +35,10 @@ acme_domain_names = {
     "downloads.twentyeight.solutions",
     "downloads-r.twentyeight.solutions"
   ]
+  monitoring = [
+    "monitoring.sdw.ovh",
+    "*.monitoring.sdw.ovh"
+  ]
   traefik = [
     "traefik.sdw.ovh"
   ]
