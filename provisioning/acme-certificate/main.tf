@@ -3,9 +3,28 @@ resource "tls_private_key" "cert_private_key" {
   ecdsa_curve = "P384"
 }
 
+locals {
+  with_www = compact(flatten(
+    [for d in var.dns_names : [d, startswith(d, "*.") ? null : "www.${d}"]]
+  ))
+
+  wildcards = [
+    for d in local.with_www : trimprefix(d, "*") if startswith(d, "*.")
+  ]
+
+  dns_names = distinct(length(local.wildcards) == 0
+    ? local.with_www
+    : flatten(
+      [for d in local.with_www :
+        [for w in local.wildcards : d if !endswith(d, w) || d == "*${w}"]
+      ]
+    )
+  )
+}
+
 resource "tls_cert_request" "csr" {
   private_key_pem = tls_private_key.cert_private_key.private_key_pem
-  dns_names       = flatten([for d in var.dns_names : [d, "www.${d}"]])
+  dns_names       = local.dns_names
 
   subject {
     common_name         = var.common_name
