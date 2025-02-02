@@ -151,11 +151,25 @@ resource "docker_container" "reverse_proxy" {
 
   ports {
     internal = 80
+    ip       = "::"
+    external = 80
+  }
+
+  ports {
+    internal = 80
+    ip       = "0.0.0.0"
     external = 80
   }
 
   ports {
     internal = 443
+    ip       = "::"
+    external = 443
+  }
+
+  ports {
+    internal = 443
+    ip       = "0.0.0.0"
     external = 443
   }
 
