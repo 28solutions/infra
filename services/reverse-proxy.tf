@@ -174,6 +174,20 @@ resource "docker_container" "reverse_proxy" {
   }
 
   ports {
+    protocol = "udp"
+    internal = 443
+    ip       = "::"
+    external = 443
+  }
+
+  ports {
+    protocol = "udp"
+    internal = 443
+    ip       = "0.0.0.0"
+    external = 443
+  }
+
+  ports {
     internal = 8080
     ip       = "127.0.0.1"
     external = 8080

@@ -74,6 +74,20 @@ resource "scaleway_instance_security_group" "www" {
     port     = 443
     ip_range = "::/0"
   }
+
+  inbound_rule {
+    action   = "accept"
+    port     = 443
+    protocol = "UDP"
+    ip_range = "0.0.0.0/0"
+  }
+
+  inbound_rule {
+    action   = "accept"
+    port     = 443
+    protocol = "UDP"
+    ip_range = "::/0"
+  }
 }
 
 resource "scaleway_instance_ip" "web_public_ipv4" {
