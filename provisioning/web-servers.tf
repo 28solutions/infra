@@ -48,13 +48,18 @@ resource "scaleway_instance_security_group" "www" {
   }
 }
 
-resource "scaleway_instance_ip" "web_public_ip" {}
+resource "scaleway_instance_ip" "web_public_ipv4" {
+  type = "routed_ipv4"
+}
 
 resource "scaleway_instance_server" "web" {
   type              = "DEV1-S"
   image             = "debian_bookworm"
-  ip_id             = scaleway_instance_ip.web_public_ip.id
   security_group_id = scaleway_instance_security_group.www.id
+
+  ip_ids = [
+    scaleway_instance_ip.web_public_ipv4.id
+  ]
 
   user_data = {
     cloud-init = templatefile("${path.module}/cloud-init.yaml", { port = local.ssh_port })
@@ -77,7 +82,7 @@ data "cloudflare_zone" "dns_zone" {
   name = "28.solutions"
 }
 
-resource "cloudflare_record" "kenny_dns" {
+resource "cloudflare_record" "kenny_dns_ipv4" {
   zone_id = data.cloudflare_zone.dns_zone.id
   name    = "kenny.hosts"
   type    = "A"
@@ -89,7 +94,7 @@ output "web_server_ip_address" {
 }
 
 output "web_server_hostname" {
-  value = cloudflare_record.kenny_dns.hostname
+  value = cloudflare_record.kenny_dns_ipv4.hostname
 }
 
 output "web_server_ssh_port" {
