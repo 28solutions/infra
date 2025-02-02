@@ -28,23 +28,51 @@ resource "scaleway_instance_security_group" "www" {
   outbound_default_policy = "accept"
 
   inbound_rule {
-    action = "accept"
-    port   = local.ssh_port
+    action   = "accept"
+    port     = local.ssh_port
+    ip_range = "0.0.0.0/0"
   }
 
   inbound_rule {
-    action = "accept"
-    port   = local.docker_port
+    action   = "accept"
+    port     = local.ssh_port
+    ip_range = "::/0"
   }
 
   inbound_rule {
-    action = "accept"
-    port   = 80
+    action   = "accept"
+    port     = local.docker_port
+    ip_range = "0.0.0.0/0"
   }
 
   inbound_rule {
-    action = "accept"
-    port   = 443
+    action   = "accept"
+    port     = local.docker_port
+    ip_range = "::/0"
+  }
+
+  inbound_rule {
+    action   = "accept"
+    port     = 80
+    ip_range = "0.0.0.0/0"
+  }
+
+  inbound_rule {
+    action   = "accept"
+    port     = 80
+    ip_range = "::/0"
+  }
+
+  inbound_rule {
+    action   = "accept"
+    port     = 443
+    ip_range = "0.0.0.0/0"
+  }
+
+  inbound_rule {
+    action   = "accept"
+    port     = 443
+    ip_range = "::/0"
   }
 }
 
