@@ -73,14 +73,19 @@ resource "scaleway_instance_server" "web" {
   }
 }
 
-data "cloudflare_zone" "dns_zone" {
+data "cloudflare_zones" "dns_zone_search" {
   name = "28.solutions"
 }
 
-resource "cloudflare_record" "kenny_dns" {
+data "cloudflare_zone" "dns_zone" {
+  zone_id = data.cloudflare_zones.dns_zone_search.result[0].id
+}
+
+resource "cloudflare_dns_record" "kenny_dns" {
   zone_id = data.cloudflare_zone.dns_zone.id
   name    = "kenny.hosts"
   type    = "A"
+  ttl     = 1 # auto
   content = scaleway_instance_server.web.public_ips[0].address
 }
 
@@ -89,7 +94,11 @@ output "web_server_ip_address" {
 }
 
 output "web_server_hostname" {
-  value = cloudflare_record.kenny_dns.hostname
+  value = format(
+    "%s.%s",
+    resource.cloudflare_dns_record.kenny_dns.name,
+    data.cloudflare_zone.dns_zone.name
+  )
 }
 
 output "web_server_ssh_port" {
