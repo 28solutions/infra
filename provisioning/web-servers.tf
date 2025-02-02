@@ -52,13 +52,18 @@ resource "scaleway_instance_ip" "web_public_ipv4" {
   type = "routed_ipv4"
 }
 
+resource "scaleway_instance_ip" "web_public_ipv6" {
+  type = "routed_ipv6"
+}
+
 resource "scaleway_instance_server" "web" {
   type              = "DEV1-S"
   image             = "debian_bookworm"
   security_group_id = scaleway_instance_security_group.www.id
 
   ip_ids = [
-    scaleway_instance_ip.web_public_ipv4.id
+    scaleway_instance_ip.web_public_ipv4.id,
+    scaleway_instance_ip.web_public_ipv6.id
   ]
 
   user_data = {
@@ -87,6 +92,13 @@ resource "cloudflare_record" "kenny_dns_ipv4" {
   name    = "kenny.hosts"
   type    = "A"
   content = scaleway_instance_server.web.public_ips[0].address
+}
+
+resource "cloudflare_record" "kenny_dns_ipv6" {
+  zone_id = data.cloudflare_zone.dns_zone.id
+  name    = "kenny.hosts"
+  type    = "AAAA"
+  content = scaleway_instance_server.web.public_ips[1].address
 }
 
 output "web_server_ip_address" {
