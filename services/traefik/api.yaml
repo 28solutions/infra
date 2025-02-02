@@ -6,7 +6,7 @@ http:
       service: api@internal
     api-web:
       entrypoints: [websecure]
-      rule: Host(`traefik.sdw.ovh`)
+      rule: Host(`traefik.monitoring.sdw.ovh`)
       middlewares: [api-auth]
       service: api@internal
   middlewares:

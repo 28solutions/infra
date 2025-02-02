@@ -29,7 +29,7 @@ resource "onepassword_item" "api_account" {
     symbols = false
   }
 
-  url = "https://${data.terraform_remote_state.provisioning.outputs.certificates["traefik"].common_name}"
+  url = "https://traefik.${data.terraform_remote_state.provisioning.outputs.certificates["monitoring"].common_name}"
 }
 
 locals {

@@ -39,7 +39,4 @@ acme_domain_names = {
     "monitoring.sdw.ovh",
     "*.monitoring.sdw.ovh"
   ]
-  traefik = [
-    "traefik.sdw.ovh"
-  ]
 }
