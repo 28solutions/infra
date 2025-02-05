@@ -2,19 +2,19 @@ terraform {
   required_providers {
     scaleway = {
       source  = "scaleway/scaleway"
-      version = "~> 2.49.0"
+      version = "2.49.0"
     }
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 5.85.0"
+      version = "5.85.0"
     }
     onepassword = {
       source  = "1Password/onepassword"
-      version = "~> 2.1.2"
+      version = "2.1.2"
     }
     time = {
       source  = "hashicorp/time"
-      version = "~> 0.12.1"
+      version = "0.12.1"
     }
   }
 

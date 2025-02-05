@@ -2,11 +2,11 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 5.85.0"
+      version = "5.85.0"
     }
     onepassword = {
       source  = "1Password/onepassword"
-      version = "~> 2.1.2"
+      version = "2.1.2"
     }
   }
 }
