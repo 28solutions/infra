@@ -1,5 +1,7 @@
 SHELL := /bin/bash
 
+export TF_PLUGIN_CACHE_DIR=../shared/.tf-providers
+
 ifndef OP_SERVICE_ACCOUNT_TOKEN
 	1p_creds = . $(HOME)/.creds/terraform@1password &&
 endif
