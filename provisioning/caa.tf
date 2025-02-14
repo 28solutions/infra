@@ -24,7 +24,7 @@ resource "cloudflare_dns_record" "caa_issue" {
   type    = "CAA"
 
   data = {
-    flags = "0"
+    flags = 0
     tag   = "issue"
     value = "letsencrypt.org"
   }
