@@ -5,6 +5,6 @@ processors:
     error_mode: ignore
     metrics:
       exclude:
-        match_type: expr
-        expressions:
-          - Label("net.peer.name") == "docker-proxy"
+        match_type: regexp
+        metric_names:
+          - ^http\.client\..*
