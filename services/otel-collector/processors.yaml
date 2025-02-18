@@ -2,6 +2,7 @@ processors:
   batch:
     timeout: 2s
   filter/dockerproxy:
+    error_mode: ignore
     metrics:
       exclude:
         match_type: expr
