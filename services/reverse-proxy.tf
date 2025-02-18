@@ -51,7 +51,7 @@ variable "enabled_telemetry" {
 
   default = {
     logs    = true
-    metrics = false
+    metrics = true
     traces  = true
   }
 }
