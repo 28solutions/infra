@@ -55,6 +55,9 @@ deploy: .venv
 			playbook.yaml
 endif
 
+apt-upgrade:
+	$(MAKE) deploy ansible_tags="--tags upgrade"
+
 .venv:
 	python -m venv --upgrade-deps .venv
 	$(activate_venv) && pip install ansible ansible-lint
