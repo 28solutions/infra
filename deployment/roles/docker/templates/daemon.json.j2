@@ -1,8 +1,0 @@
-{
-	"hosts": ["fd://", "tcp://0.0.0.0:{{ docker_tcp_port }}"],
-	"tls": true,
-	"tlscacert": "{{ docker_ssl_directory }}/ca.pem",
-	"tlscert": "{{ docker_ssl_directory }}/certificate.pem",
-	"tlskey": "{{ docker_ssl_directory }}/private-key.pem",
-	"tlsverify": true
-}

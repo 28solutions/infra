@@ -5,6 +5,7 @@ ifndef OP_SERVICE_ACCOUNT_TOKEN
 endif
 
 ansible := ansible
+ansible_galaxy := ansible-galaxy
 ansible_pb := ansible-playbook
 ansible_lint := ansible-lint
 
@@ -26,12 +27,21 @@ ansible_ssh_opts = \
 ansible_tags = --skip-tags upgrade
 ansible_extra_vars = --extra-vars "pki_domain_name=$(pki_domain_name)"
 
+ansible_galaxy_install_parameters = --force --role-file requirements.yaml
+ansible_galaxy_install = $(ansible_galaxy) install $(ansible_galaxy_install_parameters)
+
 .PHONY: all lint plan detect-drift deploy upgrade versions
 
 all: deploy
 
+ifndef VIRTUAL_ENV
 lint: .venv
-	$(activate_venv) && $(ansible_lint) --profile production --strict
+	$(activate_venv) && $(MAKE) lint
+else
+lint:
+	$(ansible_galaxy_install)
+	$(ansible_lint) --profile production --strict
+endif
 
 plan:
 	$(MAKE) deploy ansible_pb="$(ansible_pb) --check --diff"
@@ -39,13 +49,17 @@ plan:
 detect-drift:
 	$(MAKE) plan | sed '/changed=0.*failed=0/,$$b;$$q1'
 
-ifndef SSH_AUTH_SOCK
+ifndef VIRTUAL_ENV
+deploy: .venv
+	$(activate_venv) && $(MAKE) deploy
+else ifndef SSH_AUTH_SOCK
 deploy:
 	ssh-agent $(MAKE) deploy
 else
-deploy: .venv
+deploy:
+	$(ansible_galaxy_install)
 	$(1p_creds) op read 'op://IaC/Scaleway SSH key/private key' | ssh-add -
-	$(activate_venv) && $(1p_creds) $(ansible_vars) | \
+	$(1p_creds) $(ansible_vars) | \
 		$(ansible_env) $(ansible_pb) \
 			$(ansible_ssh_opts) \
 			$(ansible_inventory) \

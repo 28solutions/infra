@@ -11,7 +11,7 @@
   roles:
     - upgrade
     - sshca
-    - role: docker
+    - role: stephdewit.docker
       vars:
         docker_tcp_port: "{{ lookup('ansible.builtin.pipe', 'op read \"op://IaC/Docker SSL server certificate - Kenny/port\"') }}"
         docker_tcp_ca: "{{ lookup('ansible.builtin.url', 'https://{{ pki_domain_name }}/ssl/ca/certificate.pem', split_lines=False) }}"
