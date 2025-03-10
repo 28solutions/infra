@@ -81,6 +81,11 @@ init: .venv
 upgrade: .venv
 	$(activate_venv) && pip install --upgrade ansible ansible-lint
 
+ifndef VIRTUAL_ENV
 versions: .venv
-	@echo Ansible $(shell $(activate_venv) && $(ansible) --version | grep -Po '(?<=core )[0-9.]+')
-	@echo Ansible Lint $(shell $(activate_venv) && $(ansible_lint) --version | grep -Eo "[0-9.]+" | head -n 1)
+	@$(activate_venv) && $(MAKE) --no-print-directory versions
+else
+versions:
+	@echo Ansible $(shell $(ansible) --version | grep -Po '(?<=core )[0-9.]+')
+	@echo Ansible Lint $(shell $(ansible_lint) --version | grep -Eo "[0-9.]+" | head -n 1)
+endif
