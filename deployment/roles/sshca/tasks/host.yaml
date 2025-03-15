@@ -20,8 +20,8 @@
     valid_to: +26w
     valid_at: +2w
     ignore_timestamps: true
-    identifier: "{{ tf.web_server_hostname }} host key"
-    principals: ["{{ tf.web_server_hostname }}"]
+    identifier: "{{ sshca_host_principal }} host key"
+    principals: ["{{ sshca_host_principal }}"]
   with_items: "{{ host_keys.files | map(attribute='path') }}"
   notify: Reload SSH service
 - name: Register host keys certificates
