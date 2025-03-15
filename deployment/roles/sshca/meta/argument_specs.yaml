@@ -1,0 +1,5 @@
+argument_specs:
+  main:
+    options:
+      sshca_user_ca:
+        type: "str"

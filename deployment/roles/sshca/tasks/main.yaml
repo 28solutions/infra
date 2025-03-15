@@ -2,3 +2,4 @@
   ansible.builtin.include_tasks: host.yaml
 - name: User CA
   ansible.builtin.include_tasks: user.yaml
+  when: sshca_user_ca is defined
