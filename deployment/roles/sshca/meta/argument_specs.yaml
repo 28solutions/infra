@@ -3,3 +3,5 @@ argument_specs:
     options:
       sshca_user_ca:
         type: "str"
+      sshca_host_ca:
+        type: "str"

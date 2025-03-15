@@ -1,9 +1,8 @@
-- name: Download host CA public key
-  ansible.builtin.get_url:
-    url: https://{{ pki_domain_name }}/ssh/ca/host.pub
+- name: Copy host CA public key
+  ansible.builtin.copy:
+    content: "{{ sshca_host_ca }}"
     dest: /etc/ssh/host-ca.pub
     mode: "0644"
-  when: not ansible_check_mode # Ansible bug #65687
 - name: List host keys
   ansible.builtin.find:
     path: /etc/ssh
