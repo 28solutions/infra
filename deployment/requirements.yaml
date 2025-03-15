@@ -1,2 +1,4 @@
 - name: stephdewit.docker
   version: "1.0.2"
+- name: stephdewit.sshca
+  version: "1.0.0"

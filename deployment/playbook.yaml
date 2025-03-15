@@ -10,7 +10,7 @@
         name: tf
   roles:
     - upgrade
-    - role: sshca
+    - role: stephdewit.sshca
       vars:
         sshca_user_ca: "{{ lookup('ansible.builtin.url', 'https://{{ pki_domain_name }}/ssh/ca/user.pub', split_lines=False) }}"
         sshca_host_ca: "{{ lookup('ansible.builtin.url', 'https://{{ pki_domain_name }}/ssh/ca/host.pub', split_lines=False) }}"

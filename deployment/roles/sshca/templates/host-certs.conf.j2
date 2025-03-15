@@ -1,3 +1,0 @@
-{% for file in host_keys.files %}
-HostCertificate {{ file.path | replace('.pub', '-cert.pub') }}
-{% endfor %}
