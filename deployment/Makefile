@@ -30,7 +30,7 @@ ansible_extra_vars = --extra-vars "pki_domain_name=$(pki_domain_name)"
 ansible_galaxy_install_parameters = --force --role-file requirements.yaml
 ansible_galaxy_install = $(ansible_galaxy) install $(ansible_galaxy_install_parameters)
 
-.PHONY: all lint plan detect-drift deploy upgrade versions
+.PHONY: all lint plan detect-drift deploy apt-upgrade upgrade versions
 
 all: deploy
 
