@@ -19,7 +19,7 @@ resource "cloudflare_dns_record" "caa_issue" {
   for_each = data.cloudflare_zone.zones
 
   zone_id = each.value.zone_id
-  name    = "@"
+  name    = each.value.name
   ttl     = local.dns_records_auto_ttl
   type    = "CAA"
 
