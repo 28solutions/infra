@@ -19,6 +19,30 @@ resource "aws_s3_bucket_versioning" "state-bucket" {
   }
 }
 
+resource "aws_s3_bucket_lifecycle_configuration" "lifecycle" {
+  depends_on = [aws_s3_bucket_versioning.state-bucket]
+
+  bucket = aws_s3_bucket.state-bucket.id
+
+  rule {
+    id     = "delete-old-versions"
+    status = "Enabled"
+
+    filter {
+      prefix = "states/"
+    }
+
+    noncurrent_version_expiration {
+      noncurrent_days           = 7
+      newer_noncurrent_versions = 5
+    }
+
+    abort_incomplete_multipart_upload {
+      days_after_initiation = 2
+    }
+  }
+}
+
 resource "aws_dynamodb_table" "state-table" {
   name         = var.dynamodb_table
   billing_mode = "PAY_PER_REQUEST"
