@@ -74,7 +74,7 @@ destroy: .terraform
 endif
 
 detect-drift:
-	$(MAKE) plan tf_plan_params=-detailed-exitcode
+	$(MAKE) plan tf_plan_params+=-detailed-exitcode
 
 versions:
 	@echo Terraform $(shell $(tf) version -json | jq -r .terraform_version)
