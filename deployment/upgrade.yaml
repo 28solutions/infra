@@ -2,5 +2,13 @@
   hosts: all
   vars:
     ansible_python_interpreter: auto_silent
-  roles:
-    - upgrade
+  tasks:
+    - name: Update package manager
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 3600
+    - name: Upgrade system
+      ansible.builtin.apt:
+        upgrade: true
+        autoremove: true
+        autoclean: true
