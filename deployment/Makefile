@@ -26,6 +26,7 @@ ansible_ssh_opts = \
 	--ssh-common-args "-o ControlMaster=auto -o ControlPersist=60s -o ForwardAgent=yes -o UserKnownHostsFile=/dev/null"
 ansible_tags = --skip-tags upgrade
 ansible_extra_vars = --extra-vars "pki_domain_name=$(pki_domain_name)"
+ansible_pb_path := playbook.yaml
 
 ansible_galaxy_install_parameters = --force --role-file requirements.yaml
 ansible_galaxy_install = $(ansible_galaxy) install $(ansible_galaxy_install_parameters)
@@ -66,7 +67,7 @@ deploy:
 			$(ansible_auth) \
 			$(ansible_tags) \
 			$(ansible_extra_vars) \
-			playbook.yaml
+			$(ansible_pb_path)
 endif
 
 apt-upgrade:
