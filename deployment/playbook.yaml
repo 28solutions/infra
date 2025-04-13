@@ -9,7 +9,6 @@
         file: /dev/stdin
         name: tf
   roles:
-    - upgrade
     - role: stephdewit.sshca
       vars:
         sshca_user_ca: "{{ lookup('ansible.builtin.url', 'https://{{ pki_domain_name }}/ssh/ca/user.pub', split_lines=False) }}"

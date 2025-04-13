@@ -1,0 +1,6 @@
+- name: Upgrade web server
+  hosts: all
+  vars:
+    ansible_python_interpreter: auto_silent
+  roles:
+    - upgrade

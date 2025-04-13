@@ -24,7 +24,6 @@ ansible_inventory = -i $(ip), -e ansible_port=$(ssh_port)
 ansible_auth = -u root
 ansible_ssh_opts = \
 	--ssh-common-args "-o ControlMaster=auto -o ControlPersist=60s -o ForwardAgent=yes -o UserKnownHostsFile=/dev/null"
-ansible_tags = --skip-tags upgrade
 ansible_extra_vars = --extra-vars "pki_domain_name=$(pki_domain_name)"
 ansible_pb_path := playbook.yaml
 
@@ -65,13 +64,12 @@ deploy:
 			$(ansible_ssh_opts) \
 			$(ansible_inventory) \
 			$(ansible_auth) \
-			$(ansible_tags) \
 			$(ansible_extra_vars) \
 			$(ansible_pb_path)
 endif
 
 apt-upgrade:
-	$(MAKE) deploy ansible_tags="--tags upgrade"
+	$(MAKE) deploy ansible_pb_path=upgrade.yaml
 
 .venv:
 	python -m venv --upgrade-deps .venv

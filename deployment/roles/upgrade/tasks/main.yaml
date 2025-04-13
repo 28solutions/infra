@@ -1,10 +1,8 @@
 - name: Update package manager
-  tags: upgrade
   ansible.builtin.apt:
     update_cache: true
     cache_valid_time: 3600
 - name: Upgrade system
-  tags: upgrade
   ansible.builtin.apt:
     upgrade: true
     autoremove: true
