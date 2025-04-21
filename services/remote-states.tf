@@ -7,6 +7,7 @@ data "terraform_remote_state" "storage" {
     region         = var.region
     bucket         = var.bucket
     key            = "states/storage.tfstate"
+    use_lockfile   = var.use_lockfile
     dynamodb_table = var.dynamodb_table
   }
 }
@@ -20,6 +21,7 @@ data "terraform_remote_state" "provisioning" {
     region         = var.region
     bucket         = var.bucket
     key            = "states/provisioning.tfstate"
+    use_lockfile   = var.use_lockfile
     dynamodb_table = var.dynamodb_table
   }
 }
