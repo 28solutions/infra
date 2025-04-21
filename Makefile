@@ -1,5 +1,7 @@
 SHELL := /bin/bash
 
+color ?= 1
+
 .PHONY: all bootstrap provision storage deploy services for-each init lint plan detect-drift upgrade versions git-sync
 
 all: services

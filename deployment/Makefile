@@ -9,6 +9,8 @@ ansible_galaxy := ansible-galaxy
 ansible_pb := ansible-playbook
 ansible_lint := ansible-lint
 
+color ?= 1
+
 activate_venv := . .venv/bin/activate
 
 tf_provisioning := terraform -chdir=../provisioning
@@ -19,7 +21,13 @@ ssh_port = $(shell $(tf_provisioning) output -raw web_server_ssh_port)
 ansible_vars = $(tf_provisioning) output -json | jq -c 'map_values(.value)'
 pki_domain_name = $(shell $(tf_storage) output -raw pki_domain_name)
 
-ansible_env = ANSIBLE_HOST_KEY_CHECKING=False ANSIBLE_PIPELINING=True
+ifeq ($(color),0)
+	ansible_env := $(ansible_env) ANSIBLE_NOCOLOR=True
+else
+	ansible_env := $(ansible_env) ANSIBLE_FORCE_COLOR=True
+endif
+
+ansible_env := $(ansible_env) ANSIBLE_HOST_KEY_CHECKING=False ANSIBLE_PIPELINING=True
 ansible_inventory = -i $(ip), -e ansible_port=$(ssh_port)
 ansible_auth = -u root
 ansible_ssh_opts = \
