@@ -44,7 +44,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "lifecycle" {
 }
 
 resource "aws_dynamodb_table" "state-table" {
-  name         = var.dynamodb_table
+  name         = "TerraformStateLocks"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "LockID"
 
@@ -87,15 +87,6 @@ resource "aws_iam_policy" "policy" {
           "s3:DeleteObject",
         ]
         Resource = "${aws_s3_bucket.state-bucket.arn}/states/*.tflock"
-      },
-      {
-        Effect = "Allow"
-        Action = [
-          "dynamodb:GetItem",
-          "dynamodb:PutItem",
-          "dynamodb:DeleteItem",
-        ]
-        Resource = aws_dynamodb_table.state-table.arn
       },
     ]
   })

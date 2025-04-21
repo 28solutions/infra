@@ -3,4 +3,3 @@ secret_key     = "{{ op://IaC/Amazon Web Services - 28s terraform-state/credenti
 region         = "eu-central-1"
 bucket         = "28s-terraform"
 use_lockfile   = true
-dynamodb_table = "TerraformStateLocks"
