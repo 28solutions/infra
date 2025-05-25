@@ -1,6 +1,6 @@
 argument_specs:
   main:
     options:
-      common_admin_user:
+      screen_admin_user:
         type: "str"
         required: true

@@ -4,7 +4,7 @@
 - name: Configure screen
   ansible.builtin.copy:
     src: screenrc
-    dest: /home/{{ common_admin_user }}/.screenrc
+    dest: /home/{{ screen_admin_user }}/.screenrc
     mode: "0644"
-    owner: "{{ common_admin_user }}"
-    group: "{{ common_admin_user }}"
+    owner: "{{ screen_admin_user }}"
+    group: "{{ screen_admin_user }}"

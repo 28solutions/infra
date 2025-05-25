@@ -24,6 +24,6 @@
       vars:
         users_admin_user: "{{ admin_user }}"
     - tls
-    - role: common
+    - role: screen
       vars:
-        common_admin_user: "{{ admin_user }}"
+        screen_admin_user: "{{ admin_user }}"
