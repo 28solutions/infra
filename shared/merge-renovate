@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+set -e
+
+git checkout main
+git pull github
+
+git branch \
+	--remotes \
+	--sort authordate \
+	--list 'github/renovate/*' | \
+cut -d / -f 2- | \
+while read -r br; do
+	git checkout "$br"
+	git rebase main
+	git push --force-with-lease
+	git checkout main
+	git merge --ff-only "$br"
+	git push
+	git push --delete github "$br"
+done
