@@ -18,4 +18,5 @@ while read -r br; do
 	git merge --ff-only "$br"
 	git push
 	git push --delete github "$br"
+	git branch --delete "$br"
 done
