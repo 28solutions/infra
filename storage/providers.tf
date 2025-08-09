@@ -2,7 +2,7 @@ terraform {
   required_providers {
     scaleway = {
       source  = "scaleway/scaleway"
-      version = "2.58.0"
+      version = "2.59.0"
     }
     aws = {
       source  = "hashicorp/aws"
