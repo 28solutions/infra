@@ -1,6 +1,18 @@
 SHELL := /bin/bash
 
-ifndef OP_SERVICE_ACCOUNT_TOKEN
+has_1p_creds := 0
+
+ifdef OP_SERVICE_ACCOUNT_TOKEN
+	has_1p_creds := 1
+endif
+
+ifdef OP_CONNECT_HOST
+ifdef OP_CONNECT_TOKEN
+	has_1p_creds := 1
+endif
+endif
+
+ifeq ($(has_1p_creds),0)
 	1p_creds = . $(HOME)/.creds/terraform@1password &&
 endif
 

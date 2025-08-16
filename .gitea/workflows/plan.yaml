@@ -21,7 +21,8 @@ jobs:
       uses: 1password/install-cli-action@v2
     - name: Initialize all projects
       env:
-        OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+        OP_CONNECT_HOST: ${{ vars.OP_CONNECT_HOST }}
+        OP_CONNECT_TOKEN: ${{ secrets.OP_CONNECT_TOKEN }}
       run: make init
     - name: Lint
       run: |
@@ -29,5 +30,6 @@ jobs:
         make lint
     - name: Plan
       env:
-        OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+        OP_CONNECT_HOST: ${{ vars.OP_CONNECT_HOST }}
+        OP_CONNECT_TOKEN: ${{ secrets.OP_CONNECT_TOKEN }}
       run: make plan
