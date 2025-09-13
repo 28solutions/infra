@@ -3,6 +3,10 @@
   vars:
     ansible_python_interpreter: auto_silent
     admin_user: stephdewit
+    sshca_url_prefix: https://{{ pki_domain_name }}/ssh/ca/
+    sshca_user_key_url: "{{ sshca_url_prefix }}user.pub"
+    sshca_host_key_url: "{{ sshca_url_prefix }}host.pub"
+    ca_certificate_url: https://{{ pki_domain_name }}/ssl/ca/certificate.pem
   pre_tasks:
     - name: Load Terraform outputs
       ansible.builtin.include_vars:
@@ -11,13 +15,13 @@
   roles:
     - role: stephdewit.sshca
       vars:
-        sshca_user_ca: "{{ lookup('ansible.builtin.url', 'https://{{ pki_domain_name }}/ssh/ca/user.pub', split_lines=False) }}"
-        sshca_host_ca: "{{ lookup('ansible.builtin.url', 'https://{{ pki_domain_name }}/ssh/ca/host.pub', split_lines=False) }}"
+        sshca_user_ca: "{{ lookup('ansible.builtin.url', sshca_user_key_url, split_lines=False) }}"
+        sshca_host_ca: "{{ lookup('ansible.builtin.url', sshca_host_key_url, split_lines=False) }}"
         sshca_host_principal: "{{ tf.web_server_hostname }}"
     - role: stephdewit.docker
       vars:
         docker_tcp_port: "{{ lookup('ansible.builtin.pipe', 'op read \"op://IaC/Docker SSL server certificate - Kenny/port\"') }}"
-        docker_tcp_ca: "{{ lookup('ansible.builtin.url', 'https://{{ pki_domain_name }}/ssl/ca/certificate.pem', split_lines=False) }}"
+        docker_tcp_ca: "{{ lookup('ansible.builtin.url', ca_certificate_url, split_lines=False) }}"
         docker_tcp_cert: "{{ lookup('ansible.builtin.pipe', 'op read \"op://IaC/Docker SSL server certificate - Kenny/certificate.pem\"') }}"
         docker_tcp_key: "{{ lookup('ansible.builtin.pipe', 'op read \"op://IaC/Docker SSL server certificate - Kenny/private-key.pem\"') }}"
     - role: users
