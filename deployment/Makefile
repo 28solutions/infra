@@ -98,7 +98,7 @@ apt-upgrade:
 init: .venv
 
 upgrade: .venv
-	$(activate_venv) && pip install --upgrade ansible ansible-lint
+	$(activate_venv) && pip install --upgrade pip ansible ansible-lint
 
 ifndef VIRTUAL_ENV
 versions: .venv
