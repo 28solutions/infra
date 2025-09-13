@@ -93,12 +93,12 @@ apt-upgrade:
 
 .venv:
 	python -m venv --upgrade-deps .venv
-	$(activate_venv) && pip install ansible ansible-lint
+	$(activate_venv) && pip install 'ansible<12' ansible-lint
 
 init: .venv
 
 upgrade: .venv
-	$(activate_venv) && pip install --upgrade pip ansible ansible-lint
+	$(activate_venv) && pip install --upgrade pip 'ansible<12' ansible-lint
 
 ifndef VIRTUAL_ENV
 versions: .venv
