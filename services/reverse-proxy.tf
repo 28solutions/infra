@@ -50,7 +50,7 @@ variable "enabled_telemetry" {
   })
 
   default = {
-    logs    = true
+    logs    = false # broken in v3.5, Traefik can't start
     metrics = false
     traces  = true
   }
