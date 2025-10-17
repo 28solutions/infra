@@ -7,11 +7,7 @@
     sshca_user_key_url: "{{ sshca_url_prefix }}user.pub"
     sshca_host_key_url: "{{ sshca_url_prefix }}host.pub"
     ca_certificate_url: https://{{ pki_domain_name }}/ssl/ca/certificate.pem
-  pre_tasks:
-    - name: Load Terraform outputs
-      ansible.builtin.include_vars:
-        file: /dev/stdin
-        name: tf
+    tf: "{{ lookup('pipe', tf_vars_cmd) | from_json }}"
   roles:
     - role: stephdewit.sshca
       vars:

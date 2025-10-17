@@ -79,12 +79,13 @@ else
 deploy:
 	$(ansible_galaxy_install)
 	$(1p_creds) op read 'op://IaC/Scaleway SSH key/private key' | ssh-add -
-	$(1p_creds) $(ansible_vars) | \
+	$(1p_creds) \
 		$(ansible_env) $(ansible_pb) \
 			$(ansible_ssh_opts) \
 			$(ansible_inventory) \
 			$(ansible_auth) \
 			$(ansible_extra_vars) \
+			--extra-vars "tf_vars_cmd=\"$(ansible_vars)\"" \
 			$(ansible_pb_path)
 endif
 
