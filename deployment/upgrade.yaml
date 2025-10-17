@@ -12,3 +12,10 @@
         upgrade: true
         autoremove: true
         autoclean: true
+    - name: Check reboot file
+      ansible.builtin.stat:
+        path: /var/run/reboot-required
+      register: reboot_file
+    - name: Is reboot required?
+      ansible.builtin.debug:
+        msg: "Reboot required: {{ reboot_file.stat.exists }}"
