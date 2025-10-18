@@ -43,7 +43,7 @@ ansible_env := $(ansible_env) ANSIBLE_HOST_KEY_CHECKING=False ANSIBLE_PIPELINING
 ansible_inventory = -i $(ip), -e ansible_port=$(ssh_port)
 ansible_auth = -u root
 ansible_ssh_opts = \
-	--ssh-common-args "-o ControlMaster=auto -o ControlPersist=60s -o ForwardAgent=yes -o UserKnownHostsFile=/dev/null"
+	--ssh-common-args "-o ForwardAgent=yes -o UserKnownHostsFile=/dev/null"
 ansible_extra_vars = --extra-vars "pki_domain_name=$(pki_domain_name)"
 ansible_pb_path := playbook.yaml
 
