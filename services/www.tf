@@ -5,7 +5,7 @@ resource "docker_network" "www" {
 module "www_28s_service" {
   source = "./docker-http-service"
 
-  image         = "28solutions/www:0.2.1"
+  image         = "28solutions/www:2.0.0"
   container     = "www-28s"
   internal_port = 8080
   network       = docker_network.www.name
