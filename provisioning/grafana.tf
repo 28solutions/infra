@@ -52,11 +52,8 @@ output "traefik_traces_push_url" {
   value = scaleway_cockpit_source.traefik_traces.push_url
 }
 
-resource "scaleway_cockpit_grafana_user" "user" {
+data "scaleway_cockpit_grafana" "main" {
   project_id = data.scaleway_account_project.project.project_id
-
-  login = "stephdewit"
-  role  = "editor"
 }
 
 resource "onepassword_item" "grafana_login" {
@@ -65,8 +62,5 @@ resource "onepassword_item" "grafana_login" {
   title    = "Scaleway Grafana | www"
   category = "login"
 
-  username = scaleway_cockpit_grafana_user.user.login
-  password = scaleway_cockpit_grafana_user.user.password
-
-  url = scaleway_cockpit_grafana_user.user.grafana_url
+  url = data.scaleway_cockpit_grafana.main.grafana_url
 }
