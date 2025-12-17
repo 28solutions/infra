@@ -1,5 +1,5 @@
 resource "docker_image" "reverse_proxy" {
-  name         = "traefik:v3.6.4"
+  name         = "traefik:v3.6.5"
   keep_locally = true
 }
 
