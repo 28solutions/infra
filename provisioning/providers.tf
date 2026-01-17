@@ -2,7 +2,7 @@ terraform {
   required_providers {
     scaleway = {
       source  = "scaleway/scaleway"
-      version = "2.66.0"
+      version = "2.67.1"
     }
     cloudflare = {
       source  = "cloudflare/cloudflare"
