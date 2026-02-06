@@ -3,7 +3,7 @@ resource "docker_network" "otel" {
 }
 
 resource "docker_image" "otel_collector" {
-  name         = "otel/opentelemetry-collector-contrib:0.144.0"
+  name         = "otel/opentelemetry-collector-contrib:0.145.0"
   keep_locally = true
 }
 
