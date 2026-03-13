@@ -21,6 +21,9 @@ acme_domain_names = {
     "stephdew.it",
     "phane.be", "st.phane.be", "ste.phane.be"
   ]
+  wordle_solver = [
+    "wordle-solver.stephdew.it",
+  ]
   www_sdw_id = [
     "id.stephanedewit.be"
   ]
