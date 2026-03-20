@@ -14,7 +14,7 @@ terraform {
     }
     onepassword = {
       source  = "1Password/onepassword"
-      version = "3.3.0"
+      version = "3.3.1"
     }
     tls = {
       source  = "hashicorp/tls"
