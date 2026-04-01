@@ -1,5 +1,5 @@
 locals {
-  wordle_solver_host = "wordle-solver.stephdew.it"
+  wordle_solver_host = "wordle-solver.ovh"
 }
 
 module "wordle_solver_api" {
