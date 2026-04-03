@@ -104,6 +104,11 @@ resource "docker_container" "reverse_proxy" {
   }
 
   upload {
+    file    = "/etc/traefik/dynamic/rate-limiting.yaml"
+    content = file("traefik/rate-limiting.yaml")
+  }
+
+  upload {
     file = "/etc/traefik/dynamic/downloads.yaml"
     content = templatefile(
       "traefik/downloads.yaml",

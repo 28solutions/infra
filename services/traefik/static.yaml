@@ -61,6 +61,7 @@ entryPoints:
       tls: {}
       middlewares:
         - hsts-header@file
+        - rate-limit@file
   api:
     address: ":8080"
 api: {}
