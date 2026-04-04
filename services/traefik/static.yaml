@@ -62,6 +62,7 @@ entryPoints:
       middlewares:
         - hsts-header@file
         - rate-limit@file
+        - request-body-limit@file
   api:
     address: ":8080"
 api: {}

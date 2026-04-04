@@ -5,3 +5,6 @@ http:
         average: 50
         period: 1s
         burst: 100
+    request-body-limit:
+      buffering:
+        maxRequestBodyBytes: 262144
