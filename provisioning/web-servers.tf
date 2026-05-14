@@ -101,6 +101,7 @@ resource "scaleway_instance_ip" "web_public_ipv6" {
 resource "scaleway_instance_server" "web" {
   type              = "DEV1-S"
   image             = "debian_trixie"
+  name              = "kenny"
   security_group_id = scaleway_instance_security_group.www.id
 
   ip_ids = [
