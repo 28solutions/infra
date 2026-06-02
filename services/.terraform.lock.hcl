@@ -82,3 +82,25 @@ provider "registry.terraform.io/kreuzwerker/docker" {
     "zh:f38022ff9a675864ee8f8e53c5121731dd4964703c2f7c35bc702a09c4a727a3",
   ]
 }
+
+provider "registry.terraform.io/mvisonneau/updown" {
+  version     = "0.2.3"
+  constraints = "0.2.3"
+  hashes = [
+    "h1:vddqKGkwBFo9ecWBk6uxY6Dmx4c6mbh1/4Df+2Gzsu4=",
+    "zh:055e48695e55d32b5183223fd01b2af77b2635ae9229ec7438ff6f11f41ee898",
+    "zh:1782daf74c515fd08dc2c56381d11fa8285660d29f299bdc9dae541866217106",
+    "zh:27fb9a25efe1235b2b1c6ac9683c008b08abcf95d168dc74b19e8e547c289b1c",
+    "zh:294992e7db896f29274451b889bc522e7a67bfda6a04844b43c05b4001e874f2",
+    "zh:4479626ac20384616aeb566a7c187cc10ae3dffd110e588b6b4cbadb3bcbe376",
+    "zh:475a90982b4b497e5397d664e65a94ac7e70e61b6825a67316c87cad9ca97a6b",
+    "zh:613658b2dcd8cb739c995cf12234c2c8a697308532520a9abfd9d21fd4e3b3b1",
+    "zh:674cf15d4d3d1663ed0785d43b386792b05aff945d19efacc5a6252475afe625",
+    "zh:7a7401cc39f1d80bdf374c95244fa5a3dd4f6ddee6ab2777e859b62d843d1f0d",
+    "zh:a9cd0e49c7084d89f4a7ad65c33b8eefd74018863895ec5c0bd712f621370cad",
+    "zh:c75c67f56d6cd0c349d7e23ad07df6fc8dc7a4a19c7a3705c46b1e4d80e360be",
+    "zh:e00b378dc606d7122ec737e7c2337f76c565bcb423a9a94f405d564abc4a7cf6",
+    "zh:f70c61311fbcf7378f976b505b2e45ad2dea38baf1e45465f0a32df392ebf32a",
+    "zh:fd8060e43408d67c0cccca6aea67e2fa77db3d6d57b536ae4bd7fceb99a5752a",
+  ]
+}

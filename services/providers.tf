@@ -12,6 +12,10 @@ terraform {
       source  = "hashicorp/http"
       version = "3.6.0"
     }
+    updown = {
+      source  = "mvisonneau/updown"
+      version = "0.2.3"
+    }
   }
 
   backend "s3" {
@@ -40,6 +44,11 @@ data "onepassword_item" "ssl_certificate" {
   title = "Docker SSL client certificate - Terraform"
 }
 
+data "onepassword_item" "updown" {
+  vault = data.onepassword_vault.iac_vault.uuid
+  title = "updown"
+}
+
 locals {
   docker_host = data.terraform_remote_state.provisioning.outputs.web_server_hostname
   docker_port = [for field in data.onepassword_item.docker_host.section[0].field : field.value if field.label == "port"][0]
@@ -54,4 +63,8 @@ provider "docker" {
   ca_material   = data.http.ca_certificate.response_body
   cert_material = local.docker_cert
   key_material  = local.docker_key
+}
+
+provider "updown" {
+  api_key = data.onepassword_item.updown.credential
 }
