@@ -92,9 +92,9 @@ endif
 apt-upgrade:
 	$(MAKE) deploy ansible_pb_path=upgrade.yaml
 
-.venv:
+.venv: requirements.txt
 	python -m venv --upgrade-deps .venv
-	$(activate_venv) && pip install ansible ansible-lint
+	$(activate_venv) && pip install -r requirements.txt
 
 init: .venv
 
