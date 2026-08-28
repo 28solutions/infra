@@ -10,7 +10,7 @@ terraform {
     }
     acme = {
       source  = "vancluever/acme"
-      version = "2.48.3"
+      version = "3.0.0"
     }
     onepassword = {
       source  = "1Password/onepassword"
