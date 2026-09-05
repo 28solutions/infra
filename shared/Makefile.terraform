@@ -2,7 +2,9 @@ SHELL := /bin/bash
 
 color ?= 1
 
-export TF_PLUGIN_CACHE_DIR=../shared/tf-providers
+ifdef CI
+	export TF_PLUGIN_CACHE_DIR=../shared/tf-providers
+endif
 
 has_1p_creds := 0
 
@@ -63,6 +65,13 @@ all: provision
 
 init:
 	$(tf_init) $(tf_init_params)
+
+ifdef CI
+init: | $(TF_PLUGIN_CACHE_DIR)
+
+$(TF_PLUGIN_CACHE_DIR):
+	mkdir -p $@
+endif
 
 upgrade: .terraform
 	$(tf_init) -upgrade
