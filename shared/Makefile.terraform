@@ -2,7 +2,10 @@ SHELL := /bin/bash
 
 color ?= 1
 
-export TF_PLUGIN_CACHE_DIR=../shared/tf-providers
+ifdef CI
+	export TF_PLUGIN_CACHE_DIR=../shared/tf-providers
+	mkdir -p $(TF_PLUGIN_CACHE_DIR)
+endif
 
 has_1p_creds := 0
 
