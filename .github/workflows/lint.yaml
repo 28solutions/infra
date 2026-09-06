@@ -18,6 +18,22 @@ jobs:
       uses: actions/setup-python@v7
       with:
         python-version: '3.14'
+    - name: Cache Terraform providers
+      uses: actions/cache@v4
+      with:
+        path: shared/tf-providers
+        key: tf-providers-${{ hashFiles('**/.terraform.lock.hcl') }}
+        restore-keys: tf-providers-
+    - name: Cache Python virtualenv
+      uses: actions/cache@v4
+      with:
+        path: deployment/.venv
+        key: deployment-venv-${{ hashFiles('deployment/requirements.txt') }}
+    - name: Cache Ansible Galaxy roles
+      uses: actions/cache@v4
+      with:
+        path: ~/.ansible/roles
+        key: ansible-roles-${{ hashFiles('deployment/requirements.yaml') }}
     - name: Initialize all projects
       run: tf_init_params=-backend=false make init
     - name: Lint
