@@ -45,4 +45,4 @@ jobs:
       env:
         OP_CONNECT_HOST: ${{ vars.OP_CONNECT_HOST }}
         OP_CONNECT_TOKEN: ${{ secrets.OP_CONNECT_TOKEN }}
-      run: make detect-drift color=0
+      run: make detect-drift
