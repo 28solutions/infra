@@ -1,0 +1,48 @@
+name: Detect Drift
+on:
+  schedule:
+    - cron: '0 1 * * *' # 02:00 Europe/Brussels (CET); off by 1h during CEST
+jobs:
+  detect-drift:
+    name: detect-drift
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v7
+    - name: Install Terraform
+      uses: hashicorp/setup-terraform@v4
+      with:
+        terraform_wrapper: false
+        terraform_version: 1.14.8
+    - name: Install Python
+      uses: actions/setup-python@v7
+      with:
+        python-version: '3.14'
+    - name: Install 1Password CLI
+      uses: 1password/install-cli-action@v4
+    - name: Cache Terraform providers
+      uses: actions/cache@v6
+      with:
+        path: shared/tf-providers
+        key: tf-providers-${{ hashFiles('**/.terraform.lock.hcl') }}
+        restore-keys: tf-providers-
+    - name: Cache Python virtualenv
+      uses: actions/cache@v6
+      with:
+        path: deployment/.venv
+        key: deployment-venv-${{ hashFiles('deployment/requirements.txt') }}
+    - name: Cache Ansible Galaxy roles
+      uses: actions/cache@v6
+      with:
+        path: ~/.ansible/roles
+        key: ansible-roles-${{ hashFiles('deployment/requirements.yaml') }}
+    - name: Initialize all projects
+      env:
+        OP_CONNECT_HOST: ${{ vars.OP_CONNECT_HOST }}
+        OP_CONNECT_TOKEN: ${{ secrets.OP_CONNECT_TOKEN }}
+      run: make init
+    - name: Detect drift
+      env:
+        OP_CONNECT_HOST: ${{ vars.OP_CONNECT_HOST }}
+        OP_CONNECT_TOKEN: ${{ secrets.OP_CONNECT_TOKEN }}
+      run: make detect-drift color=0

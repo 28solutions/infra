@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-trap 'rm $tmpfile' EXIT
-tmpfile=$(mktemp)
-
-if ! make detect-drift color=0 >"$tmpfile" 2>&1; then
-	mail -s "Infrastructure drift" "$USER" <"$tmpfile"
-fi
