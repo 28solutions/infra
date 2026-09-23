@@ -55,3 +55,5 @@ endif
 
 merge-renovate:
 	shared/merge-renovate
+	$(MAKE) git-sync
+	$(MAKE) init
