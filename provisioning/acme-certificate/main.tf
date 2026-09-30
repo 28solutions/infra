@@ -40,6 +40,10 @@ resource "acme_certificate" "certificate" {
   account_key_pem         = var.account_key_pem
   certificate_request_pem = tls_cert_request.csr.cert_request_pem
 
+  # Don't rely on the runner's resolver (may serve split-horizon zones or
+  # cache negative answers for _acme-challenge records)
+  recursive_nameservers = ["1.1.1.1:53", "8.8.8.8:53"]
+
   dns_challenge {
     provider = "cloudflare"
 
