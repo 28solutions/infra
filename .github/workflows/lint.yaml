@@ -15,6 +15,7 @@ jobs:
         terraform_wrapper: false
         terraform_version: v1.16.5
     - name: Install Python
+      id: python
       uses: actions/setup-python@v7
       with:
         python-version: '3.14'
@@ -28,7 +29,7 @@ jobs:
       uses: actions/cache@v6
       with:
         path: deployment/.venv
-        key: deployment-venv-${{ hashFiles('deployment/requirements.txt') }}
+        key: deployment-venv-${{ steps.python.outputs.python-version }}-${{ hashFiles('deployment/requirements.txt') }}
     - name: Cache Ansible Galaxy roles
       uses: actions/cache@v6
       with:
