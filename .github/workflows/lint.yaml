@@ -26,10 +26,14 @@ jobs:
         key: tf-providers-${{ hashFiles('**/.terraform.lock.hcl') }}
         restore-keys: tf-providers-
     - name: Cache Python virtualenv
+      id: venv-cache
       uses: actions/cache@v6
       with:
         path: deployment/.venv
         key: deployment-venv-${{ steps.python.outputs.python-version }}-${{ hashFiles('deployment/requirements.txt') }}
+    - name: Mark cached virtualenv as up to date
+      if: steps.venv-cache.outputs.cache-hit == 'true'
+      run: touch deployment/.venv
     - name: Cache Ansible Galaxy roles
       uses: actions/cache@v6
       with:
