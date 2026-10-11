@@ -18,7 +18,7 @@ jobs:
       id: python
       uses: actions/setup-python@v7
       with:
-        python-version: '3.14'
+        python-version: '3.15'
     - name: Cache Terraform providers
       uses: actions/cache@v6
       with:
