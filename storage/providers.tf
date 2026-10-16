@@ -6,7 +6,7 @@ terraform {
     }
     aws = {
       source  = "hashicorp/aws"
-      version = "6.68.0"
+      version = "6.69.1"
     }
     onepassword = {
       source  = "1Password/onepassword"
