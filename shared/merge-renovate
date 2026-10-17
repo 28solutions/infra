@@ -2,6 +2,11 @@
 
 set -e
 
+# Space-separated substrings; branches whose name contains any of them are
+# skipped, e.g.:
+#   RENOVATE_IGNORE="aws ansible" make merge-renovate
+read -ra ignore <<< "${RENOVATE_IGNORE:-}"
+
 git checkout main
 git pull github
 
@@ -11,6 +16,18 @@ git branch \
 	--list 'github/renovate/*' | \
 cut -d / -f 2- | \
 while read -r br; do
+	skip=0
+	for pattern in "${ignore[@]}"; do
+		if [[ $br == *"$pattern"* ]]; then
+			skip=1
+			break
+		fi
+	done
+	if ((skip)); then
+		echo "Skipping $br"
+		continue
+	fi
+
 	git checkout "$br"
 	git rebase main
 	git push --force-with-lease
