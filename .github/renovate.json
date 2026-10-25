@@ -1,3 +1,4 @@
 {
-	"repositories": ["28solutions/infra"]
+	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
+	"extends": ["config:recommended"]
 }
