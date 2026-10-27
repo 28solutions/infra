@@ -18,7 +18,7 @@ jobs:
       id: python
       uses: actions/setup-python@v7
       with:
-        python-version: '3.14'
+        python-version: '3.15'
     - name: Install 1Password CLI
       uses: 1password/install-cli-action@v4
     - name: Cache Terraform providers
