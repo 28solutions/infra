@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+set -e
+
+# Removes provider versions no longer referenced by any lock file from the
+# CI plugin cache, which would otherwise grow with every provider upgrade.
+
+cd "$(dirname "$0")/.."
+
+cache=shared/tf-providers
+
+[ -d "$cache" ] || exit 0
+
+declare -A locked
+while read -r provider version; do
+	locked["$provider/$version"]=1
+done < <(
+	awk -F '"' '
+		/^provider "/ { provider = $2 }
+		/^  version / { print provider, $2 }
+	' ./*/.terraform.lock.hcl
+)
+
+find "$cache" -mindepth 4 -maxdepth 4 -type d | \
+while read -r dir; do
+	if [ -z "${locked[${dir#"$cache"/}]}" ]; then
+		echo "Removing ${dir#"$cache"/}"
+		rm -rf "$dir"
+	fi
+done

@@ -51,3 +51,5 @@ jobs:
         OP_CONNECT_HOST: ${{ vars.OP_CONNECT_HOST }}
         OP_CONNECT_TOKEN: ${{ secrets.OP_CONNECT_TOKEN }}
       run: make detect-drift
+    - name: Prune Terraform providers cache
+      run: shared/prune-tf-providers

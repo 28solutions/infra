@@ -45,3 +45,5 @@ jobs:
       run: |
         make versions
         make lint
+    - name: Prune Terraform providers cache
+      run: shared/prune-tf-providers
