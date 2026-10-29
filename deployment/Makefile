@@ -39,7 +39,8 @@ else
 	ansible_env := $(ansible_env) ANSIBLE_FORCE_COLOR=True
 endif
 
-ansible_env := $(ansible_env) ANSIBLE_HOST_KEY_CHECKING=False ANSIBLE_PIPELINING=True
+ansible_env := $(ansible_env) ANSIBLE_HOST_KEY_CHECKING=False ANSIBLE_PIPELINING=True \
+	ANSIBLE_CALLBACKS_ENABLED=ansible.posix.profile_tasks
 ansible_inventory = -i $(ip), -e ansible_port=$(ssh_port)
 ansible_auth = -u root
 ansible_ssh_opts = \
