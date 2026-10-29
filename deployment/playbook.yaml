@@ -7,19 +7,31 @@
     sshca_user_key_url: "{{ sshca_url_prefix }}user.pub"
     sshca_host_key_url: "{{ sshca_url_prefix }}host.pub"
     ca_certificate_url: https://{{ pki_domain_name }}/ssl/ca/certificate.pem
-    tf: "{{ lookup('pipe', tf_vars_cmd) | from_json }}"
+    docker_op_item: op://IaC/Docker SSL server certificate - Kenny
+  pre_tasks:
+    # Lookups in vars are lazily re-evaluated on every reference; resolve them once
+    - name: Resolve external values
+      ansible.builtin.set_fact:
+        tf: "{{ lookup('ansible.builtin.pipe', tf_vars_cmd) | from_json }}"
+        sshca_user_ca_key: "{{ lookup('ansible.builtin.url', sshca_user_key_url, split_lines=False) }}"
+        sshca_host_ca_key: "{{ lookup('ansible.builtin.url', sshca_host_key_url, split_lines=False) }}"
+        ca_certificate: "{{ lookup('ansible.builtin.url', ca_certificate_url, split_lines=False) }}"
+        docker_tls_port: "{{ lookup('ansible.builtin.pipe', 'op read \"' ~ docker_op_item ~ '/port\"') }}"
+        docker_tls_cert: "{{ lookup('ansible.builtin.pipe', 'op read \"' ~ docker_op_item ~ '/certificate.pem\"') }}"
+        docker_tls_key: "{{ lookup('ansible.builtin.pipe', 'op read \"' ~ docker_op_item ~ '/private-key.pem\"') }}"
+      no_log: true
   roles:
     - role: stephdewit.sshca
       vars:
-        sshca_user_ca: "{{ lookup('ansible.builtin.url', sshca_user_key_url, split_lines=False) }}"
-        sshca_host_ca: "{{ lookup('ansible.builtin.url', sshca_host_key_url, split_lines=False) }}"
+        sshca_user_ca: "{{ sshca_user_ca_key }}"
+        sshca_host_ca: "{{ sshca_host_ca_key }}"
         sshca_host_principal: "{{ tf.web_server_hostname }}"
     - role: stephdewit.docker
       vars:
-        docker_tcp_port: "{{ lookup('ansible.builtin.pipe', 'op read \"op://IaC/Docker SSL server certificate - Kenny/port\"') }}"
-        docker_tcp_ca: "{{ lookup('ansible.builtin.url', ca_certificate_url, split_lines=False) }}"
-        docker_tcp_cert: "{{ lookup('ansible.builtin.pipe', 'op read \"op://IaC/Docker SSL server certificate - Kenny/certificate.pem\"') }}"
-        docker_tcp_key: "{{ lookup('ansible.builtin.pipe', 'op read \"op://IaC/Docker SSL server certificate - Kenny/private-key.pem\"') }}"
+        docker_tcp_port: "{{ docker_tls_port }}"
+        docker_tcp_ca: "{{ ca_certificate }}"
+        docker_tcp_cert: "{{ docker_tls_cert }}"
+        docker_tcp_key: "{{ docker_tls_key }}"
     - role: users
       vars:
         users_admin_user: "{{ admin_user }}"
