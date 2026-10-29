@@ -4,21 +4,45 @@
     state: directory
     mode: "0750"
     group: "{{ tls_group_name }}"
-- name: Copy private key
-  ansible.builtin.copy:
-    content: "{{ tf.certificates[item].private_key }}"
-    dest: "{{ tls_private_directory }}/{{ tf.certificates[item].common_name }}.pem"
-    mode: "0640"
-    group: "{{ tls_group_name }}"
-  loop: "{{ tf.certificates | list }}"
 - name: Create local certificates directory
   ansible.builtin.file:
     path: "{{ tls_certs_directory }}"
     state: directory
     mode: "0755"
+# Each copy costs several round trips; inspect all files at once and only copy those that differ
+- name: Inspect existing files
+  ansible.builtin.find:
+    paths:
+      - "{{ tls_private_directory }}"
+      - "{{ tls_certs_directory }}"
+    patterns: "*.pem"
+    get_checksum: true
+  register: tls_existing
+- name: Copy private key
+  ansible.builtin.copy:
+    content: "{{ tls_content }}"
+    dest: "{{ tls_dest }}"
+    mode: "0640"
+    group: "{{ tls_group_name }}"
+  loop: "{{ tf.certificates | list }}"
+  vars:
+    tls_content: "{{ tf.certificates[item].private_key }}"
+    tls_dest: "{{ tls_private_directory }}/{{ tf.certificates[item].common_name }}.pem"
+    tls_current: "{{ tls_existing_files[tls_dest] | default({}) }}"
+  when: >-
+    tls_current.checksum | default('') != tls_content | hash('sha1')
+    or tls_current.mode | default('') != '0640'
+    or tls_current.gr_name | default('') != tls_group_name
 - name: Copy certificate
   ansible.builtin.copy:
-    content: "{{ tf.certificates[item].certificate }}"
-    dest: "{{ tls_certs_directory }}/{{ tf.certificates[item].common_name }}.pem"
+    content: "{{ tls_content }}"
+    dest: "{{ tls_dest }}"
     mode: "0644"
   loop: "{{ tf.certificates | list }}"
+  vars:
+    tls_content: "{{ tf.certificates[item].certificate }}"
+    tls_dest: "{{ tls_certs_directory }}/{{ tf.certificates[item].common_name }}.pem"
+    tls_current: "{{ tls_existing_files[tls_dest] | default({}) }}"
+  when: >-
+    tls_current.checksum | default('') != tls_content | hash('sha1')
+    or tls_current.mode | default('') != '0644'
