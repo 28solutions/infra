@@ -3,7 +3,7 @@ resource "docker_network" "socket" {
 }
 
 resource "docker_image" "docker_proxy" {
-  name         = "tecnativa/docker-socket-proxy:0.3"
+  name         = "tecnativa/docker-socket-proxy:3.4"
   keep_locally = true
 }
 
